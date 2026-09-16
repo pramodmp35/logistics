@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Logiver - 404 Page Not Found</title>
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Bootstrap 5 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- FontAwesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+
+    <!-- AOS CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    <style>
+      :root {
+        --ember: #f94735;
+        --abyss: #0f313a;
+        --cloud: #ffffff;
+        --coastal: #5094c1;
+        --lagoon: #104a57;
+        --sunbeam: #fac12e;
+      }
+
+      body {
+        font-family: "Outfit", sans-serif;
+        background-color: #f8f9fa;
+      }
+
+      /* Floating decorative background elements */
+      .bg-blob {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(80px);
+        opacity: 0.15;
+      }
+      .blob-1 {
+        width: 300px;
+        height: 300px;
+        background-color: var(--sunbeam);
+        top: -50px;
+        left: -50px;
+      }
+      .blob-2 {
+        width: 400px;
+        height: 400px;
+        background-color: var(--coastal);
+        bottom: -100px;
+        right: -100px;
+      }
+      .blob-3 {
+        width: 200px;
+        height: 200px;
+        background-color: var(--ember);
+        top: 40%;
+        left: 10%;
+      }
+
+      /* Image styling */
+      .error-image {
+        max-width: 100%;
+        height: auto;
+        filter: drop-shadow(0 20px 30px rgba(15, 49, 58, 0.1));
+      }
+
+      /* Button Hover Effect */
+      .btn-base {
+        transition: all 0.3s ease;
+      }
+      .btn-base:hover {
+        transform: translateY(-5px);
+      }
+      .btn-home:hover {
+        box-shadow: 0 15px 25px rgba(249, 71, 53, 0.4);
+      }
+      .btn-back:hover {
+        box-shadow: 0 15px 25px rgba(15, 49, 58, 0.2);
+      }
+    </style>
+  </head>
+  <body class="relative min-h-screen flex items-center justify-center">
+    <!-- ================= DECORATIVE BACKGROUND (FIXED OVERFLOW WRAPPER) ================= -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none z-0">
+      <div class="bg-blob blob-1"></div>
+      <div class="bg-blob blob-2"></div>
+      <div class="bg-blob blob-3"></div>
+    </div>
+
+    <!-- ================= 404 SECTION ================= -->
+    <section class="relative z-10 w-full px-4 py-12">
+      <div class="max-w-3xl mx-auto text-center">
+        <!-- Image Wrapper -->
+        <div
+          class="mb-8 relative flex justify-center"
+          data-aos="zoom-in"
+          data-aos-duration="1000"
+        >
+          <!-- 
+                    REPLACE THE 'src' ATTRIBUTE BELOW WITH YOUR ACTUAL 404 IMAGE URL 
+                -->
+          <img
+            src="./assets/404.webp"
+            alt="404 Page Not Found"
+            class="error-image w-full max-w-md md:max-w-lg"
+            id="errorImage"
+          />
+        </div>
+
+        <!-- Text Content -->
+        <h1
+          class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-[#0f313a] mb-4 tracking-tight"
+          data-aos="fade-up"
+          data-aos-delay="100"
+          data-aos-duration="800"
+        >
+          Oops! Page Not found.
+        </h1>
+
+        <p
+          class="text-gray-500 text-base md:text-lg mb-10 max-w-xl mx-auto font-medium"
+          data-aos="fade-up"
+          data-aos-delay="200"
+          data-aos-duration="800"
+        >
+          You're either misspelling the URL or requesting a page that no longer
+          here.
+        </p>
+
+        <!-- CTA Buttons -->
+        <div
+          class="flex flex-col sm:flex-row justify-center items-center gap-4"
+          data-aos="fade-up"
+          data-aos-delay="300"
+          data-aos-duration="800"
+        >
+          <!-- Go Back Button -->
+          <button
+            onclick="goBack()"
+            class="btn-base btn-back w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-transparent border-2 border-[#0f313a] text-[#0f313a] hover:bg-[#0f313a] hover:red font-bold py-4 px-8 rounded-lg text-lg transition-colors duration-300"
+          >
+            <i class="fas fa-arrow-left"></i>
+            Go Back
+          </button>
+
+          <!-- Back to Home Button -->
+          <a
+            href="#"
+            class="btn-base btn-home w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-[#f94735] hover:bg-[#d13c2c] text-white font-bold py-4 px-8 rounded-lg shadow-lg text-lg"
+          >
+            <i class="fas fa-home"></i>
+            Back To Home Page
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= SCRIPTS ================= -->
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- AOS JS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <!-- Initialization Scripts -->
+    <script>
+      // Initialize AOS
+      AOS.init({
+        duration: 800,
+        once: true,
+        offset: 100,
+        easing: "ease-out-cubic",
+      });
+
+      // GSAP Floating Animation for the 404 Image
+      gsap.to("#errorImage", {
+        y: -15,
+        duration: 2,
+        ease: "power1.inOut",
+        yoyo: true,
+        repeat: -1,
+      });
+
+      // GSAP Animation for the Background Blobs (Parallax effect)
+      gsap.to(".blob-1", {
+        x: 50,
+        y: 30,
+        duration: 5,
+        ease: "power1.inOut",
+        yoyo: true,
+        repeat: -1,
+      });
+
+      gsap.to(".blob-2", {
+        x: -40,
+        y: -20,
+        duration: 6,
+        ease: "power1.inOut",
+        yoyo: true,
+        repeat: -1,
+      });
+
+      // Function to redirect to the previous page
+      function goBack() {
+        window.history.back();
+      }
+    </script>
+  </body>
+</html>

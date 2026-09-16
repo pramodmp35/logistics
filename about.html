@@ -1,0 +1,1030 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stackly - About Us</title>
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Bootstrap 5 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- FontAwesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+
+    <!-- AOS CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    <style>
+      :root {
+        --ember: #f94735;
+        --abyss: #0f313a;
+        --cloud: #ffffff;
+        --coastal: #5094c1;
+        --lagoon: #104a57;
+        --sunbeam: #fac12e;
+      }
+
+      body {
+        font-family: "Outfit", sans-serif;
+        background-color: #f8f9fa;
+        overflow-x: hidden;
+      }
+
+      /* Hero Parallax */
+      .hero-bg {
+        background-attachment: fixed;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+
+      /* Dotted Map Background Pattern */
+      .map-bg {
+        background-color: #ffffff;
+        background-image: radial-gradient(#d1d5db 1.5px, transparent 1.5px);
+        background-size: 24px 24px;
+      }
+
+      /* Team Card Styles */
+      .team-card {
+        transition: all 0.4s ease;
+      }
+      .team-card:hover {
+        transform: translateY(-10px);
+      }
+      .team-card:hover img {
+        transform: scale(1.05);
+      }
+      .team-card .card-info {
+        transition: all 0.4s ease;
+        position: relative;
+        z-index: 10;
+      }
+      .team-card:hover .card-info {
+        background-color: var(--sunbeam) !important;
+      }
+      .team-card:hover .card-info h3 {
+        color: var(--abyss) !important;
+      }
+      .team-card:hover .card-info p {
+        color: var(--abyss) !important;
+        opacity: 0.8;
+      }
+
+      /* Vehicle Showcase Image Floating */
+      .vehicle-img {
+        filter: drop-shadow(0 20px 30px rgba(15, 49, 58, 0.15));
+        transition: transform 0.5s ease;
+      }
+      .vehicle-img:hover {
+        transform: translateY(-10px) scale(1.02);
+      }
+
+      /* Custom Checkmark List */
+      .feature-list li {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 12px;
+        color: #4b5563;
+        font-weight: 500;
+      }
+      .feature-list li i {
+        color: var(--sunbeam);
+        font-size: 1.1rem;
+        background: rgba(250, 193, 46, 0.2);
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+      }
+
+      /* Stats Counter */
+      .stat-number {
+        font-size: 3.5rem;
+        font-weight: 800;
+        color: var(--abyss);
+        line-height: 1;
+      }
+      .stat-label {
+        font-size: 1rem;
+        color: #6b7280;
+        font-weight: 500;
+        margin-top: 8px;
+      }
+    </style>
+    <link rel="stylesheet" href="./navbar.css" />
+    <link rel="stylesheet" href="./footer.css" />
+  </head>
+  <body>
+    <!-- ================= NAVBAR ================= -->
+    <header class="navHeader">
+      <!-- ================= TOP BAR ================= -->
+      <div class="navTopBar">
+        <div class="container mx-auto px-4 md:px-8 navTopBarFlex">
+          <div class="navContactInfo">
+            <span><i class="fas fa-phone-alt"></i> +025 757 576 560</span>
+            <span
+              ><i class="fas fa-clock"></i> Monday to Friday: 9:00am -
+              6:00pm</span
+            >
+          </div>
+          <div class="navUtilityLinks">
+            <a href="./404.html">Careers</a>
+            <a href="./404.html">Terms & Conditions</a>
+            <div class="navSocialIcons">
+              <a href="./404.html"><i class="fab fa-facebook-f"></i></a>
+              <a href="./404.html"><i class="fab fa-instagram"></i></a>
+              <a href="./404.html"><i class="fab fa-youtube"></i></a>
+              <a href="./404.html"><i class="fab fa-twitter"></i></a>
+              <a href="./404.html"><i class="fab fa-pinterest-p"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= MAIN NAVBAR ================= -->
+      <div class="navMainNav">
+        <div class="container mx-auto px-4 md:px-8 navMainNavFlex">
+          <!-- Logo (Visible on Mobile and Desktop) -->
+          <a href="./index.html" class="navLogo">
+            <!-- REPLACE THE 'src' ATTRIBUTE BELOW WITH YOUR LOGO IMAGE URL -->
+            <img
+              src="./assets/logoog.webp"
+              alt="Transpi Logo"
+              class="navLogoImg"
+            />
+          </a>
+
+          <!-- Desktop Links (No Dropdowns) -->
+          <ul class="navLinks">
+            <li><a href="./index.html" class="navLink">HOME</a></li>
+            <li><a href="./about.html" class="navLink">ABOUT US</a></li>
+            <li><a href="./services.html" class="navLink">SERVICES</a></li>
+            <li><a href="./blog.html" class="navLink">BLOG</a></li>
+            <li><a href="./contact.html" class="navLink">CONTACT US</a></li>
+          </ul>
+
+          <!-- Desktop Actions -->
+          <div class="navActions">
+            <!-- Search Button -->
+            <button
+              class="navSearchBtn"
+              aria-label="Search"
+              onclick="window.location.href = './404.html'"
+            >
+              <i class="fas fa-search"></i>
+            </button>
+
+            <!-- Language Toggle -->
+            <div
+              class="navLangToggle"
+              onclick="window.location.href = './404.html'"
+            >
+              <img src="./assets/1.webp" alt="US Flag" class="navLangFlag" />
+              <!-- <i class="fas fa-chevron-down"></i> -->
+              <!-- <div class="navLangDropdown">
+                <a href="#" class="navLangItem">
+                  <img src="https://flagcdn.com/w40/ca.png" alt="Canada Flag" />
+                  Canada
+                </a>
+                <a href="#" class="navLangItem">
+                  <img
+                    src="https://flagcdn.com/w40/au.png"
+                    alt="Australia Flag"
+                  />
+                  Australia
+                </a>
+                <a href="#" class="navLangItem">
+                  <img src="https://flagcdn.com/w40/sa.png" alt="Saudi Flag" />
+                  Arabic
+                </a>
+              </div> -->
+            </div>
+
+            <!-- Track Button -->
+            <a href="./login.html" class="navTrackBtn">SIGN IN </a>
+          </div>
+
+          <!-- Mobile Hamburger (Visible only on Mobile) -->
+          <button class="navMobileBtn" id="navMobileBtn" aria-label="Open Menu">
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- ================= MOBILE MENU (FULL SCREEN) ================= -->
+    <div class="navMobileMenu" id="navMobileMenu">
+      <!-- Mobile Header (Close X Only) -->
+      <div class="navMobileHeader">
+        <button class="navCloseBtn" id="navCloseBtn" aria-label="Close Menu">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <!-- Mobile Links -->
+      <ul class="navMobileLinks">
+        <li>
+          <a href="./index.html" class="navMobileLink"
+            >HOME <i class="fas fa-chevron-right"></i
+          ></a>
+        </li>
+        <li>
+          <a href="./about.html" class="navMobileLink"
+            >ABOUT US <i class="fas fa-chevron-right"></i
+          ></a>
+        </li>
+        <li>
+          <a href="./services.html" class="navMobileLink"
+            >SERVICES <i class="fas fa-chevron-right"></i
+          ></a>
+        </li>
+        <li>
+          <a href="./blog.html" class="navMobileLink"
+            >BLOG <i class="fas fa-chevron-right"></i
+          ></a>
+        </li>
+        <li>
+          <a href="./contact.html" class="navMobileLink"
+            >CONTACT US <i class="fas fa-chevron-right"></i
+          ></a>
+        </li>
+      </ul>
+
+      <!-- Mobile Actions -->
+      <div class="navMobileActions">
+        <!-- Language Toggle (Simplified for Mobile) -->
+        <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
+          <span class="text-sm font-bold text-[#0f313a]">Language:</span>
+          <img
+            src="./assets/1.webp"
+            alt="US Flag"
+            class="w-6 h-4 object-cover rounded cursor-pointer"
+          />
+          <img
+            src="./assets/3.webp"
+            alt="Canada Flag"
+            class="w-6 h-4 object-cover rounded cursor-pointer"
+          />
+          <img
+            src="./assets/4.webp"
+            alt="Australia Flag"
+            class="w-6 h-4 object-cover rounded cursor-pointer"
+          />
+        </div>
+
+        <a href="./login.html" class="navMobileTrackBtn">SIGN IN</a>
+      </div>
+    </div>
+    <!-- ================= HERO SECTION ================= -->
+    <section
+      class="relative h-[40vh] md:h-[50vh] flex items-center justify-center hero-bg bg-[url('./assets/service33.webp')]"
+    >
+      <div class="absolute inset-0 bg-[#0f313a] opacity-80"></div>
+      <div
+        class="relative z-10 text-center text-white px-4"
+        data-aos="fade-up"
+        data-aos-duration="1000"
+      >
+        <h1 class="text-4xl md:text-6xl font-extrabold mb-4 tracking-tight">
+          About Us
+        </h1>
+        <nav
+          class="flex items-center justify-center space-x-2 text-sm md:text-base font-medium text-gray-300"
+        >
+          <a href="./index.html" class="hover:text-[#fac12e] transition-colors"
+            >Home</a
+          >
+          <i class="fas fa-chevron-right text-xs text-[#fac12e]"></i>
+          <span class="text-[#fac12e]">About</span>
+        </nav>
+      </div>
+    </section>
+
+    <!-- ================= YELLOW BANNER SECTION ================= -->
+    <section class="py-16 bg-white">
+      <div class="container mx-auto px-4 md:px-8">
+        <!-- FIXED: items-stretch ensures the image container stretches to match text height -->
+        <div
+          class="bg-[#fac12e] rounded-3xl overflow-hidden shadow-2xl flex flex-col lg:flex-row items-stretch"
+          data-aos="fade-up"
+          data-aos-duration="1000"
+        >
+          <!-- Image Left (No Margins) -->
+          <div class="w-full lg:w-1/2 min-h-[250px] lg:min-h-full relative">
+            <img
+              src="./assets/blog2.webp"
+              alt="Driver"
+              class="absolute inset-0 w-full h-full object-cover"
+            />
+          </div>
+
+          <!-- Text Right -->
+          <div
+            class="w-full lg:w-1/2 p-8 md:p-12 lg:p-16 relative flex flex-col justify-center"
+          >
+            <h2
+              class="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white leading-tight mb-8 uppercase tracking-wide"
+            >
+              Driving your journey forward with reliable, efficient, and
+              seamless transportation solutions
+            </h2>
+
+            <!-- Watch Video Button -->
+            <a
+              href="./404.html"
+              class="inline-flex items-center gap-4 bg-[#fac12e] hover:bg-white text-[#0f313a] font-bold py-4 px-8 rounded-xl transition-all duration-300 shadow-lg transform hover:-translate-y-1 w-max"
+            >
+              <div
+                class="w-10 h-10 bg-[#0f313a] rounded-full flex items-center justify-center text-white"
+              >
+                <i class="fas fa-play text-sm ml-1"></i>
+              </div>
+              Watch video
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= STATS MAP SECTION ================= -->
+    <section class="py-20 map-bg relative">
+      <div class="container mx-auto px-4 md:px-8 relative z-10">
+        <div
+          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 text-center"
+        >
+          <!-- Stat 1 -->
+          <div data-aos="fade-up" data-aos-delay="100">
+            <div class="stat-number" data-target="7500">0</div>
+            <div class="stat-label">Delivered packages</div>
+          </div>
+
+          <!-- Stat 2 -->
+          <div data-aos="fade-up" data-aos-delay="200">
+            <div class="stat-number" data-target="2.6">0</div>
+            <div class="stat-label">Tons of goods</div>
+          </div>
+
+          <!-- Stat 3 -->
+          <div data-aos="fade-up" data-aos-delay="300">
+            <div class="flex items-center justify-center">
+              <div class="stat-number" data-target="100">0</div>
+              <span class="text-5xl font-extrabold text-[#0f313a] ml-1">+</span>
+            </div>
+            <div class="stat-label">Countries covered</div>
+          </div>
+
+          <!-- Stat 4 -->
+          <div data-aos="fade-up" data-aos-delay="400">
+            <div class="flex items-center justify-center">
+              <div class="stat-number" data-target="550">0</div>
+              <span class="text-5xl font-extrabold text-[#0f313a] ml-1">+</span>
+            </div>
+            <div class="stat-label">Warehouses</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= VEHICLE FLEET SECTION ================= -->
+    <section class="py-16 bg-white">
+      <div class="container mx-auto px-4 md:px-8 space-y-24">
+        <!-- Vehicle 1: Actros Truck (Text Left, Image Right) -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div data-aos="fade-right" data-aos-duration="1000">
+            <h2
+              class="text-4xl md:text-5xl font-extrabold text-[#0f313a] mb-6 uppercase"
+            >
+              Actros 1842 LS NRL
+            </h2>
+            <p class="text-gray-600 mb-8 leading-relaxed max-w-lg">
+              Triggerfish bluntnose knifefish upside-down catfish cobia
+              spookfish convict cichlid, "cat shark; saw shark trout cod."
+              Pacific hake false trevally queen parrotfish black prickleback.
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+              <div>
+                <h4 class="text-xl font-bold text-[#0f313a] mb-4">Features</h4>
+                <ul class="feature-list">
+                  <li>
+                    <i class="fas fa-check"></i> Front axle with air suspension
+                  </li>
+                  <li>
+                    <i class="fas fa-check"></i> Rear axle, crown wheel 440
+                  </li>
+                  <li><i class="fas fa-check"></i> Mercedes PowerShift 3</li>
+                  <li>
+                    <i class="fas fa-check"></i> High Performance Engine Brake
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <h4 class="text-xl font-bold text-[#0f313a] mb-4">
+                  Truck info
+                </h4>
+                <ul class="space-y-3 text-gray-600 font-medium text-sm">
+                  <li>
+                    <span class="font-bold text-[#0f313a]">Payload:</span> 9,870
+                    kg
+                  </li>
+                  <li>
+                    <span class="font-bold text-[#0f313a]">Engine:</span> Engine
+                    OM471
+                  </li>
+                  <li>
+                    <span class="font-bold text-[#0f313a]">Wheelbase:</span>
+                    3,700 mm
+                  </li>
+                  <li>
+                    <span class="font-bold text-[#0f313a]">Transmission:</span>
+                    12 Speed Auto
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div
+            class="flex justify-center"
+            data-aos="fade-left"
+            data-aos-duration="1000"
+          >
+            <img
+              src="./assets/service3.webp"
+              alt="Actros Truck"
+              class="vehicle-img w-full max-w-lg object-contain"
+            />
+          </div>
+        </div>
+
+        <!-- Vehicle 2: Evolution Mid-Roof (Image Left, Text Right) -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <!-- Image First in DOM for Left Placement -->
+          <div
+            class="flex justify-center"
+            data-aos="fade-right"
+            data-aos-duration="1000"
+          >
+            <img
+              src="./assets/truck.webp"
+              alt="Evolution Van"
+              class="vehicle-img w-full max-w-lg object-contain"
+            />
+          </div>
+          <div data-aos="fade-left" data-aos-duration="1000">
+            <h2
+              class="text-4xl md:text-5xl font-extrabold text-[#0f313a] mb-6 uppercase"
+            >
+              Evolution Mid-Roof
+            </h2>
+            <p class="text-gray-600 mb-8 leading-relaxed max-w-lg">
+              Triggerfish bluntnose knifefish upside-down catfish cobia
+              spookfish convict cichlid, "cat shark; saw shark trout cod."
+              Pacific hake false trevally queen parrotfish black prickleback.
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+              <div>
+                <h4 class="text-xl font-bold text-[#0f313a] mb-4">Features</h4>
+                <ul class="feature-list">
+                  <li>
+                    <i class="fas fa-check"></i> Roll Over Stability Control
+                  </li>
+                  <li><i class="fas fa-check"></i> Lane Departure Control</li>
+                  <li>
+                    <i class="fas fa-check"></i> Sirius/XM Enabled Additional
+                  </li>
+                  <li><i class="fas fa-check"></i> Qualcomm Omnitracs</li>
+                </ul>
+              </div>
+              <div>
+                <h4 class="text-xl font-bold text-[#0f313a] mb-4">
+                  Truck info
+                </h4>
+                <ul class="space-y-3 text-gray-600 font-medium text-sm">
+                  <li>
+                    <span class="font-bold text-[#0f313a]">Payload:</span> 5,100
+                    kg
+                  </li>
+                  <li>
+                    <span class="font-bold text-[#0f313a]">Engine:</span> 132
+                    TDI SWB LOW
+                  </li>
+                  <li>
+                    <span class="font-bold text-[#0f313a]">Sleeper:</span> 72
+                    full-size condo
+                  </li>
+                  <li>
+                    <span class="font-bold text-[#0f313a]">Transmission:</span>
+                    8 Speed Auto
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Vehicle 3: Small Van (Text Left, Image Right) -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div data-aos="fade-right" data-aos-duration="1000">
+            <h2
+              class="text-4xl md:text-5xl font-extrabold text-[#0f313a] mb-6 uppercase"
+            >
+              Small Van 1600 CC
+            </h2>
+            <p class="text-gray-600 mb-8 leading-relaxed max-w-lg">
+              Triggerfish bluntnose knifefish upside-down catfish cobia
+              spookfish convict cichlid, "cat shark; saw shark trout cod."
+              Pacific hake false trevally queen parrotfish black prickleback.
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+              <div>
+                <h4 class="text-xl font-bold text-[#0f313a] mb-4">Features</h4>
+                <ul class="feature-list">
+                  <li><i class="fas fa-check"></i> Hydraulic Steering wheel</li>
+                  <li><i class="fas fa-check"></i> Lane Departure Control</li>
+                  <li>
+                    <i class="fas fa-check"></i> Sirius/XM Enabled Additional
+                  </li>
+                  <li><i class="fas fa-check"></i> Qualcomm Omnitracs</li>
+                </ul>
+              </div>
+              <div>
+                <h4 class="text-xl font-bold text-[#0f313a] mb-4">
+                  Truck info
+                </h4>
+                <ul class="space-y-3 text-gray-600 font-medium text-sm">
+                  <li>
+                    <span class="font-bold text-[#0f313a]">Payload:</span> 3,500
+                    kg
+                  </li>
+                  <li>
+                    <span class="font-bold text-[#0f313a]">Engine:</span>
+                    Detroit DD15
+                  </li>
+                  <li>
+                    <span class="font-bold text-[#0f313a]">Sleeper:</span> 72
+                    full-size condo
+                  </li>
+                  <li>
+                    <span class="font-bold text-[#0f313a]">Transmission:</span>
+                    6 Speed Manual
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div
+            class="flex justify-center"
+            data-aos="fade-left"
+            data-aos-duration="1000"
+          >
+            <img
+              src="./assets/truckk.webp"
+              alt="Small Van"
+              class="vehicle-img w-full max-w-lg object-contain"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TEAM SECTION ================= -->
+    <section class="py-20 bg-gray-50">
+      <div class="container mx-auto px-4 md:px-8">
+        <div
+          class="text-center mb-16"
+          data-aos="fade-up"
+          data-aos-duration="800"
+        >
+          <h2 class="text-4xl md:text-5xl font-extrabold text-[#0f313a] mb-4">
+            Meet Our Team
+          </h2>
+          <p class="text-gray-600 max-w-2xl mx-auto">
+            The dedicated professionals driving our success forward every single
+            day.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+          <!-- Team Member 1 -->
+          <div
+            class="team-card bg-white rounded-3xl overflow-hidden shadow-lg relative"
+            data-aos="zoom-in"
+            data-aos-delay="100"
+          >
+            <div class="relative overflow-hidden h-72">
+              <img
+                src="./assets/t1.webp"
+                alt="Jenny Wilson"
+                class="w-full h-full object-cover"
+              />
+              <button
+                class="absolute top-4 right-4 bg-[#f94735] text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg hover:bg-[#d13c2c] transition-colors z-20"
+                onclick="window.location.href = './404.html'"
+              >
+                <i class="fas fa-share-alt"></i>
+              </button>
+            </div>
+            <div
+              class="card-info bg-white p-6 text-center rounded-b-3xl relative -mt-6 mx-4 shadow-md"
+            >
+              <h3 class="text-xl font-bold text-[#0f313a]">Jenny Wilson</h3>
+              <p class="text-gray-500 text-sm font-medium">
+                Logistics Specialist
+              </p>
+            </div>
+          </div>
+
+          <!-- Team Member 2 -->
+          <div
+            class="team-card bg-white rounded-3xl overflow-hidden shadow-lg relative"
+            data-aos="zoom-in"
+            data-aos-delay="200"
+          >
+            <div class="relative overflow-hidden h-72">
+              <img
+                src="./assets/t2.webp"
+                alt="Jacob Jones"
+                class="w-full h-full object-cover"
+              />
+              <button
+                class="absolute top-4 right-4 bg-[#f94735] text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg hover:bg-[#d13c2c] transition-colors z-20"
+                onclick="window.location.href = './404.html'"
+              >
+                <i class="fas fa-share-alt"></i>
+              </button>
+            </div>
+            <div
+              class="card-info bg-white p-6 text-center rounded-b-3xl relative -mt-6 mx-4 shadow-md"
+            >
+              <h3 class="text-xl font-bold text-[#0f313a]">Jacob Jones</h3>
+              <p class="text-gray-500 text-sm font-medium">
+                Logistics Specialist
+              </p>
+            </div>
+          </div>
+
+          <!-- Team Member 3 -->
+          <div
+            class="team-card bg-white rounded-3xl overflow-hidden shadow-lg relative"
+            data-aos="zoom-in"
+            data-aos-delay="300"
+          >
+            <div class="relative overflow-hidden h-72">
+              <img
+                src="./assets/t3.webp"
+                alt="Ralph Edwards"
+                class="w-full h-full object-cover"
+              />
+              <button
+                class="absolute top-4 right-4 bg-[#f94735] text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg hover:bg-[#d13c2c] transition-colors z-20"
+                onclick="window.location.href = './404.html'"
+              >
+                <i class="fas fa-share-alt"></i>
+              </button>
+            </div>
+            <div
+              class="card-info bg-white p-6 text-center rounded-b-3xl relative -mt-6 mx-4 shadow-md"
+            >
+              <h3 class="text-xl font-bold text-[#0f313a]">Ralph Edwards</h3>
+              <p class="text-gray-500 text-sm font-medium">
+                Logistics Specialist
+              </p>
+            </div>
+          </div>
+
+          <!-- Team Member 4 -->
+          <div
+            class="team-card bg-white rounded-3xl overflow-hidden shadow-lg relative"
+            data-aos="zoom-in"
+            data-aos-delay="100"
+          >
+            <div class="relative overflow-hidden h-72">
+              <img
+                src="./assets/t4.webp"
+                alt="Kristin Watson"
+                class="w-full h-full object-cover"
+              />
+              <button
+                class="absolute top-4 right-4 bg-[#f94735] text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg hover:bg-[#d13c2c] transition-colors z-20"
+                onclick="window.location.href = './404.html'"
+              >
+                <i class="fas fa-share-alt"></i>
+              </button>
+            </div>
+            <div
+              class="card-info bg-white p-6 text-center rounded-b-3xl relative -mt-6 mx-4 shadow-md"
+            >
+              <h3 class="text-xl font-bold text-[#0f313a]">Kristin Watson</h3>
+              <p class="text-gray-500 text-sm font-medium">
+                Logistics Specialist
+              </p>
+            </div>
+          </div>
+
+          <!-- Team Member 5 -->
+          <div
+            class="team-card bg-white rounded-3xl overflow-hidden shadow-lg relative"
+            data-aos="zoom-in"
+            data-aos-delay="200"
+          >
+            <div class="relative overflow-hidden h-72">
+              <img
+                src="./assets/t5.webp"
+                alt="Wade Warren"
+                class="w-full h-full object-cover"
+              />
+              <button
+                class="absolute top-4 right-4 bg-[#f94735] text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg hover:bg-[#d13c2c] transition-colors z-20"
+                onclick="window.location.href = './404.html'"
+              >
+                <i class="fas fa-share-alt"></i>
+              </button>
+            </div>
+            <div
+              class="card-info bg-white p-6 text-center rounded-b-3xl relative -mt-6 mx-4 shadow-md"
+            >
+              <h3 class="text-xl font-bold text-[#0f313a]">Wade Warren</h3>
+              <p class="text-gray-500 text-sm font-medium">
+                Logistics Specialist
+              </p>
+            </div>
+          </div>
+
+          <!-- Team Member 6 -->
+          <div
+            class="team-card bg-white rounded-3xl overflow-hidden shadow-lg relative"
+            data-aos="zoom-in"
+            data-aos-delay="300"
+          >
+            <div class="relative overflow-hidden h-72">
+              <img
+                src="./assets/t6.webp"
+                alt="Brooklyn Simmons"
+                class="w-full h-full object-cover"
+              />
+              <button
+                class="absolute top-4 right-4 bg-[#f94735] text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg hover:bg-[#d13c2c] transition-colors z-20"
+                onclick="window.location.href = './404.html'"
+              >
+                <i class="fas fa-share-alt"></i>
+              </button>
+            </div>
+            <div
+              class="card-info bg-white p-6 text-center rounded-b-3xl relative -mt-6 mx-4 shadow-md"
+            >
+              <h3 class="text-xl font-bold text-[#0f313a]">Brooklyn Simmons</h3>
+              <p class="text-gray-500 text-sm font-medium">
+                Logistics Specialist
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <footer class="ftrroot">
+      <div class="ftraccent"></div>
+
+      <!-- ============ NEWSLETTER BAR ============ -->
+      <div class="ftrnewsbar">
+        <div class="ftrnewslogo">
+          <!-- REPLACE src WITH YOUR LOGO URL -->
+          <img
+            src="./assets/logoog.webp"
+            alt="Stackly Worldwide Logistics"
+            onclick="window.location.href = './index.html'"
+            style="cursor: pointer"
+          />
+        </div>
+
+        <div class="ftrnewscontent">
+          <h3 class="ftrnewstitle">Subscribe Newsletter</h3>
+
+          <form class="ftrnewsform" action="./404.html">
+            <input
+              class="ftrnewsinp"
+              type="email"
+              name="ftremail"
+              placeholder="Your Email Address"
+              aria-label="Your Email Address"
+              required
+            />
+            <button class="ftrnewsbtn" type="submit">Subscribe Now</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- ============ MAIN BODY ============ -->
+      <div class="ftrmain">
+        <div class="ftrgrid">
+          <!-- CONTACT -->
+          <div class="ftrcol">
+            <h4 class="ftrhead">Get In Touch</h4>
+
+            <div class="ftrrow">
+              <span class="ftricon">
+                <svg viewBox="0 0 384 512" aria-hidden="true">
+                  <path
+                    d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 128a64 64 0 1 1 0 128 64 64 0 1 1 0-128z"
+                  />
+                </svg>
+              </span>
+              <div>
+                <p class="ftrrowtitle">Corporate Office</p>
+                <p class="ftrrowtext">
+                  3891 Salem Tamilnadu Dr. Richardson, India 62639
+                </p>
+              </div>
+            </div>
+
+            <div class="ftrdivider"></div>
+
+            <p class="ftrline">
+              <b>Call Us:</b>
+              <a class="ftrlink" href="./404.html">+91-416-8241228</a>
+            </p>
+
+            <p class="ftrline">
+              <b>Email:</b>
+              <a class="ftrlink" href="./404.html">info@stackly.com</a>
+            </p>
+          </div>
+
+          <!-- SERVICE -->
+          <div class="ftrcol">
+            <h4 class="ftrhead">Service</h4>
+            <ul class="ftrlist">
+              <li>
+                <a class="ftrlistlink" href="./404.html"
+                  >Freight Transportation</a
+                >
+              </li>
+              <li>
+                <a class="ftrlistlink" href="./404.html"
+                  >Warehousing &amp; Distribution</a
+                >
+              </li>
+              <li>
+                <a class="ftrlistlink" href="./404.html"
+                  >Supply Chain Management</a
+                >
+              </li>
+              <li>
+                <a class="ftrlistlink" href="./404.html"
+                  >E-Commerce Solutions</a
+                >
+              </li>
+              <li>
+                <a class="ftrlistlink" href="./404.html"
+                  >Rebranding and Brand Refresh</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <!-- QUICK LINK -->
+          <div class="ftrcol">
+            <h4 class="ftrhead">Quick Link</h4>
+            <ul class="ftrlist">
+              <li><a class="ftrlistlink" href="./index.html">Home</a></li>
+              <li><a class="ftrlistlink" href="./about.html">About</a></li>
+              <li>
+                <a class="ftrlistlink" href="./services.html">Services</a>
+              </li>
+              <li><a class="ftrlistlink" href="./blog.html">Blog</a></li>
+              <li><a class="ftrlistlink" href="./contact.html">Contact</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ BOTTOM BAR ============ -->
+      <div class="ftrbottom">
+        <p class="ftrcopy">
+          © All Copyright 2025 by
+          <a class="ftrcopylink" href="./index.html">Stackly</a>
+        </p>
+
+        <div class="ftrsocials">
+          <a class="ftrsocial" href="./404.html" aria-label="Facebook">
+            <svg viewBox="0 0 320 512" aria-hidden="true">
+              <path
+                d="M80 299.3V512H196V299.3h86.5l18-97.8H196V166.9c0-51.7 20.3-71.5 72.7-71.5c16.3 0 29.4 .4 37 1.2V7.9C291.4 4 256.4 0 236.2 0C129.3 0 80 50.5 80 159.4v42.1H14v97.8H80z"
+              />
+            </svg>
+          </a>
+
+          <a class="ftrsocial" href="./404.html" aria-label="X">
+            <svg viewBox="0 0 512 512" aria-hidden="true">
+              <path
+                d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"
+              />
+            </svg>
+          </a>
+
+          <a class="ftrsocial" href="./404.html" aria-label="LinkedIn">
+            <svg viewBox="0 0 448 512" aria-hidden="true">
+              <path
+                d="M100.3 448H7.4V148.9h92.9zM53.8 108.1C24.1 108.1 0 83.5 0 53.8a53.8 53.8 0 0 1 107.6 0c0 29.7-24.1 54.3-53.8 54.3zM447.9 448h-92.7V302.4c0-34.7-.7-79.2-48.3-79.2-48.3 0-55.7 37.7-55.7 76.7V448h-92.8V148.9h89.1v40.8h1.3c12.4-23.5 42.7-48.3 87.9-48.3c94 0 111.3 61.9 111.3 142.3V448z"
+              />
+            </svg>
+          </a>
+
+          <a class="ftrsocial" href="./404.html" aria-label="YouTube">
+            <svg viewBox="0 0 576 512" aria-hidden="true">
+              <path
+                d="M549.7 124.1c-6.3-23.7-24.8-42.3-48.3-48.6C458.8 64 288 64 288 64S117.2 64 74.6 75.5c-23.5 6.3-42 24.9-48.3 48.6-11.4 42.9-11.4 132.3-11.4 132.3s0 89.4 11.4 132.3c6.3 23.7 24.8 41.5 48.3 47.8C117.2 448 288 448 288 448s170.8 0 213.4-11.5c23.5-6.3 42-24.2 48.3-47.8 11.4-42.9 11.4-132.3 11.4-132.3s0-89.4-11.4-132.3zm-317.5 213.5V175.2l142.7 81.2-142.7 81.2z"
+              />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </footer>
+    <!-- ================= SCRIPTS ================= -->
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- AOS JS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <!-- Initialization Scripts -->
+    <script>
+      // Initialize AOS
+      AOS.init({
+        duration: 800,
+        once: true,
+        offset: 100,
+        easing: "ease-out-cubic",
+      });
+
+      // GSAP Parallax Effect for Hero
+      gsap.registerPlugin(ScrollTrigger);
+
+      gsap.to(".hero-bg", {
+        backgroundPosition: "50% 100%",
+        ease: "none",
+        scrollTrigger: {
+          trigger: ".hero-bg",
+          start: "top top",
+          end: "bottom top",
+          scrub: true,
+        },
+      });
+
+      // FIXED: Working Counter Animation using Object Proxy
+      const counters = document.querySelectorAll(".stat-number");
+
+      counters.forEach((counter) => {
+        const target = parseFloat(counter.getAttribute("data-target"));
+        const isDecimal = counter.getAttribute("data-target").includes(".");
+
+        // Use a proxy object to animate the number
+        let obj = { val: 0 };
+
+        gsap.to(obj, {
+          val: target,
+          duration: 2.5,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: counter,
+            start: "top 85%",
+            toggleActions: "play none none none",
+          },
+          onUpdate: function () {
+            if (isDecimal) {
+              counter.innerText = obj.val.toFixed(1);
+            } else {
+              counter.innerText = Math.floor(obj.val).toLocaleString();
+            }
+          },
+        });
+      });
+    </script>
+    <script src="./navbar.js"></script>
+  </body>
+</html>

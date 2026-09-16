@@ -1,0 +1,1002 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stackly - Our Services</title>
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Bootstrap 5 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- FontAwesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+
+    <!-- AOS CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    <style>
+      :root {
+        --ember: #f94735;
+        --abyss: #0f313a;
+        --cloud: #ffffff;
+        --coastal: #5094c1;
+        --lagoon: #104a57;
+        --sunbeam: #fac12e;
+      }
+
+      body {
+        font-family: "Outfit", sans-serif;
+        background-color: #f8f9fa;
+        overflow-x: hidden;
+      }
+
+      /* Hero Parallax */
+      .hero-bg {
+        background-attachment: fixed;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+
+      /* Specialist Services Card Angled Cut */
+      .service-card-img {
+        clip-path: polygon(0 0, 85% 0, 100% 20%, 100% 100%, 0 100%);
+        transition: transform 0.5s ease;
+      }
+      .service-card:hover .service-card-img {
+        transform: scale(1.05);
+      }
+
+      /* Marquee Styles */
+      .marquee-strip {
+        overflow: hidden;
+        white-space: nowrap;
+        display: flex;
+        align-items: center;
+      }
+
+      .marquee-content {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        animation: scroll 20s linear infinite;
+      }
+
+      .marquee-content-reverse {
+        animation: scroll-reverse 20s linear infinite;
+      }
+
+      @keyframes scroll {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(-50%);
+        }
+      }
+
+      @keyframes scroll-reverse {
+        0% {
+          transform: translateX(-50%);
+        }
+        100% {
+          transform: translateX(0);
+        }
+      }
+
+      /* Process Section Columns */
+      .process-col {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      }
+      @media (min-width: 768px) {
+        .process-col {
+          border-bottom: none;
+          border-right: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .process-col:last-child {
+          border-right: none;
+        }
+      }
+
+      /* Tracking Input Focus */
+      .tracking-input:focus {
+        outline: none;
+        border-color: var(--ember);
+        box-shadow: 0 0 0 3px rgba(249, 71, 53, 0.2);
+      }
+
+      /* How It Works Timeline */
+      .timeline-line {
+        position: absolute;
+        top: 50%;
+        left: 10%;
+        right: 10%;
+        height: 2px;
+        border-top: 2px dashed #cbd5e1;
+        z-index: 0;
+      }
+      .step-circle {
+        position: relative;
+        z-index: 10;
+        background-color: #f8f9fa;
+      }
+    </style>
+    <link rel="stylesheet" href="./navbar.css" />
+  <link rel="stylesheet" href="./footer.css" />
+  </head>
+  <body>
+      <!-- ================= NAVBAR ================= -->
+    <header class="navHeader">
+      <!-- ================= TOP BAR ================= -->
+      <div class="navTopBar">
+        <div class="container mx-auto px-4 md:px-8 navTopBarFlex">
+          <div class="navContactInfo">
+            <span><i class="fas fa-phone-alt"></i> +025 757 576 560</span>
+            <span
+              ><i class="fas fa-clock"></i> Monday to Friday: 9:00am -
+              6:00pm</span
+            >
+          </div>
+          <div class="navUtilityLinks">
+            <a href="./404.html">Careers</a>
+            <a href="./404.html">Terms & Conditions</a>
+            <div class="navSocialIcons">
+              <a href="./404.html"><i class="fab fa-facebook-f"></i></a>
+              <a href="./404.html"><i class="fab fa-instagram"></i></a>
+              <a href="./404.html"><i class="fab fa-youtube"></i></a>
+              <a href="./404.html"><i class="fab fa-twitter"></i></a>
+              <a href="./404.html"><i class="fab fa-pinterest-p"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= MAIN NAVBAR ================= -->
+      <div class="navMainNav">
+        <div class="container mx-auto px-4 md:px-8 navMainNavFlex">
+          <!-- Logo (Visible on Mobile and Desktop) -->
+          <a href="./index.html" class="navLogo">
+            <!-- REPLACE THE 'src' ATTRIBUTE BELOW WITH YOUR LOGO IMAGE URL -->
+            <img
+              src="./assets/logoog.webp"
+              alt="Transpi Logo"
+              class="navLogoImg"
+            />
+          </a>
+
+          <!-- Desktop Links (No Dropdowns) -->
+          <ul class="navLinks">
+            <li><a href="./index.html" class="navLink">HOME</a></li>
+            <li><a href="./about.html" class="navLink">ABOUT US</a></li>
+            <li><a href="./services.html" class="navLink">SERVICES</a></li>
+            <li><a href="./blog.html" class="navLink">BLOG</a></li>
+            <li><a href="./contact.html" class="navLink">CONTACT US</a></li>
+          </ul>
+
+          <!-- Desktop Actions -->
+          <div class="navActions">
+            <!-- Search Button -->
+            <button
+              class="navSearchBtn"
+              aria-label="Search"
+              onclick="window.location.href = './404.html'"
+            >
+              <i class="fas fa-search"></i>
+            </button>
+
+            <!-- Language Toggle -->
+            <div
+              class="navLangToggle"
+              onclick="window.location.href = './404.html'"
+            >
+              <img src="./assets/1.webp" alt="US Flag" class="navLangFlag" />
+              <!-- <i class="fas fa-chevron-down"></i> -->
+              <!-- <div class="navLangDropdown">
+                <a href="#" class="navLangItem">
+                  <img src="https://flagcdn.com/w40/ca.png" alt="Canada Flag" />
+                  Canada
+                </a>
+                <a href="#" class="navLangItem">
+                  <img
+                    src="https://flagcdn.com/w40/au.png"
+                    alt="Australia Flag"
+                  />
+                  Australia
+                </a>
+                <a href="#" class="navLangItem">
+                  <img src="https://flagcdn.com/w40/sa.png" alt="Saudi Flag" />
+                  Arabic
+                </a>
+              </div> -->
+            </div>
+
+            <!-- Track Button -->
+            <a href="./login.html" class="navTrackBtn">SIGN IN </a>
+          </div>
+
+          <!-- Mobile Hamburger (Visible only on Mobile) -->
+          <button class="navMobileBtn" id="navMobileBtn" aria-label="Open Menu">
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- ================= MOBILE MENU (FULL SCREEN) ================= -->
+    <div class="navMobileMenu" id="navMobileMenu">
+      <!-- Mobile Header (Close X Only) -->
+      <div class="navMobileHeader">
+        <button class="navCloseBtn" id="navCloseBtn" aria-label="Close Menu">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <!-- Mobile Links -->
+      <ul class="navMobileLinks">
+        <li>
+          <a href="./index.html" class="navMobileLink"
+            >HOME <i class="fas fa-chevron-right"></i
+          ></a>
+        </li>
+        <li>
+          <a href="./about.html" class="navMobileLink"
+            >ABOUT US <i class="fas fa-chevron-right"></i
+          ></a>
+        </li>
+        <li>
+          <a href="./services.html" class="navMobileLink"
+            >SERVICES <i class="fas fa-chevron-right"></i
+          ></a>
+        </li>
+        <li>
+          <a href="./blog.html" class="navMobileLink"
+            >BLOG <i class="fas fa-chevron-right"></i
+          ></a>
+        </li>
+        <li>
+          <a href="./contact.html" class="navMobileLink"
+            >CONTACT US <i class="fas fa-chevron-right"></i
+          ></a>
+        </li>
+      </ul>
+
+      <!-- Mobile Actions -->
+      <div class="navMobileActions">
+        <!-- Language Toggle (Simplified for Mobile) -->
+        <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
+          <span class="text-sm font-bold text-[#0f313a]">Language:</span>
+          <img
+            src="./assets/1.webp"
+            alt="US Flag"
+            class="w-6 h-4 object-cover rounded cursor-pointer"
+          />
+          <img
+            src="./assets/3.webp"
+            alt="Canada Flag"
+            class="w-6 h-4 object-cover rounded cursor-pointer"
+          />
+          <img
+            src="./assets/4.webp"
+            alt="Australia Flag"
+            class="w-6 h-4 object-cover rounded cursor-pointer"
+          />
+        </div>
+
+        <a href="./login.html" class="navMobileTrackBtn">SIGN IN</a>
+      </div>
+    </div>
+    <!-- ================= HERO SECTION ================= -->
+    <section
+      class="relative h-[40vh] md:h-[50vh] flex items-center justify-center hero-bg bg-[url('./assets/service33.webp')]"
+    >
+      <div class="absolute inset-0 bg-[#0f313a] opacity-80"></div>
+      <div
+        class="relative z-10 text-center text-white px-4"
+        data-aos="fade-up"
+        data-aos-duration="1000"
+      >
+        <h1 class="text-4xl md:text-6xl font-extrabold mb-4 tracking-tight">
+          Our Services
+        </h1>
+        <nav
+          class="flex items-center justify-center space-x-2 text-sm md:text-base font-medium text-gray-300"
+        >
+          <a href="./index.html" class="hover:text-[#fac12e] transition-colors">Home</a>
+          <i class="fas fa-chevron-right text-xs text-[#fac12e]"></i>
+          <span class="text-[#fac12e]">Services</span>
+        </nav>
+      </div>
+    </section>
+
+    <!-- ================= SPECIALIST LOGISTICS SERVICES ================= -->
+    <section class="py-20 bg-white">
+      <div class="container mx-auto px-4 md:px-8">
+        <!-- Header -->
+        <div class="mb-16" data-aos="fade-right" data-aos-duration="800">
+          <span
+            class="text-[#f94735] font-bold tracking-widest uppercase text-sm block mb-2"
+            >Shipping Services</span
+          >
+          <h2
+            class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-[#0f313a] leading-tight max-w-2xl"
+          >
+            Specialist Logistics Services
+          </h2>
+        </div>
+
+        <!-- Cards Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+          <!-- Air Transportation -->
+          <div
+            class="service-card group relative"
+            data-aos="fade-up"
+            data-aos-delay="100"
+          >
+            <div class="relative overflow-hidden rounded-2xl h-64">
+              <img
+                src="./assets/service33.webp"
+                alt="Air Transportation"
+                class="w-full h-full object-cover service-card-img"
+              />
+              <!-- Icon Overlap -->
+              <div
+                class="absolute bottom-4 right-4 bg-[#f94735] text-white w-16 h-16 rounded-full flex items-center justify-center text-2xl shadow-lg border-4 border-white transform group-hover:scale-110 transition-transform duration-300"
+              >
+                <i class="fas fa-plane"></i>
+              </div>
+            </div>
+            <div class="mt-6">
+              <h3 class="text-2xl font-bold text-[#0f313a] mb-3">
+                Air Transportation
+              </h3>
+              <p class="text-gray-600 mb-4 text-sm leading-relaxed">
+                Air freight is the fastest way to any transport can any deliver
+                works.
+              </p>
+              <a
+                href="./404.html"
+                class="inline-flex items-center text-sm font-bold text-[#0f313a] tracking-wider uppercase hover:text-[#f94735] transition-colors group-hover:translate-x-2 duration-300"
+              >
+                Read More <i class="fas fa-arrow-right ml-2 text-xs"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Road Transportation -->
+          <div
+            class="service-card group relative"
+            data-aos="fade-up"
+            data-aos-delay="200"
+          >
+            <div class="relative overflow-hidden rounded-2xl h-64">
+              <img
+                src="./assets/service11.webp"
+                alt="Road Transportation"
+                class="w-full h-full object-cover service-card-img"
+              />
+              <!-- Icon Overlap -->
+              <div
+                class="absolute bottom-4 right-4 bg-[#f94735] text-white w-16 h-16 rounded-full flex items-center justify-center text-2xl shadow-lg border-4 border-white transform group-hover:scale-110 transition-transform duration-300"
+              >
+                <i class="fas fa-truck"></i>
+              </div>
+            </div>
+            <div class="mt-6">
+              <h3 class="text-2xl font-bold text-[#0f313a] mb-3">
+                Road Transportation
+              </h3>
+              <p class="text-gray-600 mb-4 text-sm leading-relaxed">
+                Air freight is the fastest way to any transport can any deliver
+                works.
+              </p>
+              <a
+                href="./404.html"
+                class="inline-flex items-center text-sm font-bold text-[#0f313a] tracking-wider uppercase hover:text-[#f94735] transition-colors group-hover:translate-x-2 duration-300"
+              >
+                Read More <i class="fas fa-arrow-right ml-2 text-xs"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Rail Transportation -->
+          <div
+            class="service-card group relative"
+            data-aos="fade-up"
+            data-aos-delay="300"
+          >
+            <div class="relative overflow-hidden rounded-2xl h-64">
+              <img
+                src="./assets/service22.webp"
+                alt="Rail Transportation"
+                class="w-full h-full object-cover service-card-img"
+              />
+              <!-- Icon Overlap -->
+              <div
+                class="absolute bottom-4 right-4 bg-[#f94735] text-white w-16 h-16 rounded-full flex items-center justify-center text-2xl shadow-lg border-4 border-white transform group-hover:scale-110 transition-transform duration-300"
+              >
+                <i class="fas fa-train"></i>
+              </div>
+            </div>
+            <div class="mt-6">
+              <h3 class="text-2xl font-bold text-[#0f313a] mb-3">
+                Rail Transportation
+              </h3>
+              <p class="text-gray-600 mb-4 text-sm leading-relaxed">
+                Air freight is the fastest way to any transport can any deliver
+                works.
+              </p>
+              <a
+                href="./404.html"
+                class="inline-flex items-center text-sm font-bold text-[#0f313a] tracking-wider uppercase hover:text-[#f94735] transition-colors group-hover:translate-x-2 duration-300"
+              >
+                Read More <i class="fas fa-arrow-right ml-2 text-xs"></i>
+              </a>
+            </div>
+          </div>
+        </img>
+      </div>
+    </section>
+
+    <!-- ================= PROCESS SECTION (DARK OVERLAY) ================= -->
+    <section
+      class="relative py-24 bg-[url('./assets/about7.webp')] bg-cover bg-center bg-fixed"
+    >
+      <div class="absolute inset-0 bg-[#0f313a] opacity-85"></div>
+
+      <div class="container mx-auto px-4 md:px-8 relative z-10">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+          <!-- Column 1 -->
+          <div
+            class="process-col p-8 text-white relative group"
+            data-aos="fade-up"
+            data-aos-delay="100"
+          >
+            <div
+              class="w-12 h-12 rounded-full border border-white flex items-center justify-center text-lg font-bold mb-16"
+            >
+              01
+            </div>
+            <div class="mb-4">
+              <span
+                class="px-4 py-1 border border-white rounded-full text-xs font-semibold uppercase tracking-wider"
+                >Cargo</span
+              >
+            </div>
+            <h3 class="text-2xl font-bold mb-8 leading-tight">
+              CT Scanner from Italy to the UK
+            </h3>
+            <a
+              href="./404.html"
+              class="w-10 h-10 bg-white text-[#0f313a] flex items-center justify-center rounded hover:bg-[#000000] hover:black transition-colors duration-300"
+            >
+              <i class="fas fa-arrow-right"></i>
+            </a>
+          </div>
+
+          <!-- Column 2 -->
+          <div
+            class="process-col p-8 text-white relative group"
+            data-aos="fade-up"
+            data-aos-delay="200"
+          >
+            <div
+              class="w-12 h-12 rounded-full border border-white flex items-center justify-center text-lg font-bold mb-16"
+            >
+              02
+            </div>
+            <div class="mb-4">
+              <span
+                class="px-4 py-1 border border-white rounded-full text-xs font-semibold uppercase tracking-wider"
+                >Air Freight</span
+              >
+            </div>
+            <h3 class="text-2xl font-bold mb-8 leading-tight">
+              International Freight Japan to the USA
+            </h3>
+            <a
+              href="./404.html"
+              class="w-10 h-10 bg-white text-[#0f313a] flex items-center justify-center rounded hover:bg-[#000000] hover:black transition-colors duration-300"
+            >
+              <i class="fas fa-arrow-right"></i>
+            </a>
+          </div>
+
+          <!-- Column 3 -->
+          <div
+            class="process-col p-8 text-white relative group"
+            data-aos="fade-up"
+            data-aos-delay="300"
+          >
+            <div
+              class="w-12 h-12 rounded-full border border-white flex items-center justify-center text-lg font-bold mb-16"
+            >
+              03
+            </div>
+            <div class="mb-4">
+              <span
+                class="px-4 py-1 border border-white rounded-full text-xs font-semibold uppercase tracking-wider"
+                >Road Freight</span
+              >
+            </div>
+            <h3 class="text-2xl font-bold mb-8 leading-tight">
+              Road Logistics Works Companies.
+            </h3>
+            <a
+              href="./404.html"
+              class="w-10 h-10 bg-white text-[#0f313a] flex items-center justify-center rounded hover:bg-[#000000] hover:black transition-colors duration-300"
+            >
+              <i class="fas fa-arrow-right"></i>
+            </a>
+          </div>
+
+          <!-- Column 4 -->
+          <div
+            class="process-col p-8 text-white relative group"
+            data-aos="fade-up"
+            data-aos-delay="400"
+          >
+            <div
+              class="w-12 h-12 rounded-full border border-white flex items-center justify-center text-lg font-bold mb-16"
+            >
+              04
+            </div>
+            <div class="mb-4">
+              <span
+                class="px-4 py-1 border border-white rounded-full text-xs font-semibold uppercase tracking-wider"
+                >Ocean</span
+              >
+            </div>
+            <h3 class="text-2xl font-bold mb-8 leading-tight">
+              Ocean Door To Fast Parcel done.
+            </h3>
+            <a
+              href="./404.html"
+              class="w-10 h-10 bg-white text-[#0f313a] flex items-center justify-center rounded hover:bg-[#000000] hover:black transition-colors duration-300"
+            >
+              <i class="fas fa-arrow-right"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= MARQUEE SECTION ================= -->
+    <section
+      class="relative py-24 overflow-hidden bg-gray-50 flex items-center justify-center"
+    >
+      <!-- Strip 1 (Yellow) -->
+      <div
+        class="absolute w-[120vw] -rotate-3 bg-[#fac12e] py-4 shadow-xl z-20 marquee-strip"
+      >
+        <div class="marquee-content">
+          <span
+            class="text-2xl md:text-3xl font-extrabold text-[#0f313a] uppercase tracking-wider flex items-center gap-4"
+          >
+            <i class="fas fa-truck-moving"></i> Stackly Transportation
+          </span>
+          <span
+            class="text-2xl md:text-3xl font-extrabold text-[#0f313a] uppercase tracking-wider flex items-center gap-4"
+          >
+            <i class="fas fa-truck-moving"></i> Stackly Transportation
+          </span>
+          <span
+            class="text-2xl md:text-3xl font-extrabold text-[#0f313a] uppercase tracking-wider flex items-center gap-4"
+          >
+            <i class="fas fa-truck-moving"></i> Stackly Transportation
+          </span>
+          <span
+            class="text-2xl md:text-3xl font-extrabold text-[#0f313a] uppercase tracking-wider flex items-center gap-4"
+          >
+            <i class="fas fa-truck-moving"></i> Stackly Transportation
+          </span>
+        </div>
+      </div>
+
+      <!-- Strip 2 (Dark Teal) -->
+      <div
+        class="absolute w-[120vw] rotate-3 bg-[#0f313a] py-4 shadow-xl z-10 marquee-strip"
+      >
+        <div class="marquee-content marquee-content-reverse">
+          <span
+            class="text-2xl md:text-3xl font-extrabold text-white uppercase tracking-wider flex items-center gap-4"
+          >
+            <i class="fas fa-truck-moving"></i> Stackly Transportation
+          </span>
+          <span
+            class="text-2xl md:text-3xl font-extrabold text-white uppercase tracking-wider flex items-center gap-4"
+          >
+            <i class="fas fa-truck-moving"></i> Stackly Transportation
+          </span>
+          <span
+            class="text-2xl md:text-3xl font-extrabold text-white uppercase tracking-wider flex items-center gap-4"
+          >
+            <i class="fas fa-truck-moving"></i> Stackly Transportation
+          </span>
+          <span
+            class="text-2xl md:text-3xl font-extrabold text-white uppercase tracking-wider flex items-center gap-4"
+          >
+            <i class="fas fa-truck-moving"></i> Stackly Transportation
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TRACKING FORM SECTION ================= -->
+    <section class="py-20 bg-white">
+      <div class="container mx-auto px-4 md:px-8">
+        <div
+          class="max-w-3xl mx-auto"
+          data-aos="fade-left"
+          data-aos-duration="800"
+        >
+          <h2 class="text-3xl md:text-4xl font-extrabold text-[#0f313a] mb-6">
+            Enter the Consignment No.
+          </h2>
+          <form class="flex flex-col sm:flex-row gap-4" action="./404.html">
+            <input
+              type="text"
+              placeholder="Enter Tracking Number"
+              class="tracking-input flex-grow border border-gray-300 rounded-lg px-6 py-4 text-gray-700 focus:ring-0 transition-all duration-300"
+              required
+            />
+            <button
+              type="submit"
+              class="bg-[#f94735] hover:bg-[#d13c2c] text-white font-bold px-8 py-4 rounded-lg transition-colors duration-300 whitespace-nowrap"
+            >
+              TRACK RESULT
+            </button>
+          </form>
+          <p class="mt-4 text-[#0f313a] font-bold text-lg">Ex: STKLOG12345</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= HOW IT WORKS SECTION ================= -->
+    <section class="py-20 bg-gray-50">
+      <div class="container mx-auto px-4 md:px-8">
+        <!-- Header -->
+        <div
+          class="text-center mb-16"
+          data-aos="fade-up"
+          data-aos-duration="800"
+        >
+          <span
+            class="text-[#f94735] font-bold tracking-widest uppercase text-sm block mb-2"
+            >How It Works</span
+          >
+          <h2
+            class="text-4xl md:text-5xl font-extrabold text-[#0f313a] leading-tight"
+          >
+            How We Deliver<br />Your Parcel
+          </h2>
+        </div>
+
+        <!-- Timeline Grid -->
+        <div class="relative grid grid-cols-1 md:grid-cols-4 gap-12">
+          <!-- Dashed Line (Desktop Only) -->
+          <div class="hidden md:block timeline-line"></div>
+
+          <!-- Step 1 -->
+          <div
+            class="flex flex-col items-center text-center"
+            data-aos="fade-up"
+            data-aos-delay="100"
+          >
+            <div
+              class="step-circle w-24 h-24 rounded-full border border-[#f94735] flex items-center justify-center text-[#f94735] text-2xl mb-6 relative"
+            >
+              <i class="fas fa-clipboard-list"></i>
+              <div
+                class="absolute bottom-0 right-0 w-8 h-8 bg-[#f94735] text-white rounded-full flex items-center justify-center text-xs font-bold border-2 border-white"
+              >
+                01
+              </div>
+            </div>
+            <h3 class="text-xl font-bold text-[#0f313a] mb-2">
+              Parcel Register
+            </h3>
+            <p class="text-gray-500 text-sm leading-relaxed max-w-xs">
+              Lorem ipsum amet consectetur any more tellus suspendisse.
+            </p>
+          </div>
+
+          <!-- Step 2 -->
+          <div
+            class="flex flex-col items-center text-center"
+            data-aos="fade-up"
+            data-aos-delay="200"
+          >
+            <div
+              class="step-circle w-24 h-24 rounded-full border border-[#f94735] flex items-center justify-center text-[#f94735] text-2xl mb-6 relative"
+            >
+              <i class="fas fa-box-open"></i>
+              <div
+                class="absolute bottom-0 right-0 w-8 h-8 bg-[#f94735] text-white rounded-full flex items-center justify-center text-xs font-bold border-2 border-white"
+              >
+                02
+              </div>
+            </div>
+            <h3 class="text-xl font-bold text-[#0f313a] mb-2">
+              Parcel Loading
+            </h3>
+            <p class="text-gray-500 text-sm leading-relaxed max-w-xs">
+              Lorem ipsum amet consectetur any more tellus suspendisse.
+            </p>
+          </div>
+
+          <!-- Step 3 -->
+          <div
+            class="flex flex-col items-center text-center"
+            data-aos="fade-up"
+            data-aos-delay="300"
+          >
+            <div
+              class="step-circle w-24 h-24 rounded-full border border-[#f94735] flex items-center justify-center text-[#f94735] text-2xl mb-6 relative"
+            >
+              <i class="fas fa-truck-fast"></i>
+              <div
+                class="absolute bottom-0 right-0 w-8 h-8 bg-[#f94735] text-white rounded-full flex items-center justify-center text-xs font-bold border-2 border-white"
+              >
+                03
+              </div>
+            </div>
+            <h3 class="text-xl font-bold text-[#0f313a] mb-2">
+              Parcel In-Transit
+            </h3>
+            <p class="text-gray-500 text-sm leading-relaxed max-w-xs">
+              Lorem ipsum amet consectetur any more tellus suspendisse.
+            </p>
+          </div>
+
+          <!-- Step 4 -->
+          <div
+            class="flex flex-col items-center text-center"
+            data-aos="fade-up"
+            data-aos-delay="400"
+          >
+            <div
+              class="step-circle w-24 h-24 rounded-full border border-[#f94735] flex items-center justify-center text-[#f94735] text-2xl mb-6 relative"
+            >
+              <i class="fas fa-handshake"></i>
+              <div
+                class="absolute bottom-0 right-0 w-8 h-8 bg-[#f94735] text-white rounded-full flex items-center justify-center text-xs font-bold border-2 border-white"
+              >
+                04
+              </div>
+            </div>
+            <h3 class="text-xl font-bold text-[#0f313a] mb-2">
+              Parcel Delivery
+            </h3>
+            <p class="text-gray-500 text-sm leading-relaxed max-w-xs">
+              Lorem ipsum amet consectetur any more tellus suspendisse.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+ <footer class="ftrroot">
+      <div class="ftraccent"></div>
+
+      <!-- ============ NEWSLETTER BAR ============ -->
+      <div class="ftrnewsbar">
+        <div class="ftrnewslogo">
+          <!-- REPLACE src WITH YOUR LOGO URL -->
+          <img
+            src="./assets/logoog.webp"
+            alt="Stackly Worldwide Logistics"
+            onclick="window.location.href = './index.html'"
+            style="cursor: pointer"
+          />
+        </div>
+
+        <div class="ftrnewscontent">
+          <h3 class="ftrnewstitle">Subscribe Newsletter</h3>
+
+          <form class="ftrnewsform" action="./404.html">
+            <input
+              class="ftrnewsinp"
+              type="email"
+              name="ftremail"
+              placeholder="Your Email Address"
+              aria-label="Your Email Address"
+              required
+            />
+            <button class="ftrnewsbtn" type="submit">Subscribe Now</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- ============ MAIN BODY ============ -->
+      <div class="ftrmain">
+        <div class="ftrgrid">
+          <!-- CONTACT -->
+          <div class="ftrcol">
+            <h4 class="ftrhead">Get In Touch</h4>
+
+            <div class="ftrrow">
+              <span class="ftricon">
+                <svg viewBox="0 0 384 512" aria-hidden="true">
+                  <path
+                    d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 128a64 64 0 1 1 0 128 64 64 0 1 1 0-128z"
+                  />
+                </svg>
+              </span>
+              <div>
+                <p class="ftrrowtitle">Corporate Office</p>
+                <p class="ftrrowtext">
+                  3891 Salem Tamilnadu Dr. Richardson, India 62639
+                </p>
+              </div>
+            </div>
+
+            <div class="ftrdivider"></div>
+
+            <p class="ftrline">
+              <b>Call Us:</b>
+              <a class="ftrlink" href="./404.html">+91-416-8241228</a>
+            </p>
+
+            <p class="ftrline">
+              <b>Email:</b>
+              <a class="ftrlink" href="./404.html">info@stackly.com</a>
+            </p>
+          </div>
+
+          <!-- SERVICE -->
+          <div class="ftrcol">
+            <h4 class="ftrhead">Service</h4>
+            <ul class="ftrlist">
+              <li>
+                <a class="ftrlistlink" href="./404.html"
+                  >Freight Transportation</a
+                >
+              </li>
+              <li>
+                <a class="ftrlistlink" href="./404.html"
+                  >Warehousing &amp; Distribution</a
+                >
+              </li>
+              <li>
+                <a class="ftrlistlink" href="./404.html"
+                  >Supply Chain Management</a
+                >
+              </li>
+              <li>
+                <a class="ftrlistlink" href="./404.html"
+                  >E-Commerce Solutions</a
+                >
+              </li>
+              <li>
+                <a class="ftrlistlink" href="./404.html"
+                  >Rebranding and Brand Refresh</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <!-- QUICK LINK -->
+          <div class="ftrcol">
+            <h4 class="ftrhead">Quick Link</h4>
+            <ul class="ftrlist">
+              <li><a class="ftrlistlink" href="./index.html">Home</a></li>
+              <li><a class="ftrlistlink" href="./about.html">About</a></li>
+              <li>
+                <a class="ftrlistlink" href="./services.html">Services</a>
+              </li>
+              <li><a class="ftrlistlink" href="./blog.html">Blog</a></li>
+              <li><a class="ftrlistlink" href="./contact.html">Contact</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ BOTTOM BAR ============ -->
+      <div class="ftrbottom">
+        <p class="ftrcopy">
+          © All Copyright 2025 by
+          <a class="ftrcopylink" href="./index.html">Stackly</a>
+        </p>
+
+        <div class="ftrsocials">
+          <a class="ftrsocial" href="./404.html" aria-label="Facebook">
+            <svg viewBox="0 0 320 512" aria-hidden="true">
+              <path
+                d="M80 299.3V512H196V299.3h86.5l18-97.8H196V166.9c0-51.7 20.3-71.5 72.7-71.5c16.3 0 29.4 .4 37 1.2V7.9C291.4 4 256.4 0 236.2 0C129.3 0 80 50.5 80 159.4v42.1H14v97.8H80z"
+              />
+            </svg>
+          </a>
+
+          <a class="ftrsocial" href="./404.html" aria-label="X">
+            <svg viewBox="0 0 512 512" aria-hidden="true">
+              <path
+                d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"
+              />
+            </svg>
+          </a>
+
+          <a class="ftrsocial" href="./404.html" aria-label="LinkedIn">
+            <svg viewBox="0 0 448 512" aria-hidden="true">
+              <path
+                d="M100.3 448H7.4V148.9h92.9zM53.8 108.1C24.1 108.1 0 83.5 0 53.8a53.8 53.8 0 0 1 107.6 0c0 29.7-24.1 54.3-53.8 54.3zM447.9 448h-92.7V302.4c0-34.7-.7-79.2-48.3-79.2-48.3 0-55.7 37.7-55.7 76.7V448h-92.8V148.9h89.1v40.8h1.3c12.4-23.5 42.7-48.3 87.9-48.3c94 0 111.3 61.9 111.3 142.3V448z"
+              />
+            </svg>
+          </a>
+
+          <a class="ftrsocial" href="./404.html" aria-label="YouTube">
+            <svg viewBox="0 0 576 512" aria-hidden="true">
+              <path
+                d="M549.7 124.1c-6.3-23.7-24.8-42.3-48.3-48.6C458.8 64 288 64 288 64S117.2 64 74.6 75.5c-23.5 6.3-42 24.9-48.3 48.6-11.4 42.9-11.4 132.3-11.4 132.3s0 89.4 11.4 132.3c6.3 23.7 24.8 41.5 48.3 47.8C117.2 448 288 448 288 448s170.8 0 213.4-11.5c23.5-6.3 42-24.2 48.3-47.8 11.4-42.9 11.4-132.3 11.4-132.3s0-89.4-11.4-132.3zm-317.5 213.5V175.2l142.7 81.2-142.7 81.2z"
+              />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </footer>
+    <!-- ================= SCRIPTS ================= -->
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- AOS JS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <!-- Initialization Scripts -->
+    <script>
+      // Initialize AOS
+      AOS.init({
+        duration: 800,
+        once: true,
+        offset: 100,
+        easing: "ease-out-cubic",
+      });
+
+      // GSAP Parallax Effect for Hero
+      gsap.registerPlugin(ScrollTrigger);
+
+      gsap.to(".hero-bg", {
+        backgroundPosition: "50% 100%",
+        ease: "none",
+        scrollTrigger: {
+          trigger: ".hero-bg",
+          start: "top top",
+          end: "bottom top",
+          scrub: true,
+        },
+      });
+
+      // GSAP Animation for the "How It Works" Circles
+      gsap.from(".step-circle", {
+        scrollTrigger: {
+          trigger: ".step-circle",
+          start: "top 85%",
+          toggleActions: "play none none none",
+        },
+        scale: 0,
+        opacity: 0,
+        duration: 0.8,
+        stagger: 0.2,
+        ease: "back.out(1.7)",
+      });
+    </script>
+     <script src="./navbar.js"></script>
+  </body>
+</html>

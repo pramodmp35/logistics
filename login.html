@@ -1,0 +1,590 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stackly - Login & Signup</title>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+
+    <style>
+      :root {
+        --ember: #f94735;
+        --abyss: #0f313a;
+        --cloud: #ffffff;
+        --coastal: #5094c1;
+        --lagoon: #104a57;
+        --sunbeam: #fac12e;
+      }
+
+      html,
+      body {
+        overflow-x: hidden;
+        max-width: 100vw;
+      }
+
+      body {
+        font-family: "Outfit", sans-serif;
+        background-color: #f0f4f8;
+        background-image:
+          radial-gradient(
+            circle at 10% 20%,
+            rgba(80, 148, 193, 0.1) 0%,
+            transparent 20%
+          ),
+          radial-gradient(
+            circle at 90% 80%,
+            rgba(250, 193, 46, 0.1) 0%,
+            transparent 20%
+          );
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      /* ================= 3D FLIP CARD ================= */
+      .flip-container {
+        perspective: 1500px;
+        width: 100%;
+        max-width: 1000px;
+        margin: 2rem auto;
+      }
+
+      .flipper {
+        display: grid;
+        grid-template-columns: 1fr;
+        transform-style: preserve-3d;
+        transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        position: relative;
+      }
+
+      .front,
+      .back {
+        grid-area: 1 / 1 / 2 / 2;
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+        background: #f0f4f8;
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: 0 25px 50px -12px rgba(15, 49, 58, 0.25);
+        height: 100%;
+
+        /* FIX: the face that is turned away must not catch clicks */
+        pointer-events: none;
+      }
+
+      .back {
+        transform: rotateY(180deg);
+      }
+
+      /* FIX: only the currently visible face is interactive */
+      .flip-container:not(.flipped) .front,
+      .flip-container.flipped .back {
+        pointer-events: auto;
+      }
+
+      .flip-container.flipped .flipper {
+        transform: rotateY(180deg);
+      }
+
+      /* ================= ROLE TOGGLE ================= */
+      .role-btn {
+        transition: all 0.3s ease;
+      }
+      .role-btn.active {
+        background-color: var(--abyss);
+        color: white;
+        box-shadow: 0 4px 12px rgba(15, 49, 58, 0.2);
+      }
+
+      /* ================= FORM INPUTS ================= */
+      .form-input {
+        transition: all 0.3s ease;
+        border: 1px solid #e2e8f0;
+      }
+      .form-input:focus {
+        outline: none;
+        border-color: var(--coastal);
+        box-shadow: 0 0 0 4px rgba(80, 148, 193, 0.15);
+      }
+
+      /* ================= LEFT PANEL ================= */
+      .left-panel {
+        background: linear-gradient(
+          135deg,
+          var(--abyss) 0%,
+          var(--lagoon) 100%
+        );
+        position: relative;
+        overflow: hidden;
+        height: 100%;
+      }
+      .left-panel::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(
+          circle,
+          rgba(250, 193, 46, 0.1) 0%,
+          transparent 70%
+        );
+        border-radius: 50%;
+      }
+
+      /* ================= BUTTONS ================= */
+      .btn-primary {
+        background-color: var(--ember);
+        transition: all 0.3s ease;
+      }
+      .btn-primary:hover {
+        background-color: #d13c2c;
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(249, 71, 53, 0.3);
+      }
+
+      /* ================= HOME BUTTON ================= */
+      .home-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.55rem;
+        padding: 0.75rem 1.6rem;
+        border-radius: 12px;
+        font-size: 0.875rem;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+        color: #ffffff;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+        text-decoration: none;
+        transition: all 0.3s ease;
+      }
+      .home-btn:hover {
+        background: var(--sunbeam);
+        border-color: var(--sunbeam);
+        color: var(--abyss);
+        transform: translateY(-2px);
+        box-shadow: 0 10px 22px rgba(250, 193, 46, 0.28);
+      }
+      .home-btn i {
+        font-size: 0.95rem;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ================= AUTHENTICATION SECTION ================= -->
+    <div class="flip-container" id="authContainer">
+      <div class="flipper" id="flipper">
+        <!-- ================= FRONT: LOGIN PAGE ================= -->
+        <div class="front">
+          <div class="flex flex-col lg:flex-row min-h-[600px] h-full">
+            <div
+              class="left-panel w-full lg:w-1/2 p-8 md:p-12 flex flex-col justify-center text-white relative z-10"
+            >
+              <div class="mb-8" data-aos="fade-right" data-aos-duration="800">
+                <img
+                  src="./assets/logoog.webp"
+                  alt="Logiver Logo"
+                  class="h-16 md:h-24 w-auto object-contain mb-6"
+                />
+                <h1 class="text-3xl md:text-4xl font-extrabold mb-4">
+                  Welcome Back to Stackly
+                </h1>
+                <p class="text-gray-300 text-sm md:text-base leading-relaxed">
+                  Your trusted partner in global logistics and transportation.
+                  Sign in to manage your shipments, track deliveries, and access
+                  your dashboard.
+                </p>
+              </div>
+
+              <div class="mt-auto" data-aos="fade-right" data-aos-delay="200">
+                <div class="flex flex-wrap gap-4 mb-6">
+                  <div class="flex items-center gap-2 text-sm text-gray-300">
+                    <i class="fas fa-check-circle text-[#fac12e]"></i> Secure
+                    Access
+                  </div>
+                  <div class="flex items-center gap-2 text-sm text-gray-300">
+                    <i class="fas fa-check-circle text-[#fac12e]"></i> 24/7
+                    Support
+                  </div>
+                </div>
+
+                <a href="index.html" class="home-btn">
+                  <i class="fas fa-home"></i> GO TO HOME
+                </a>
+              </div>
+            </div>
+
+            <div
+              class="w-full lg:w-1/2 p-8 md:p-12 bg-white flex flex-col justify-center"
+            >
+              <div data-aos="fade-left" data-aos-duration="800">
+                <h2
+                  class="text-2xl md:text-3xl font-extrabold text-[#0f313a] mb-2"
+                >
+                  Login to Account
+                </h2>
+                <p class="text-gray-500 text-sm mb-8">
+                  Please enter your details to sign in.
+                </p>
+
+                <div
+                  class="flex bg-gray-100 rounded-lg p-1 mb-6"
+                  id="loginRoleToggle"
+                >
+                  <button
+                    type="button"
+                    class="role-btn active flex-1 py-2.5 text-center rounded-md text-sm font-bold"
+                    data-role="USER"
+                  >
+                    USER
+                  </button>
+                  <button
+                    type="button"
+                    class="role-btn flex-1 py-2.5 text-center rounded-md text-sm font-bold text-gray-500"
+                    data-role="ADMIN"
+                  >
+                    ADMIN
+                  </button>
+                </div>
+
+                <form id="loginForm">
+                  <div class="mb-4">
+                    <label class="block text-sm font-bold text-[#0f313a] mb-2"
+                      >Email Address</label
+                    >
+                    <div class="relative">
+                      <i
+                        class="fas fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+                      ></i>
+                      <input
+                        type="email"
+                        id="loginEmail"
+                        class="form-input w-full pl-12 pr-4 py-3 rounded-lg text-sm"
+                        placeholder="john@example.com"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="mb-6">
+                    <label class="block text-sm font-bold text-[#0f313a] mb-2"
+                      >Password</label
+                    >
+                    <div class="relative">
+                      <i
+                        class="fas fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+                      ></i>
+                      <input
+                        type="password"
+                        id="loginPassword"
+                        class="form-input w-full pl-12 pr-4 py-3 rounded-lg text-sm"
+                        placeholder="••••••••"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div class="flex justify-end mb-6">
+                    <a
+                      href="./404.html"
+                      class="text-sm font-bold text-[#5094c1] hover:text-[#0f313a] transition-colors"
+                      >Forgot Password?</a
+                    >
+                  </div>
+
+                  <button
+                    type="submit"
+                    class="btn-primary w-full text-white font-bold py-3.5 rounded-lg flex items-center justify-center gap-2"
+                  >
+                    Login <i class="fas fa-arrow-right"></i>
+                  </button>
+                </form>
+
+                <p class="text-center text-sm text-gray-500 mt-8">
+                  Don't have an account?
+                  <a
+                    href="#"
+                    id="goToSignup"
+                    class="font-bold text-[#f94735] hover:underline"
+                    >Sign Up</a
+                  >
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================= BACK: SIGNUP PAGE ================= -->
+        <div class="back">
+          <div class="flex flex-col lg:flex-row min-h-[600px] h-full">
+            <div
+              class="left-panel w-full lg:w-1/2 p-8 md:p-12 flex flex-col justify-center text-white relative z-10"
+            >
+              <div class="mb-8" data-aos="fade-right" data-aos-duration="800">
+                <img
+                  src="./assets/logoog.webp"
+                  alt="Logiver Logo"
+                  class="h-16 md:h-24 w-auto object-contain mb-6"
+                />
+                <h1 class="text-3xl md:text-4xl font-extrabold mb-4">
+                  Join Stackly Today
+                </h1>
+                <p class="text-gray-300 text-sm md:text-base leading-relaxed">
+                  Create an account to streamline your logistics operations. Get
+                  instant access to our global network and real-time tracking
+                  systems.
+                </p>
+              </div>
+
+              <div class="mt-auto" data-aos="fade-right" data-aos-delay="200">
+                <div class="flex flex-wrap gap-4 mb-6">
+                  <div class="flex items-center gap-2 text-sm text-gray-300">
+                    <i class="fas fa-check-circle text-[#fac12e]"></i> Free
+                    Setup
+                  </div>
+                  <div class="flex items-center gap-2 text-sm text-gray-300">
+                    <i class="fas fa-check-circle text-[#fac12e]"></i> Global
+                    Reach
+                  </div>
+                </div>
+
+                <a href="index.html" class="home-btn">
+                  <i class="fas fa-home"></i> GO TO HOME
+                </a>
+              </div>
+            </div>
+
+            <div
+              class="w-full lg:w-1/2 p-8 md:p-12 bg-white flex flex-col justify-center"
+            >
+              <div data-aos="fade-left" data-aos-duration="800">
+                <h2
+                  class="text-2xl md:text-3xl font-extrabold text-[#0f313a] mb-2"
+                >
+                  Create an Account
+                </h2>
+                <p class="text-gray-500 text-sm mb-8">
+                  Fill in the details to get started.
+                </p>
+
+                <div
+                  class="flex bg-gray-100 rounded-lg p-1 mb-6"
+                  id="signupRoleToggle"
+                >
+                  <button
+                    type="button"
+                    class="role-btn active flex-1 py-2.5 text-center rounded-md text-sm font-bold"
+                    data-role="USER"
+                  >
+                    USER
+                  </button>
+                  <button
+                    type="button"
+                    class="role-btn flex-1 py-2.5 text-center rounded-md text-sm font-bold text-gray-500"
+                    data-role="ADMIN"
+                  >
+                    ADMIN
+                  </button>
+                </div>
+
+                <form id="signupForm">
+                  <div class="mb-4">
+                    <label class="block text-sm font-bold text-[#0f313a] mb-2"
+                      >Full Name</label
+                    >
+                    <div class="relative">
+                      <i
+                        class="fas fa-user absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+                      ></i>
+                      <input
+                        type="text"
+                        id="signupName"
+                        class="form-input w-full pl-12 pr-4 py-3 rounded-lg text-sm"
+                        placeholder="John Doe"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="mb-4">
+                    <label class="block text-sm font-bold text-[#0f313a] mb-2"
+                      >Email Address</label
+                    >
+                    <div class="relative">
+                      <i
+                        class="fas fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+                      ></i>
+                      <input
+                        type="email"
+                        id="signupEmail"
+                        class="form-input w-full pl-12 pr-4 py-3 rounded-lg text-sm"
+                        placeholder="john@example.com"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="mb-6">
+                    <label class="block text-sm font-bold text-[#0f313a] mb-2"
+                      >Password</label
+                    >
+                    <div class="relative">
+                      <i
+                        class="fas fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+                      ></i>
+                      <input
+                        type="password"
+                        id="signupPassword"
+                        class="form-input w-full pl-12 pr-4 py-3 rounded-lg text-sm"
+                        placeholder="••••••••"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <button
+                    type="submit"
+                    class="btn-primary w-full text-white font-bold py-3.5 rounded-lg flex items-center justify-center gap-2"
+                  >
+                    Sign Up <i class="fas fa-arrow-right"></i>
+                  </button>
+                </form>
+
+                <p class="text-center text-sm text-gray-500 mt-8">
+                  Already have an account?
+                  <!-- FIX: pure JS handler, no inline onclick, no navigation -->
+                  <a
+                    href="#"
+                    id="goToLogin"
+                    class="font-bold text-[#f94735] hover:underline"
+                    >Login</a
+                  >
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= SCRIPTS ================= -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <script>
+      AOS.init({
+        duration: 800,
+        once: true,
+        offset: 100,
+        easing: "ease-out-cubic",
+      });
+
+      // ================= FLIP LOGIC =================
+      const flipContainer = document.getElementById("authContainer");
+
+      function flipToSignup() {
+        flipContainer.classList.add("flipped");
+      }
+
+      function flipToLogin() {
+        flipContainer.classList.remove("flipped");
+      }
+
+      // FIX: bind the flip links here instead of inline onclick + href="#"
+      document.getElementById("goToSignup").addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        flipToSignup();
+      });
+
+      document.getElementById("goToLogin").addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        flipToLogin();
+      });
+
+      // ================= ROLE TOGGLE LOGIC =================
+      document.querySelectorAll(".role-btn").forEach((btn) => {
+        btn.addEventListener("click", function () {
+          const toggleGroup = this.parentElement;
+
+          toggleGroup.querySelectorAll(".role-btn").forEach((b) => {
+            b.classList.remove("active");
+            b.classList.add("text-gray-500");
+          });
+
+          this.classList.add("active");
+          this.classList.remove("text-gray-500");
+        });
+      });
+
+      function getSelectedRole(toggleId) {
+        const toggle = document.getElementById(toggleId);
+        const activeBtn = toggle.querySelector(".role-btn.active");
+        return activeBtn ? activeBtn.getAttribute("data-role") : "USER";
+      }
+
+      // ================= FORM SUBMISSIONS =================
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          const email = document.getElementById("loginEmail").value;
+          const role = getSelectedRole("loginRoleToggle");
+
+          localStorage.setItem(
+            "logiverUser",
+            JSON.stringify({ email: email, role: role }),
+          );
+
+          if (role === "ADMIN") {
+            window.location.href = "admin.html";
+          } else {
+            window.location.href = "user.html";
+          }
+        });
+
+      document
+        .getElementById("signupForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          const email = document.getElementById("signupEmail").value;
+          const name = document.getElementById("signupName").value;
+          const role = getSelectedRole("signupRoleToggle");
+
+          localStorage.setItem(
+            "logiverUser",
+            JSON.stringify({ email: email, name: name, role: role }),
+          );
+
+          alert(
+            "Account created successfully! Redirecting to your dashboard...",
+          );
+
+          if (role === "ADMIN") {
+            window.location.href = "admin.html";
+          } else {
+            window.location.href = "user.html";
+          }
+        });
+    </script>
+  </body>
+</html>

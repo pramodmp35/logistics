@@ -1,0 +1,1907 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stackly - Global Logistics & Transportation</title>
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Bootstrap 5 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- FontAwesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+
+    <!-- AOS CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    <style>
+      :root {
+        --ember: #f94735;
+        --abyss: #0f313a;
+        --cloud: #ffffff;
+        --coastal: #5094c1;
+        --lagoon: #104a57;
+        --sunbeam: #fac12e;
+      }
+      body,
+      html {
+        overflow-x: hidden;
+      }
+      body {
+        font-family: "Outfit", sans-serif;
+        background-color: #f8f9fa;
+        overflow-x: hidden;
+      }
+
+      /* Hero Slider */
+      .hero-slide {
+        transition: opacity 1.5s ease-in-out;
+      }
+
+      /* Cascading Services Cards */
+      .cascade-card {
+        transition: all 0.4s ease;
+      }
+      .cascade-card:hover {
+        transform: translateX(15px) scale(1.02);
+        z-index: 50 !important;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+      }
+
+      /* Dotted Map Background Pattern */
+      .map-bg {
+        background-color: #ffffff;
+        background-image: radial-gradient(#d1d5db 1.5px, transparent 1.5px);
+        background-size: 24px 24px;
+      }
+
+      /* Diagonal Clip Path */
+      .diagonal-clip {
+        clip-path: polygon(20% 0, 100% 0, 100% 100%, 0% 100%);
+      }
+      @media (max-width: 1024px) {
+        .diagonal-clip {
+          clip-path: polygon(0 20%, 100% 0, 100% 100%, 0% 100%);
+        }
+      }
+
+      /* Outline Text for Pricing */
+      .outline-text {
+        color: transparent;
+        -webkit-text-stroke: 2px var(--sunbeam);
+        font-size: 5rem;
+        font-weight: 800;
+        line-height: 1;
+      }
+
+      /* Testimonial Carousel */
+      .testimonial-track {
+        transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+      }
+
+      /* Custom Checkmark List */
+      .check-list li {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 12px;
+        color: #4b5563;
+        font-weight: 500;
+      }
+      .check-list li i {
+        color: var(--sunbeam);
+        font-size: 1rem;
+      }
+
+      /* Stats Bar */
+      .stats-bar-item {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+      .stats-bar-item i {
+        font-size: 2.5rem;
+        color: var(--cloud);
+      }
+      .stats-bar-item .divider {
+        width: 1px;
+        height: 40px;
+        background-color: rgba(255, 255, 255, 0.3);
+      }
+
+      /* Case Study Sticky Stacking */
+      .project-item {
+        position: sticky;
+        top: 120px;
+        background-color: #ffffff;
+        border-radius: 24px;
+        padding: 16px;
+        box-shadow: 0 10px 30px rgba(15, 49, 58, 0.1);
+        margin-bottom: 24px;
+        transition: transform 0.3s ease;
+      }
+    </style>
+    <link rel="stylesheet" href="./navbar.css" />
+    <link rel="stylesheet" href="./footer.css" />
+  </head>
+  <body>
+    <!-- ================= NAVBAR ================= -->
+    <header class="navHeader">
+      <!-- ================= TOP BAR ================= -->
+      <div class="navTopBar">
+        <div class="container mx-auto px-4 md:px-8 navTopBarFlex">
+          <div class="navContactInfo">
+            <span><i class="fas fa-phone-alt"></i> +025 757 576 560</span>
+            <span
+              ><i class="fas fa-clock"></i> Monday to Friday: 9:00am -
+              6:00pm</span
+            >
+          </div>
+          <div class="navUtilityLinks">
+            <a href="./404.html">Careers</a>
+            <a href="./404.html">Terms & Conditions</a>
+            <div class="navSocialIcons">
+              <a href="./404.html"><i class="fab fa-facebook-f"></i></a>
+              <a href="./404.html"><i class="fab fa-instagram"></i></a>
+              <a href="./404.html"><i class="fab fa-youtube"></i></a>
+              <a href="./404.html"><i class="fab fa-twitter"></i></a>
+              <a href="./404.html"><i class="fab fa-pinterest-p"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= MAIN NAVBAR ================= -->
+      <div class="navMainNav">
+        <div class="container mx-auto px-4 md:px-8 navMainNavFlex">
+          <!-- Logo (Visible on Mobile and Desktop) -->
+          <a href="./index.html" class="navLogo">
+            <!-- REPLACE THE 'src' ATTRIBUTE BELOW WITH YOUR LOGO IMAGE URL -->
+            <img
+              src="./assets/logoog.webp"
+              alt="Transpi Logo"
+              class="navLogoImg"
+            />
+          </a>
+
+          <!-- Desktop Links (No Dropdowns) -->
+          <ul class="navLinks">
+            <li><a href="./index.html" class="navLink">HOME</a></li>
+            <li><a href="./about.html" class="navLink">ABOUT US</a></li>
+            <li><a href="./services.html" class="navLink">SERVICES</a></li>
+            <li><a href="./blog.html" class="navLink">BLOG</a></li>
+            <li><a href="./contact.html" class="navLink">CONTACT US</a></li>
+          </ul>
+
+          <!-- Desktop Actions -->
+          <div class="navActions">
+            <!-- Search Button -->
+            <button
+              class="navSearchBtn"
+              aria-label="Search"
+              onclick="window.location.href = './404.html'"
+            >
+              <i class="fas fa-search"></i>
+            </button>
+
+            <!-- Language Toggle -->
+            <div
+              class="navLangToggle"
+              onclick="window.location.href = './404.html'"
+            >
+              <img src="./assets/1.webp" alt="US Flag" class="navLangFlag" />
+              <!-- <i class="fas fa-chevron-down"></i> -->
+              <!-- <div class="navLangDropdown">
+                <a href="#" class="navLangItem">
+                  <img src="https://flagcdn.com/w40/ca.png" alt="Canada Flag" />
+                  Canada
+                </a>
+                <a href="#" class="navLangItem">
+                  <img
+                    src="https://flagcdn.com/w40/au.png"
+                    alt="Australia Flag"
+                  />
+                  Australia
+                </a>
+                <a href="#" class="navLangItem">
+                  <img src="https://flagcdn.com/w40/sa.png" alt="Saudi Flag" />
+                  Arabic
+                </a>
+              </div> -->
+            </div>
+
+            <!-- Track Button -->
+            <a href="./login.html" class="navTrackBtn">SIGN IN </a>
+          </div>
+
+          <!-- Mobile Hamburger (Visible only on Mobile) -->
+          <button class="navMobileBtn" id="navMobileBtn" aria-label="Open Menu">
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- ================= MOBILE MENU (FULL SCREEN) ================= -->
+    <div class="navMobileMenu" id="navMobileMenu">
+      <!-- Mobile Header (Close X Only) -->
+      <div class="navMobileHeader">
+        <button class="navCloseBtn" id="navCloseBtn" aria-label="Close Menu">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <!-- Mobile Links -->
+      <ul class="navMobileLinks">
+        <li>
+          <a href="./index.html" class="navMobileLink"
+            >HOME <i class="fas fa-chevron-right"></i
+          ></a>
+        </li>
+        <li>
+          <a href="./about.html" class="navMobileLink"
+            >ABOUT US <i class="fas fa-chevron-right"></i
+          ></a>
+        </li>
+        <li>
+          <a href="./services.html" class="navMobileLink"
+            >SERVICES <i class="fas fa-chevron-right"></i
+          ></a>
+        </li>
+        <li>
+          <a href="./blog.html" class="navMobileLink"
+            >BLOG <i class="fas fa-chevron-right"></i
+          ></a>
+        </li>
+        <li>
+          <a href="./contact.html" class="navMobileLink"
+            >CONTACT US <i class="fas fa-chevron-right"></i
+          ></a>
+        </li>
+      </ul>
+
+      <!-- Mobile Actions -->
+      <div class="navMobileActions">
+        <!-- Language Toggle (Simplified for Mobile) -->
+        <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
+          <span class="text-sm font-bold text-[#0f313a]">Language:</span>
+          <img
+            src="./assets/1.webp"
+            alt="US Flag"
+            class="w-6 h-4 object-cover rounded cursor-pointer"
+          />
+          <img
+            src="./assets/3.webp"
+            alt="Canada Flag"
+            class="w-6 h-4 object-cover rounded cursor-pointer"
+          />
+          <img
+            src="./assets/4.webp"
+            alt="Australia Flag"
+            class="w-6 h-4 object-cover rounded cursor-pointer"
+          />
+        </div>
+
+        <a href="./login.html" class="navMobileTrackBtn">SIGN IN</a>
+      </div>
+    </div>
+    <!-- ================= HERO SECTION ================= -->
+    <section class="relative h-[80vh] md:h-[90vh] overflow-hidden">
+      <!-- Hero Slides (Background Images) -->
+      <div
+        class="hero-slide absolute inset-0 bg-cover bg-center opacity-100 z-0"
+        style="background-image: url(&quot;./assets/pllane.webp&quot;)"
+      ></div>
+      <div
+        class="hero-slide absolute inset-0 bg-cover bg-center opacity-0 z-0"
+        style="background-image: url(&quot;./assets/about7.webp&quot;)"
+      ></div>
+      <div
+        class="hero-slide absolute inset-0 bg-cover bg-center opacity-0 z-0"
+        style="background-image: url(&quot;./assets/trucks.webp&quot;)"
+      ></div>
+      <div
+        class="hero-slide absolute inset-0 bg-cover bg-center opacity-0 z-0"
+        style="background-image: url(&quot;./assets/services21.webp&quot;)"
+      ></div>
+
+      <div
+        class="absolute inset-0 bg-gradient-to-t from-[#0f313a] via-[#0f313a]/70 to-transparent z-10"
+      ></div>
+
+      <!-- Navigation Arrows -->
+      <button
+        class="absolute left-4 md:left-10 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full border border-white/30 flex items-center justify-center text-white hover:bg-[#f94735] hover:border-[#f94735] transition-all duration-300 z-30"
+      >
+        <i class="fas fa-chevron-left"></i>
+      </button>
+      <button
+        class="absolute right-4 md:right-10 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full border border-white/30 flex items-center justify-center text-white hover:bg-[#f94735] hover:border-[#f94735] transition-all duration-300 z-30"
+      >
+        <i class="fas fa-chevron-right"></i>
+      </button>
+
+      <div
+        class="relative z-20 text-center text-white px-4 max-w-5xl mx-auto h-full flex flex-col justify-center items-center"
+        data-aos="fade-up"
+        data-aos-duration="1000"
+      >
+        <span
+          class="text-[#f94735] font-bold tracking-[0.3em] uppercase text-sm md:text-base block mb-6"
+          >Welcome to our transport services</span
+        >
+        <h1
+          class="text-5xl md:text-7xl lg:text-8xl font-extrabold mb-8 tracking-tight leading-tight"
+        >
+          We are Delivering on time
+        </h1>
+      </div>
+    </section>
+
+    <!-- ================= CASCADING SERVICES SECTION ================= -->
+    <section class="py-24 bg-[#0f313a] relative overflow-hidden">
+      <!-- Decorative Airplane Silhouette -->
+      <div class="absolute top-20 right-10 opacity-10 text-white text-9xl">
+        <i class="fas fa-plane"></i>
+      </div>
+      <div
+        class="absolute bottom-20 left-10 opacity-10 text-white text-9xl transform -rotate-45"
+      >
+        <i class="fas fa-ship"></i>
+      </div>
+
+      <div class="container mx-auto px-4 md:px-8 relative z-10">
+        <!-- Top Row -->
+        <div
+          class="flex justify-between items-end mb-16"
+          data-aos="fade-right"
+          data-aos-duration="800"
+        >
+          <h2
+            class="text-3xl md:text-5xl font-extrabold text-white leading-tight max-w-lg"
+          >
+            Comprehensive Logistics Solutions
+          </h2>
+          <a
+            href="./404.html"
+            class="hidden md:inline-flex items-center gap-2 bg-[#fac12e] text-[#0f313a] font-bold px-6 py-3 rounded-lg hover:bg-white transition-colors duration-300"
+          >
+            Discover Now
+            <i class="fas fa-arrow-up-right-from-square text-sm"></i>
+          </a>
+        </div>
+
+        <!-- Cascading Cards (FIXED: Widths adjusted to 80% to prevent overflow) -->
+        <div class="flex flex-col gap-6 md:gap-0">
+          <!-- Card 1 -->
+          <div
+            class="cascade-card bg-[#104a57] rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between border border-white/10 shadow-2xl relative z-10 md:w-[80%]"
+            data-aos="fade-up"
+            data-aos-delay="100"
+          >
+            <div class="flex-1 mb-6 md:mb-0">
+              <h3 class="text-2xl font-bold text-white mb-2">Ocean Freight</h3>
+              <div class="text-[#5094c1] text-4xl mb-4">
+                <i class="fas fa-ship"></i>
+              </div>
+              <p class="text-gray-300 text-sm max-w-xs">
+                Comprehensive ocean freight solutions delivering goods safely
+                across ...
+              </p>
+            </div>
+            <img
+              src="./assets/breadcrumb-shape.webp"
+              alt="Ocean Freight"
+              class="w-full md:w-64 h-40 object-cover rounded-xl"
+            />
+          </div>
+
+          <!-- Card 2 -->
+          <div
+            class="cascade-card bg-[#104a57] rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between border border-white/10 shadow-2xl relative z-20 md:w-[80%] md:ml-[5%] md:-mt-12"
+            data-aos="fade-up"
+            data-aos-delay="200"
+          >
+            <div class="flex-1 mb-6 md:mb-0">
+              <h3 class="text-2xl font-bold text-white mb-2">Land Transport</h3>
+              <div class="text-[#5094c1] text-4xl mb-4">
+                <i class="fas fa-truck"></i>
+              </div>
+              <p class="text-gray-300 text-sm max-w-xs">
+                Comprehensive land transport solutions delivering goods safely
+                across ...
+              </p>
+            </div>
+            <img
+              src="./assets/service3.webp"
+              alt="Land Transport"
+              class="w-full md:w-64 h-40 object-cover rounded-xl"
+            />
+          </div>
+
+          <!-- Card 3 -->
+          <div
+            class="cascade-card bg-[#104a57] rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between border border-white/10 shadow-2xl relative z-30 md:w-[80%] md:ml-[10%] md:-mt-12"
+            data-aos="fade-up"
+            data-aos-delay="300"
+          >
+            <div class="flex-1 mb-6 md:mb-0">
+              <h3 class="text-2xl font-bold text-white mb-2">Rail Freight</h3>
+              <div class="text-[#5094c1] text-4xl mb-4">
+                <i class="fas fa-train"></i>
+              </div>
+              <p class="text-gray-300 text-sm max-w-xs">
+                Comprehensive rail freight solutions delivering goods safely
+                across ...
+              </p>
+            </div>
+            <img
+              src="./assets/service22.webp"
+              alt="Rail Freight"
+              class="w-full md:w-64 h-40 object-cover rounded-xl"
+            />
+          </div>
+
+          <!-- Card 4 -->
+          <div
+            class="cascade-card bg-[#104a57] rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between border border-white/10 shadow-2xl relative z-40 md:w-[80%] md:ml-[15%] md:-mt-12"
+            data-aos="fade-up"
+            data-aos-delay="400"
+          >
+            <div class="flex-1 mb-6 md:mb-0">
+              <h3 class="text-2xl font-bold text-white mb-2">Air Freight</h3>
+              <div class="text-[#5094c1] text-4xl mb-4">
+                <i class="fas fa-plane"></i>
+              </div>
+              <p class="text-gray-300 text-sm max-w-xs">
+                Comprehensive air freight solutions delivering goods safely
+                across ...
+              </p>
+            </div>
+            <img
+              src="./assets/plane.webp"
+              alt="Air Freight"
+              class="w-full md:w-64 h-40 object-cover rounded-xl"
+            />
+          </div>
+
+          <!-- Card 5 -->
+          <div
+            class="cascade-card bg-[#104a57] rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between border border-white/10 shadow-2xl relative z-50 md:w-[80%] md:ml-[20%] md:-mt-12"
+            data-aos="fade-up"
+            data-aos-delay="500"
+          >
+            <div class="flex-1 mb-6 md:mb-0">
+              <h3 class="text-2xl font-bold text-white mb-2">Warehousing</h3>
+              <div class="text-[#5094c1] text-4xl mb-4">
+                <i class="fas fa-warehouse"></i>
+              </div>
+              <p class="text-gray-300 text-sm max-w-xs">
+                Comprehensive warehousing solutions delivering goods safely
+                across ...
+              </p>
+            </div>
+            <img
+              src="./assets/blog2.webp"
+              alt="Warehousing"
+              class="w-full md:w-64 h-40 object-cover rounded-xl"
+            />
+          </div>
+        </div>
+
+        <div class="mt-10 text-center md:hidden">
+          <a
+            href="./404.html"
+            class="inline-flex items-center gap-2 bg-[#fac12e] text-[#0f313a] font-bold px-6 py-3 rounded-lg hover:bg-white transition-colors duration-300"
+          >
+            Discover Now
+            <i class="fas fa-arrow-up-right-from-square text-sm"></i>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= STATS MAP SECTION ================= -->
+    <section class="py-20 map-bg relative">
+      <div class="container mx-auto px-4 md:px-8 relative z-10">
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-12 text-center">
+          <div data-aos="fade-up" data-aos-delay="100">
+            <div
+              class="stat-number text-4xl md:text-5xl font-extrabold text-[#0f313a]"
+              data-target="7500"
+            >
+              0
+            </div>
+            <div class="text-gray-600 font-medium mt-2">Delivered packages</div>
+          </div>
+
+          <div data-aos="fade-up" data-aos-delay="200">
+            <div class="flex items-center justify-center">
+              <div
+                class="stat-number text-4xl md:text-5xl font-extrabold text-[#0f313a]"
+                data-target="2.6"
+              >
+                0
+              </div>
+              <span class="text-3xl font-extrabold text-[#0f313a] ml-1"
+                >bil</span
+              >
+            </div>
+            <div class="text-gray-600 font-medium mt-2">Tons of goods</div>
+          </div>
+
+          <div data-aos="fade-up" data-aos-delay="300">
+            <div class="flex items-center justify-center">
+              <div
+                class="stat-number text-4xl md:text-5xl font-extrabold text-[#0f313a]"
+                data-target="100"
+              >
+                0
+              </div>
+              <span class="text-3xl font-extrabold text-[#0f313a] ml-1">+</span>
+            </div>
+            <div class="text-gray-600 font-medium mt-2">Countries covered</div>
+          </div>
+
+          <div data-aos="fade-up" data-aos-delay="400">
+            <div class="flex items-center justify-center">
+              <div
+                class="stat-number text-4xl md:text-5xl font-extrabold text-[#0f313a]"
+                data-target="550"
+              >
+                0
+              </div>
+              <span class="text-3xl font-extrabold text-[#0f313a] ml-1">+</span>
+            </div>
+            <div class="text-gray-600 font-medium mt-2">Warehouses</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= WHY CHOOSE LOGIVER SECTION ================= -->
+    <section class="py-24 bg-[#0f313a] relative overflow-hidden">
+      <div class="container mx-auto px-4 md:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <!-- Left Content -->
+          <div data-aos="fade-right" data-aos-duration="1000">
+            <span
+              class="inline-block px-4 py-1.5 border border-[#fac12e] rounded-full text-xs font-bold text-[#fac12e] mb-6 uppercase tracking-wider"
+              >Why choose Logiver</span
+            >
+            <h2
+              class="text-3xl md:text-5xl font-extrabold text-white leading-tight mb-6"
+            >
+              WHY CHOOSE LOGIVER FOR RELIABLE GLOBAL TRANSPORTATION & LOGISTICS
+              SOLUTIONS.
+            </h2>
+
+            <a
+              href="./404.html"
+              class="inline-flex items-center gap-2 bg-[#f94735] text-white font-bold px-8 py-4 rounded-lg hover:bg-[#d13c2c] transition-all duration-300 transform hover:scale-105 mb-12"
+            >
+              Discover Now
+              <i class="fas fa-arrow-up-right-from-square text-sm"></i>
+            </a>
+
+            <!-- Features Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+              <div class="flex flex-col gap-3">
+                <div class="text-[#fac12e] text-3xl">
+                  <i class="fas fa-globe"></i>
+                </div>
+                <h4 class="text-white font-bold text-lg">
+                  Global Network Coverage
+                </h4>
+                <p class="text-gray-400 text-sm">
+                  Seamless transportation solutions across international routes.
+                </p>
+              </div>
+
+              <div class="flex flex-col gap-3">
+                <div class="text-[#fac12e] text-3xl">
+                  <i class="fas fa-satellite-dish"></i>
+                </div>
+                <h4 class="text-white font-bold text-lg">
+                  Advanced Tracking System
+                </h4>
+                <p class="text-gray-400 text-sm">
+                  Seamless transportation solutions across international routes.
+                </p>
+              </div>
+
+              <div class="flex flex-col gap-3">
+                <div class="text-[#fac12e] text-3xl">
+                  <i class="fas fa-users"></i>
+                </div>
+                <h4 class="text-white font-bold text-lg">
+                  Experienced Team Members
+                </h4>
+                <p class="text-gray-400 text-sm">
+                  Seamless transportation solutions across international routes.
+                </p>
+              </div>
+
+              <div
+                class="bg-[#fac12e] p-6 rounded-xl flex flex-col gap-3 transform hover:scale-105 transition-transform duration-300"
+              >
+                <div class="text-[#0f313a] text-3xl">
+                  <i class="fas fa-headset"></i>
+                </div>
+                <h4 class="text-[#0f313a] font-bold text-lg">
+                  24/7 Customer Support
+                </h4>
+                <p class="text-[#0f313a]/80 text-sm font-medium">
+                  Seamless transportation solutions across international routes.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Image with Diagonal Clip -->
+          <div
+            class="relative h-[400px] lg:h-[600px] w-full"
+            data-aos="fade-left"
+            data-aos-duration="1000"
+          >
+            <div
+              class="absolute inset-0 diagonal-clip overflow-hidden rounded-3xl"
+            >
+              <img
+                src="./assets/about4.webp"
+                alt="Logistics Trucks"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <div
+              class="absolute top-0 right-0 w-1/2 h-full border-l-4 border-[#f94735] opacity-20 transform skew-x-12"
+            ></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TRUSTED BY SECTION ================= -->
+    <section class="py-20 bg-gray-50">
+      <div class="container mx-auto px-4 md:px-8">
+        <h2
+          class="text-center text-2xl md:text-3xl font-bold text-[#0f313a] mb-12"
+          data-aos="fade-up"
+        >
+          TRUSTED BY <span class="text-[#f94735]">120+</span> LOGISTIC SERVICES
+          CLIENTS
+        </h2>
+
+        <div
+          class="grid grid-cols-2 md:grid-cols-4 border border-gray-200"
+          data-aos="fade-up"
+          data-aos-delay="100"
+        >
+          <div
+            class="p-8 flex items-center justify-center border-r border-b border-gray-200 hover:bg-white transition-colors duration-300"
+          >
+            <span class="text-2xl font-bold text-[#0f313a]">dreeam</span>
+          </div>
+          <div
+            class="p-8 flex items-center justify-center border-r border-b border-gray-200 hover:bg-white transition-colors duration-300"
+          >
+            <span class="text-2xl font-bold text-[#0f313a]">amazon</span>
+          </div>
+          <div
+            class="p-8 flex items-center justify-center border-r border-b border-gray-200 hover:bg-white transition-colors duration-300"
+          >
+            <span class="text-2xl font-bold text-[#0f313a]"
+              ><i class="fas fa-cube mr-2"></i>Census</span
+            >
+          </div>
+          <div
+            class="p-8 flex items-center justify-center border-b border-gray-200 hover:bg-white transition-colors duration-300"
+          >
+            <span class="text-2xl font-bold text-[#0f313a]">N SCHENKER</span>
+          </div>
+        </div>
+
+        <div
+          class="grid grid-cols-2 md:grid-cols-4 border-l border-r border-b border-gray-200"
+          data-aos="fade-up"
+          data-aos-delay="200"
+        >
+          <div
+            class="p-8 flex items-center justify-center border-r border-gray-200 hover:bg-white transition-colors duration-300"
+          >
+            <span class="text-2xl font-bold text-[#0f313a]">unit group</span>
+          </div>
+          <div
+            class="p-8 flex items-center justify-center border-r border-gray-200 hover:bg-white transition-colors duration-300"
+          >
+            <span class="text-2xl font-bold text-[#0f313a]">swan</span>
+          </div>
+          <div
+            class="p-8 flex items-center justify-center border-r border-gray-200 hover:bg-white transition-colors duration-300"
+          >
+            <span class="text-2xl font-bold text-[#0f313a]">FedEx</span>
+          </div>
+          <div
+            class="p-8 flex items-center justify-center border-gray-200 hover:bg-white transition-colors duration-300"
+          >
+            <span class="text-2xl font-bold text-[#0f313a]">GLOBAL</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= CASE STUDIES SHOWCASE (STACKING PARALLAX) ================= -->
+    <section class="py-24 bg-white relative">
+      <div class="container mx-auto px-4 md:px-8">
+        <!-- Header -->
+        <div
+          class="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-6"
+          data-aos="fade-right"
+          data-aos-duration="800"
+        >
+          <div>
+            <span
+              class="inline-block px-4 py-1.5 border border-[#0f313a] rounded-full text-xs font-bold text-[#0f313a] mb-6 uppercase tracking-wider"
+              >Logiver Case Studies</span
+            >
+            <h2
+              class="text-4xl md:text-5xl font-extrabold text-[#0f313a] leading-tight max-w-2xl"
+            >
+              OUR SUCCESSFUL GLOBAL TRANSPORTATION AND LOGISTICS PROJECTS
+              SHOWCASE.
+            </h2>
+          </div>
+          <a
+            href="./404.html"
+            class="inline-flex items-center gap-2 bg-[#f94735] text-white font-bold px-6 py-3 rounded-lg hover:bg-[#d13c2c] transition-all duration-300 transform hover:scale-105 whitespace-nowrap"
+          >
+            View All Projects
+            <i class="fas fa-arrow-up-right-from-square text-sm"></i>
+          </a>
+        </div>
+
+        <!-- Showcase Layout -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          <!-- Number Navigation (Sticky) -->
+          <div
+            class="lg:col-span-2 flex lg:flex-col gap-4 lg:sticky lg:top-24 h-max"
+            data-aos="fade-right"
+            data-aos-delay="100"
+          >
+            <button
+              class="w-12 h-12 rounded-xl border-2 border-[#f94735] text-[#f94735] font-bold flex items-center justify-center transition-all duration-300 bg-red-50"
+            >
+              01
+            </button>
+            <button
+              class="w-12 h-12 rounded-xl border border-gray-200 text-gray-400 font-bold flex items-center justify-center hover:border-[#f94735] hover:text-[#f94735] transition-all duration-300"
+            >
+              02
+            </button>
+            <button
+              class="w-12 h-12 rounded-xl border border-gray-200 text-gray-400 font-bold flex items-center justify-center hover:border-[#f94735] hover:text-[#f94735] transition-all duration-300"
+            >
+              03
+            </button>
+            <button
+              class="w-12 h-12 rounded-xl border border-gray-200 text-gray-400 font-bold flex items-center justify-center hover:border-[#f94735] hover:text-[#f94735] transition-all duration-300"
+            >
+              04
+            </button>
+          </div>
+
+          <!-- Project Content (Stacking Cards) -->
+          <!-- FIXED: Removed space-y-16 to allow sticky positioning to work properly without gaps -->
+          <div class="lg:col-span-10">
+            <!-- Project 1 -->
+            <div class="project-item group" data-aos="fade-up">
+              <div class="rounded-2xl overflow-hidden shadow-md mb-6">
+                <img
+                  src="./assets/trucks.webp"
+                  alt="Global Supply Chain Optimization"
+                  class="w-full h-64 md:h-96 object-cover transform group-hover:scale-105 transition-transform duration-700"
+                />
+              </div>
+              <div
+                class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 px-2 pb-2"
+              >
+                <div>
+                  <h3 class="text-2xl font-bold text-[#0f313a] mb-2">
+                    Global Supply Chain Optimization
+                  </h3>
+                  <p class="text-gray-500 font-medium">
+                    Streamlined operations for international manufacturers,
+                    reducing delivery ...
+                  </p>
+                </div>
+                <div class="flex gap-2">
+                  <span
+                    class="px-4 py-1.5 bg-gray-100 rounded-lg text-sm font-semibold text-[#0f313a]"
+                    >Logistic</span
+                  >
+                  <span
+                    class="px-4 py-1.5 bg-gray-100 rounded-lg text-sm font-semibold text-[#0f313a]"
+                    >Cargo</span
+                  >
+                  <span
+                    class="px-4 py-1.5 bg-gray-100 rounded-lg text-sm font-semibold text-[#0f313a]"
+                    >Transport</span
+                  >
+                </div>
+              </div>
+            </div>
+
+            <!-- Project 2 -->
+            <div class="project-item group" data-aos="fade-up">
+              <div class="rounded-2xl overflow-hidden shadow-md mb-6">
+                <img
+                  src="./assets/about5.webp"
+                  alt="Warehouse & Distribution Management"
+                  class="w-full h-64 md:h-96 object-cover transform group-hover:scale-105 transition-transform duration-700"
+                />
+              </div>
+              <div
+                class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 px-2 pb-2"
+              >
+                <div>
+                  <h3 class="text-2xl font-bold text-[#0f313a] mb-2">
+                    Warehouse & Distribution Management
+                  </h3>
+                  <p class="text-gray-500 font-medium">
+                    Optimized storage and dispatch systems for faster order
+                    fulfillment for ...
+                  </p>
+                </div>
+                <div class="flex gap-2">
+                  <span
+                    class="px-4 py-1.5 bg-gray-100 rounded-lg text-sm font-semibold text-[#0f313a]"
+                    >Logistic</span
+                  >
+                  <span
+                    class="px-4 py-1.5 bg-gray-100 rounded-lg text-sm font-semibold text-[#0f313a]"
+                    >Cargo</span
+                  >
+                  <span
+                    class="px-4 py-1.5 bg-gray-100 rounded-lg text-sm font-semibold text-[#0f313a]"
+                    >Transport</span
+                  >
+                </div>
+              </div>
+            </div>
+
+            <!-- Project 3 -->
+            <div class="project-item group" data-aos="fade-up">
+              <div class="rounded-2xl overflow-hidden shadow-md mb-6">
+                <img
+                  src="./assets/about3.webp"
+                  alt="Express E-Commerce Delivery"
+                  class="w-full h-64 md:h-96 object-cover transform group-hover:scale-105 transition-transform duration-700"
+                />
+              </div>
+              <div
+                class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 px-2 pb-2"
+              >
+                <div>
+                  <h3 class="text-2xl font-bold text-[#0f313a] mb-2">
+                    Express E-Commerce Delivery
+                  </h3>
+                  <p class="text-gray-500 font-medium">
+                    Fast and reliable last-mile delivery solutions for growing
+                    online retailers ...
+                  </p>
+                </div>
+                <div class="flex gap-2">
+                  <span
+                    class="px-4 py-1.5 bg-gray-100 rounded-lg text-sm font-semibold text-[#0f313a]"
+                    >Logistic</span
+                  >
+                  <span
+                    class="px-4 py-1.5 bg-gray-100 rounded-lg text-sm font-semibold text-[#0f313a]"
+                    >Cargo</span
+                  >
+                  <span
+                    class="px-4 py-1.5 bg-gray-100 rounded-lg text-sm font-semibold text-[#0f313a]"
+                    >Transport</span
+                  >
+                </div>
+              </div>
+            </div>
+
+            <!-- Project 4 -->
+            <div class="project-item group" data-aos="fade-up">
+              <div class="rounded-2xl overflow-hidden shadow-md mb-6">
+                <img
+                  src="./assets/about2.webp"
+                  alt="Bulk Cargo Transportation"
+                  class="w-full h-64 md:h-96 object-cover transform group-hover:scale-105 transition-transform duration-700"
+                />
+              </div>
+              <div
+                class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 px-2 pb-2"
+              >
+                <div>
+                  <h3 class="text-2xl font-bold text-[#0f313a] mb-2">
+                    Bulk Cargo Transportation
+                  </h3>
+                  <p class="text-gray-500 font-medium">
+                    Managed large-scale shipments across continents with zero
+                    damage ...
+                  </p>
+                </div>
+                <div class="flex gap-2">
+                  <span
+                    class="px-4 py-1.5 bg-gray-100 rounded-lg text-sm font-semibold text-[#0f313a]"
+                    >Logistic</span
+                  >
+                  <span
+                    class="px-4 py-1.5 bg-gray-100 rounded-lg text-sm font-semibold text-[#0f313a]"
+                    >Cargo</span
+                  >
+                  <span
+                    class="px-4 py-1.5 bg-gray-100 rounded-lg text-sm font-semibold text-[#0f313a]"
+                    >Transport</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= PRICING SECTION ================= -->
+    <section class="py-24 bg-gray-50">
+      <div class="container mx-auto px-4 md:px-8">
+        <div class="mb-16" data-aos="fade-right" data-aos-duration="800">
+          <span
+            class="text-[#f94735] font-bold tracking-widest uppercase text-sm block mb-2"
+            >Pricing Plans</span
+          >
+          <h2
+            class="text-4xl md:text-5xl font-extrabold text-[#0f313a] leading-tight max-w-2xl"
+          >
+            AWESOME PRICING FOR THE BEST CLIENTS
+          </h2>
+        </div>
+
+        <div
+          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-0 border border-gray-200 rounded-2xl overflow-hidden bg-white shadow-lg"
+          data-aos="fade-up"
+          data-aos-duration="1000"
+        >
+          <!-- Plan 1 -->
+          <div
+            class="p-8 border-b lg:border-b-0 lg:border-r border-gray-200 flex flex-col hover:bg-gray-50 transition-colors duration-300"
+          >
+            <div class="outline-text mb-6">$100</div>
+            <h3 class="text-xl font-bold text-[#0f313a] mb-6">Basic plan</h3>
+            <ul class="check-list flex-grow mb-8">
+              <li><i class="fas fa-check"></i> Triggerfish bluntnose</li>
+              <li><i class="fas fa-check"></i> Knifefish catfish cobia</li>
+              <li class="opacity-40">
+                <i class="fas fa-check"></i> Convict cichlid
+              </li>
+              <li class="opacity-40">
+                <i class="fas fa-check"></i> Pacific hake false
+              </li>
+              <li class="opacity-40">
+                <i class="fas fa-check"></i> Trevally queen parrotfish
+              </li>
+            </ul>
+            <a
+              href="./404.html"
+              class="inline-flex items-center justify-between w-full border border-[#0f313a] rounded-lg p-1 hover:bg-[#0f313a] hover:text-white transition-colors duration-300 group"
+            >
+              <span class="px-4 font-bold text-sm">Get started</span>
+              <span
+                class="w-10 h-10 bg-[#0f313a] text-white rounded flex items-center justify-center group-hover:bg-white group-hover:text-[#0f313a] transition-colors duration-300"
+              >
+                <i class="fas fa-arrow-up-right-from-square text-sm"></i>
+              </span>
+            </a>
+          </div>
+
+          <!-- Plan 2 -->
+          <div
+            class="p-8 border-b lg:border-b-0 lg:border-r border-gray-200 flex flex-col hover:bg-gray-50 transition-colors duration-300"
+          >
+            <div class="outline-text mb-6">$200</div>
+            <h3 class="text-xl font-bold text-[#0f313a] mb-6">Standard plan</h3>
+            <ul class="check-list flex-grow mb-8">
+              <li><i class="fas fa-check"></i> Triggerfish bluntnose</li>
+              <li><i class="fas fa-check"></i> Knifefish catfish cobia</li>
+              <li><i class="fas fa-check"></i> Convict cichlid</li>
+              <li class="opacity-40">
+                <i class="fas fa-check"></i> Pacific hake false
+              </li>
+              <li class="opacity-40">
+                <i class="fas fa-check"></i> Trevally queen parrotfish
+              </li>
+            </ul>
+            <a
+              href="./404.html"
+              class="inline-flex items-center justify-between w-full border border-[#0f313a] rounded-lg p-1 hover:bg-[#0f313a] hover:text-white transition-colors duration-300 group"
+            >
+              <span class="px-4 font-bold text-sm">Get started</span>
+              <span
+                class="w-10 h-10 bg-[#0f313a] text-white rounded flex items-center justify-center group-hover:bg-white group-hover:text-[#0f313a] transition-colors duration-300"
+              >
+                <i class="fas fa-arrow-up-right-from-square text-sm"></i>
+              </span>
+            </a>
+          </div>
+
+          <!-- Plan 3 -->
+          <div
+            class="p-8 border-b lg:border-b-0 lg:border-r border-gray-200 flex flex-col hover:bg-gray-50 transition-colors duration-300"
+          >
+            <div class="outline-text mb-6">$300</div>
+            <h3 class="text-xl font-bold text-[#0f313a] mb-6">Best plan</h3>
+            <ul class="check-list flex-grow mb-8">
+              <li><i class="fas fa-check"></i> Triggerfish bluntnose</li>
+              <li><i class="fas fa-check"></i> Knifefish catfish cobia</li>
+              <li><i class="fas fa-check"></i> Convict cichlid</li>
+              <li><i class="fas fa-check"></i> Pacific hake false</li>
+              <li class="opacity-40">
+                <i class="fas fa-check"></i> Trevally queen parrotfish
+              </li>
+            </ul>
+            <a
+              href="./404.html"
+              class="inline-flex items-center justify-between w-full border border-[#0f313a] rounded-lg p-1 hover:bg-[#0f313a] hover:text-white transition-colors duration-300 group"
+            >
+              <span class="px-4 font-bold text-sm">Get started</span>
+              <span
+                class="w-10 h-10 bg-[#0f313a] text-white rounded flex items-center justify-center group-hover:bg-white group-hover:text-[#0f313a] transition-colors duration-300"
+              >
+                <i class="fas fa-arrow-up-right-from-square text-sm"></i>
+              </span>
+            </a>
+          </div>
+
+          <!-- Plan 4 -->
+          <div
+            class="p-8 flex flex-col hover:bg-gray-50 transition-colors duration-300"
+          >
+            <div class="outline-text mb-6">$400</div>
+            <h3 class="text-xl font-bold text-[#0f313a] mb-6">Ultimate plan</h3>
+            <ul class="check-list flex-grow mb-8">
+              <li><i class="fas fa-check"></i> Triggerfish bluntnose</li>
+              <li><i class="fas fa-check"></i> Knifefish catfish cobia</li>
+              <li><i class="fas fa-check"></i> Convict cichlid</li>
+              <li><i class="fas fa-check"></i> Pacific hake false</li>
+              <li><i class="fas fa-check"></i> Trevally queen parrotfish</li>
+            </ul>
+            <a
+              href="./404.html"
+              class="inline-flex items-center justify-between w-full border border-[#0f313a] rounded-lg p-1 hover:bg-[#0f313a] hover:text-white transition-colors duration-300 group"
+            >
+              <span class="px-4 font-bold text-sm">Get started</span>
+              <span
+                class="w-10 h-10 bg-[#0f313a] text-white rounded flex items-center justify-center group-hover:bg-white group-hover:text-[#0f313a] transition-colors duration-300"
+              >
+                <i class="fas fa-arrow-up-right-from-square text-sm"></i>
+              </span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TESTIMONIALS SECTION (AUTO-SLIDING CAROUSEL) ================= -->
+    <section class="py-24 bg-gray-50 overflow-hidden">
+      <div class="container mx-auto px-4 md:px-8">
+        <div
+          class="text-center mb-16"
+          data-aos="fade-up"
+          data-aos-duration="800"
+        >
+          <span
+            class="inline-block px-4 py-1.5 border border-[#0f313a] rounded-full text-xs font-bold text-[#0f313a] mb-4 uppercase tracking-wider"
+            >Logiver Testimonials</span
+          >
+          <h2
+            class="text-4xl md:text-5xl font-extrabold text-[#0f313a] leading-tight"
+          >
+            WHAT OUR CLIENTS SAY ABOUT LOGIVER<br />LOGISTICS SERVICES.
+          </h2>
+        </div>
+
+        <!-- Carousel Wrapper -->
+        <div
+          class="relative overflow-hidden w-full"
+          data-aos="fade-up"
+          data-aos-duration="1000"
+        >
+          <div class="testimonial-track flex gap-6" id="testimonialTrack">
+            <!-- Card 1 -->
+            <div
+              class="testimonial-card w-[300px] md:w-[350px] flex-shrink-0 bg-white p-6 rounded-2xl shadow-md border border-gray-100"
+            >
+              <div class="flex items-center justify-between mb-4">
+                <div>
+                  <div class="text-3xl font-extrabold text-[#0f313a]">
+                    5<span class="text-lg text-gray-400">/5</span>
+                  </div>
+                  <div class="text-[#fac12e] text-sm mt-1">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i
+                    ><i class="fas fa-star"></i><i class="fas fa-star"></i
+                    ><i class="fas fa-star"></i>
+                  </div>
+                </div>
+                <img
+                  src="./assets/100 (1).webp"
+                  alt="Leslie"
+                  class="w-16 h-16 rounded-lg object-cover"
+                />
+              </div>
+              <p class="text-gray-600 text-sm mb-6 italic">
+                "Logiver truly understands logistics excellence—professional
+                service, real-time updates, and on-time deliveries every single
+                time."
+              </p>
+              <div class="flex items-center justify-between">
+                <div>
+                  <h4 class="font-bold text-[#0f313a] text-sm uppercase">
+                    Leslie Alexander
+                  </h4>
+                  <p class="text-gray-400 text-xs">
+                    Web Developer at Themexriver
+                  </p>
+                </div>
+                <i class="fas fa-quote-right text-gray-200 text-3xl"></i>
+              </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div
+              class="testimonial-card w-[300px] md:w-[350px] flex-shrink-0 bg-white p-6 rounded-2xl shadow-md border border-gray-100"
+            >
+              <div class="flex items-center justify-between mb-4">
+                <div>
+                  <div class="text-3xl font-extrabold text-[#0f313a]">
+                    5<span class="text-lg text-gray-400">/5</span>
+                  </div>
+                  <div class="text-[#fac12e] text-sm mt-1">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i
+                    ><i class="fas fa-star"></i><i class="fas fa-star"></i
+                    ><i class="fas fa-star"></i>
+                  </div>
+                </div>
+                <img
+                  src="./assets/100 (2).webp"
+                  alt="Emma"
+                  class="w-16 h-16 rounded-lg object-cover"
+                />
+              </div>
+              <p class="text-gray-600 text-sm mb-6 italic">
+                "Logiver truly understands logistics excellence—professional
+                service, real-time updates, and on-time deliveries every single
+                time."
+              </p>
+              <div class="flex items-center justify-between">
+                <div>
+                  <h4 class="font-bold text-[#0f313a] text-sm uppercase">
+                    Emma Markson
+                  </h4>
+                  <p class="text-gray-400 text-xs">
+                    Web Developer at Themexriver
+                  </p>
+                </div>
+                <i class="fas fa-quote-right text-gray-200 text-3xl"></i>
+              </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div
+              class="testimonial-card w-[300px] md:w-[350px] flex-shrink-0 bg-white p-6 rounded-2xl shadow-md border border-gray-100"
+            >
+              <div class="flex items-center justify-between mb-4">
+                <div>
+                  <div class="text-3xl font-extrabold text-[#0f313a]">
+                    5<span class="text-lg text-gray-400">/5</span>
+                  </div>
+                  <div class="text-[#fac12e] text-sm mt-1">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i
+                    ><i class="fas fa-star"></i><i class="fas fa-star"></i
+                    ><i class="fas fa-star"></i>
+                  </div>
+                </div>
+                <img
+                  src="./assets/100 (3).webp"
+                  alt="Ralph"
+                  class="w-16 h-16 rounded-lg object-cover"
+                />
+              </div>
+              <p class="text-gray-600 text-sm mb-6 italic">
+                "We trust Logiver for all our shipping needs; their consistent
+                quality and punctuality help us maintain customer satisfaction
+                effortlessly."
+              </p>
+              <div class="flex items-center justify-between">
+                <div>
+                  <h4 class="font-bold text-[#0f313a] text-sm uppercase">
+                    Ralph Edwards
+                  </h4>
+                  <p class="text-gray-400 text-xs">
+                    Web Developer at Themexriver
+                  </p>
+                </div>
+                <i class="fas fa-quote-right text-gray-200 text-3xl"></i>
+              </div>
+            </div>
+
+            <!-- Card 4 -->
+            <div
+              class="testimonial-card w-[300px] md:w-[350px] flex-shrink-0 bg-white p-6 rounded-2xl shadow-md border border-gray-100"
+            >
+              <div class="flex items-center justify-between mb-4">
+                <div>
+                  <div class="text-3xl font-extrabold text-[#0f313a]">
+                    5<span class="text-lg text-gray-400">/5</span>
+                  </div>
+                  <div class="text-[#fac12e] text-sm mt-1">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i
+                    ><i class="fas fa-star"></i><i class="fas fa-star"></i
+                    ><i class="fas fa-star"></i>
+                  </div>
+                </div>
+                <img
+                  src="./assets/100 (4).webp"
+                  alt="Kristin"
+                  class="w-16 h-16 rounded-lg object-cover"
+                />
+              </div>
+              <p class="text-gray-600 text-sm mb-6 italic">
+                "Our business improved significantly after integrating Logiver's
+                systems. They are dependable and highly professional."
+              </p>
+              <div class="flex items-center justify-between">
+                <div>
+                  <h4 class="font-bold text-[#0f313a] text-sm uppercase">
+                    Kristin Watson
+                  </h4>
+                  <p class="text-gray-400 text-xs">
+                    Web Developer at Themexriver
+                  </p>
+                </div>
+                <i class="fas fa-quote-right text-gray-200 text-3xl"></i>
+              </div>
+            </div>
+
+            <!-- Card 5 -->
+            <div
+              class="testimonial-card w-[300px] md:w-[350px] flex-shrink-0 bg-white p-6 rounded-2xl shadow-md border border-gray-100"
+            >
+              <div class="flex items-center justify-between mb-4">
+                <div>
+                  <div class="text-3xl font-extrabold text-[#0f313a]">
+                    5<span class="text-lg text-gray-400">/5</span>
+                  </div>
+                  <div class="text-[#fac12e] text-sm mt-1">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i
+                    ><i class="fas fa-star"></i><i class="fas fa-star"></i
+                    ><i class="fas fa-star"></i>
+                  </div>
+                </div>
+                <img
+                  src="./assets/100 (5).webp"
+                  alt="Wade"
+                  class="w-16 h-16 rounded-lg object-cover"
+                />
+              </div>
+              <p class="text-gray-600 text-sm mb-6 italic">
+                "Logiver truly understands logistics excellence—professional
+                service, real-time updates, and on-time deliveries every single
+                time."
+              </p>
+              <div class="flex items-center justify-between">
+                <div>
+                  <h4 class="font-bold text-[#0f313a] text-sm uppercase">
+                    Wade Warren
+                  </h4>
+                  <p class="text-gray-400 text-xs">
+                    Web Developer at Themexriver
+                  </p>
+                </div>
+                <i class="fas fa-quote-right text-gray-200 text-3xl"></i>
+              </div>
+            </div>
+
+            <!-- Card 6 -->
+            <div
+              class="testimonial-card w-[300px] md:w-[350px] flex-shrink-0 bg-white p-6 rounded-2xl shadow-md border border-gray-100"
+            >
+              <div class="flex items-center justify-between mb-4">
+                <div>
+                  <div class="text-3xl font-extrabold text-[#0f313a]">
+                    5<span class="text-lg text-gray-400">/5</span>
+                  </div>
+                  <div class="text-[#fac12e] text-sm mt-1">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i
+                    ><i class="fas fa-star"></i><i class="fas fa-star"></i
+                    ><i class="fas fa-star"></i>
+                  </div>
+                </div>
+                <img
+                  src="./assets/100 (6).webp"
+                  alt="Jacob"
+                  class="w-16 h-16 rounded-lg object-cover"
+                />
+              </div>
+              <p class="text-gray-600 text-sm mb-6 italic">
+                "We trust Logiver for all our shipping needs; their consistent
+                quality and punctuality help us maintain customer satisfaction
+                effortlessly."
+              </p>
+              <div class="flex items-center justify-between">
+                <div>
+                  <h4 class="font-bold text-[#0f313a] text-sm uppercase">
+                    Jacob Jones
+                  </h4>
+                  <p class="text-gray-400 text-xs">
+                    Web Developer at Themexriver
+                  </p>
+                </div>
+                <i class="fas fa-quote-right text-gray-200 text-3xl"></i>
+              </div>
+            </div>
+
+            <!-- Card 7 -->
+            <div
+              class="testimonial-card w-[300px] md:w-[350px] flex-shrink-0 bg-white p-6 rounded-2xl shadow-md border border-gray-100"
+            >
+              <div class="flex items-center justify-between mb-4">
+                <div>
+                  <div class="text-3xl font-extrabold text-[#0f313a]">
+                    5<span class="text-lg text-gray-400">/5</span>
+                  </div>
+                  <div class="text-[#fac12e] text-sm mt-1">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i
+                    ><i class="fas fa-star"></i><i class="fas fa-star"></i
+                    ><i class="fas fa-star"></i>
+                  </div>
+                </div>
+                <img
+                  src="./assets/100 (7).webp"
+                  alt="Brooklyn"
+                  class="w-16 h-16 rounded-lg object-cover"
+                />
+              </div>
+              <p class="text-gray-600 text-sm mb-6 italic">
+                "Our business improved significantly after integrating Logiver's
+                systems. They are dependable and highly professional."
+              </p>
+              <div class="flex items-center justify-between">
+                <div>
+                  <h4 class="font-bold text-[#0f313a] text-sm uppercase">
+                    Brooklyn Simmons
+                  </h4>
+                  <p class="text-gray-400 text-xs">
+                    Web Developer at Themexriver
+                  </p>
+                </div>
+                <i class="fas fa-quote-right text-gray-200 text-3xl"></i>
+              </div>
+            </div>
+
+            <!-- Card 8 -->
+            <div
+              class="testimonial-card w-[300px] md:w-[350px] flex-shrink-0 bg-white p-6 rounded-2xl shadow-md border border-gray-100"
+            >
+              <div class="flex items-center justify-between mb-4">
+                <div>
+                  <div class="text-3xl font-extrabold text-[#0f313a]">
+                    5<span class="text-lg text-gray-400">/5</span>
+                  </div>
+                  <div class="text-[#fac12e] text-sm mt-1">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i
+                    ><i class="fas fa-star"></i><i class="fas fa-star"></i
+                    ><i class="fas fa-star"></i>
+                  </div>
+                </div>
+                <img
+                  src="./assets/100 (1).webp"
+                  alt="Jenny"
+                  class="w-16 h-16 rounded-lg object-cover"
+                />
+              </div>
+              <p class="text-gray-600 text-sm mb-6 italic">
+                "Logiver truly understands logistics excellence—professional
+                service, real-time updates, and on-time deliveries every single
+                time."
+              </p>
+              <div class="flex items-center justify-between">
+                <div>
+                  <h4 class="font-bold text-[#0f313a] text-sm uppercase">
+                    Jenny Wilson
+                  </h4>
+                  <p class="text-gray-400 text-xs">
+                    Web Developer at Themexriver
+                  </p>
+                </div>
+                <i class="fas fa-quote-right text-gray-200 text-3xl"></i>
+              </div>
+            </div>
+
+            <!-- Card 9 -->
+            <div
+              class="testimonial-card w-[300px] md:w-[350px] flex-shrink-0 bg-white p-6 rounded-2xl shadow-md border border-gray-100"
+            >
+              <div class="flex items-center justify-between mb-4">
+                <div>
+                  <div class="text-3xl font-extrabold text-[#0f313a]">
+                    5<span class="text-lg text-gray-400">/5</span>
+                  </div>
+                  <div class="text-[#fac12e] text-sm mt-1">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i
+                    ><i class="fas fa-star"></i><i class="fas fa-star"></i
+                    ><i class="fas fa-star"></i>
+                  </div>
+                </div>
+                <img
+                  src="./assets/100 (2).webp"
+                  alt="Esther"
+                  class="w-16 h-16 rounded-lg object-cover"
+                />
+              </div>
+              <p class="text-gray-600 text-sm mb-6 italic">
+                "We trust Logiver for all our shipping needs; their consistent
+                quality and punctuality help us maintain customer satisfaction
+                effortlessly."
+              </p>
+              <div class="flex items-center justify-between">
+                <div>
+                  <h4 class="font-bold text-[#0f313a] text-sm uppercase">
+                    Esther Howard
+                  </h4>
+                  <p class="text-gray-400 text-xs">
+                    Web Developer at Themexriver
+                  </p>
+                </div>
+                <i class="fas fa-quote-right text-gray-200 text-3xl"></i>
+              </div>
+            </div>
+
+            <!-- Card 10 -->
+            <div
+              class="testimonial-card w-[300px] md:w-[350px] flex-shrink-0 bg-white p-6 rounded-2xl shadow-md border border-gray-100"
+            >
+              <div class="flex items-center justify-between mb-4">
+                <div>
+                  <div class="text-3xl font-extrabold text-[#0f313a]">
+                    5<span class="text-lg text-gray-400">/5</span>
+                  </div>
+                  <div class="text-[#fac12e] text-sm mt-1">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i
+                    ><i class="fas fa-star"></i><i class="fas fa-star"></i
+                    ><i class="fas fa-star"></i>
+                  </div>
+                </div>
+                <img
+                  src="./assets/100 (3).webp"
+                  alt="Guy"
+                  class="w-16 h-16 rounded-lg object-cover"
+                />
+              </div>
+              <p class="text-gray-600 text-sm mb-6 italic">
+                "Our business improved significantly after integrating Logiver's
+                systems. They are dependable and highly professional."
+              </p>
+              <div class="flex items-center justify-between">
+                <div>
+                  <h4 class="font-bold text-[#0f313a] text-sm uppercase">
+                    Guy Hawkins
+                  </h4>
+                  <p class="text-gray-400 text-xs">
+                    Web Developer at Themexriver
+                  </p>
+                </div>
+                <i class="fas fa-quote-right text-gray-200 text-3xl"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= BOTTOM STATS BAR ================= -->
+    <section class="py-16 bg-[#0f313a] relative overflow-hidden">
+      <div
+        class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-20"
+      ></div>
+      <div class="absolute inset-0 bg-[#0f313a]/80"></div>
+
+      <div class="container mx-auto px-4 md:px-8 relative z-10">
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-8">
+          <div class="stats-bar-item" data-aos="fade-up" data-aos-delay="100">
+            <i class="fas fa-box-open"></i>
+            <div class="divider"></div>
+            <div>
+              <div
+                class="text-2xl md:text-3xl font-extrabold text-white stat-number"
+                data-target="1289"
+              >
+                0
+              </div>
+              <div class="text-gray-400 text-sm font-medium">
+                Completed Delivery
+              </div>
+            </div>
+          </div>
+
+          <div class="stats-bar-item" data-aos="fade-up" data-aos-delay="200">
+            <i class="fas fa-users"></i>
+            <div class="divider"></div>
+            <div>
+              <div
+                class="text-2xl md:text-3xl font-extrabold text-white stat-number"
+                data-target="745"
+              >
+                0
+              </div>
+              <div class="text-gray-400 text-sm font-medium">
+                Satisfied Clients
+              </div>
+            </div>
+          </div>
+
+          <div class="stats-bar-item" data-aos="fade-up" data-aos-delay="300">
+            <i class="fas fa-award"></i>
+            <div class="divider"></div>
+            <div>
+              <div
+                class="text-2xl md:text-3xl font-extrabold text-white stat-number"
+                data-target="68"
+              >
+                0
+              </div>
+              <div class="text-gray-400 text-sm font-medium">Awards Winner</div>
+            </div>
+          </div>
+
+          <div class="stats-bar-item" data-aos="fade-up" data-aos-delay="400">
+            <i class="fas fa-user-tie"></i>
+            <div class="divider"></div>
+            <div>
+              <div
+                class="text-2xl md:text-3xl font-extrabold text-white stat-number"
+                data-target="46"
+              >
+                0
+              </div>
+              <div class="text-gray-400 text-sm font-medium">Team Members</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <footer class="ftrroot">
+      <div class="ftraccent"></div>
+
+      <!-- ============ NEWSLETTER BAR ============ -->
+      <div class="ftrnewsbar">
+        <div class="ftrnewslogo">
+          <!-- REPLACE src WITH YOUR LOGO URL -->
+          <img
+            src="./assets/logoog.webp"
+            alt="Stackly Worldwide Logistics"
+            onclick="window.location.href = './index.html'"
+            style="cursor: pointer"
+          />
+        </div>
+
+        <div class="ftrnewscontent">
+          <h3 class="ftrnewstitle">Subscribe Newsletter</h3>
+
+          <form class="ftrnewsform" action="./404.html">
+            <input
+              class="ftrnewsinp"
+              type="email"
+              name="ftremail"
+              placeholder="Your Email Address"
+              aria-label="Your Email Address"
+              required
+            />
+            <button class="ftrnewsbtn" type="submit">Subscribe Now</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- ============ MAIN BODY ============ -->
+      <div class="ftrmain">
+        <div class="ftrgrid">
+          <!-- CONTACT -->
+          <div class="ftrcol">
+            <h4 class="ftrhead">Get In Touch</h4>
+
+            <div class="ftrrow">
+              <span class="ftricon">
+                <svg viewBox="0 0 384 512" aria-hidden="true">
+                  <path
+                    d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 128a64 64 0 1 1 0 128 64 64 0 1 1 0-128z"
+                  />
+                </svg>
+              </span>
+              <div>
+                <p class="ftrrowtitle">Corporate Office</p>
+                <p class="ftrrowtext">
+                  3891 Salem Tamilnadu Dr. Richardson, India 62639
+                </p>
+              </div>
+            </div>
+
+            <div class="ftrdivider"></div>
+
+            <p class="ftrline">
+              <b>Call Us:</b>
+              <a class="ftrlink" href="./404.html">+91-416-8241228</a>
+            </p>
+
+            <p class="ftrline">
+              <b>Email:</b>
+              <a class="ftrlink" href="./404.html">info@stackly.com</a>
+            </p>
+          </div>
+
+          <!-- SERVICE -->
+          <div class="ftrcol">
+            <h4 class="ftrhead">Service</h4>
+            <ul class="ftrlist">
+              <li>
+                <a class="ftrlistlink" href="./404.html"
+                  >Freight Transportation</a
+                >
+              </li>
+              <li>
+                <a class="ftrlistlink" href="./404.html"
+                  >Warehousing &amp; Distribution</a
+                >
+              </li>
+              <li>
+                <a class="ftrlistlink" href="./404.html"
+                  >Supply Chain Management</a
+                >
+              </li>
+              <li>
+                <a class="ftrlistlink" href="./404.html"
+                  >E-Commerce Solutions</a
+                >
+              </li>
+              <li>
+                <a class="ftrlistlink" href="./404.html"
+                  >Rebranding and Brand Refresh</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <!-- QUICK LINK -->
+          <div class="ftrcol">
+            <h4 class="ftrhead">Quick Link</h4>
+            <ul class="ftrlist">
+              <li><a class="ftrlistlink" href="./index.html">Home</a></li>
+              <li><a class="ftrlistlink" href="./about.html">About</a></li>
+              <li>
+                <a class="ftrlistlink" href="./services.html">Services</a>
+              </li>
+              <li><a class="ftrlistlink" href="./blog.html">Blog</a></li>
+              <li><a class="ftrlistlink" href="./contact.html">Contact</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ BOTTOM BAR ============ -->
+      <div class="ftrbottom">
+        <p class="ftrcopy">
+          © All Copyright 2025 by
+          <a class="ftrcopylink" href="./index.html">Stackly</a>
+        </p>
+
+        <div class="ftrsocials">
+          <a class="ftrsocial" href="./404.html" aria-label="Facebook">
+            <svg viewBox="0 0 320 512" aria-hidden="true">
+              <path
+                d="M80 299.3V512H196V299.3h86.5l18-97.8H196V166.9c0-51.7 20.3-71.5 72.7-71.5c16.3 0 29.4 .4 37 1.2V7.9C291.4 4 256.4 0 236.2 0C129.3 0 80 50.5 80 159.4v42.1H14v97.8H80z"
+              />
+            </svg>
+          </a>
+
+          <a class="ftrsocial" href="./404.html" aria-label="X">
+            <svg viewBox="0 0 512 512" aria-hidden="true">
+              <path
+                d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"
+              />
+            </svg>
+          </a>
+
+          <a class="ftrsocial" href="./404.html" aria-label="LinkedIn">
+            <svg viewBox="0 0 448 512" aria-hidden="true">
+              <path
+                d="M100.3 448H7.4V148.9h92.9zM53.8 108.1C24.1 108.1 0 83.5 0 53.8a53.8 53.8 0 0 1 107.6 0c0 29.7-24.1 54.3-53.8 54.3zM447.9 448h-92.7V302.4c0-34.7-.7-79.2-48.3-79.2-48.3 0-55.7 37.7-55.7 76.7V448h-92.8V148.9h89.1v40.8h1.3c12.4-23.5 42.7-48.3 87.9-48.3c94 0 111.3 61.9 111.3 142.3V448z"
+              />
+            </svg>
+          </a>
+
+          <a class="ftrsocial" href="./404.html" aria-label="YouTube">
+            <svg viewBox="0 0 576 512" aria-hidden="true">
+              <path
+                d="M549.7 124.1c-6.3-23.7-24.8-42.3-48.3-48.6C458.8 64 288 64 288 64S117.2 64 74.6 75.5c-23.5 6.3-42 24.9-48.3 48.6-11.4 42.9-11.4 132.3-11.4 132.3s0 89.4 11.4 132.3c6.3 23.7 24.8 41.5 48.3 47.8C117.2 448 288 448 288 448s170.8 0 213.4-11.5c23.5-6.3 42-24.2 48.3-47.8 11.4-42.9 11.4-132.3 11.4-132.3s0-89.4-11.4-132.3zm-317.5 213.5V175.2l142.7 81.2-142.7 81.2z"
+              />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </footer>
+    <!-- ================= SCRIPTS ================= -->
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- AOS JS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <!-- Initialization Scripts -->
+    <script>
+      // Initialize AOS
+      AOS.init({
+        duration: 800,
+        once: true,
+        offset: 100,
+        easing: "ease-out-cubic",
+      });
+
+      // ================= HERO AUTO-SLIDER =================
+      const heroSlides = document.querySelectorAll(".hero-slide");
+      let currentHeroSlide = 0;
+
+      setInterval(() => {
+        heroSlides[currentHeroSlide].classList.remove("opacity-100");
+        heroSlides[currentHeroSlide].classList.add("opacity-0");
+
+        currentHeroSlide = (currentHeroSlide + 1) % heroSlides.length;
+
+        heroSlides[currentHeroSlide].classList.remove("opacity-0");
+        heroSlides[currentHeroSlide].classList.add("opacity-100");
+      }, 1500);
+
+      // ================= TESTIMONIAL AUTO-SLIDER =================
+      const track = document.getElementById("testimonialTrack");
+      const cards = document.querySelectorAll(".testimonial-card");
+      const cardWidth = 350 + 24; // Width of card (350px) + gap (24px = 1.5rem)
+      let currentIndex = 0;
+
+      setInterval(() => {
+        currentIndex++;
+        if (currentIndex >= cards.length) {
+          currentIndex = 0; // Reset to first card instantly
+          track.style.transition = "none";
+          track.style.transform = `translateX(0)`;
+
+          // Force reflow
+          void track.offsetWidth;
+
+          // Re-enable transition
+          track.style.transition =
+            "transform 0.6s cubic-bezier(0.25, 1, 0.5, 1)";
+        } else {
+          track.style.transform = `translateX(-${currentIndex * cardWidth}px)`;
+        }
+      }, 1500); // 1.5 seconds
+
+      // Pause testimonial slider on hover
+      const testimonialWrapper = document.querySelector(
+        ".relative.overflow-hidden.w-full",
+      );
+      testimonialWrapper.addEventListener("mouseenter", () => {
+        clearInterval(window.testimonialInterval);
+      });
+      testimonialWrapper.addEventListener("mouseleave", () => {
+        window.testimonialInterval = setInterval(() => {
+          currentIndex++;
+          if (currentIndex >= cards.length) {
+            currentIndex = 0;
+            track.style.transition = "none";
+            track.style.transform = `translateX(0)`;
+            void track.offsetWidth;
+            track.style.transition =
+              "transform 0.6s cubic-bezier(0.25, 1, 0.5, 1)";
+          } else {
+            track.style.transform = `translateX(-${currentIndex * cardWidth}px)`;
+          }
+        }, 1500);
+      });
+
+      // Initialize testimonial interval
+      window.testimonialInterval = setInterval(() => {
+        currentIndex++;
+        if (currentIndex >= cards.length) {
+          currentIndex = 0;
+          track.style.transition = "none";
+          track.style.transform = `translateX(0)`;
+          void track.offsetWidth;
+          track.style.transition =
+            "transform 0.6s cubic-bezier(0.25, 1, 0.5, 1)";
+        } else {
+          track.style.transform = `translateX(-${currentIndex * cardWidth}px)`;
+        }
+      }, 1500);
+
+      // ================= GSAP STATS COUNTER =================
+      const counters = document.querySelectorAll(".stat-number");
+
+      counters.forEach((counter) => {
+        const target = parseFloat(counter.getAttribute("data-target"));
+        const isDecimal = counter.getAttribute("data-target").includes(".");
+
+        let obj = { val: 0 };
+
+        gsap.to(obj, {
+          val: target,
+          duration: 2.5,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: counter,
+            start: "top 85%",
+            toggleActions: "play none none none",
+          },
+          onUpdate: function () {
+            if (isDecimal) {
+              counter.innerText = obj.val.toFixed(1);
+            } else {
+              counter.innerText = Math.floor(obj.val).toLocaleString();
+            }
+          },
+        });
+      });
+
+      // ================= CASE STUDY NUMBER SYNC (OPTIONAL VISUAL FEEDBACK) =================
+      // Since we are using sticky positioning, the scroll triggers will update the number indicators
+      const projectItems = document.querySelectorAll(".project-item");
+      const numberBtns = document.querySelectorAll(".lg\\:col-span-2 button");
+
+      projectItems.forEach((item, index) => {
+        ScrollTrigger.create({
+          trigger: item,
+          start: "top center",
+          end: "bottom center",
+          onEnter: () => updateNumber(index),
+          onEnterBack: () => updateNumber(index),
+        });
+      });
+
+      function updateNumber(activeIndex) {
+        numberBtns.forEach((btn, i) => {
+          if (i === activeIndex) {
+            btn.className =
+              "w-12 h-12 rounded-xl border-2 border-[#f94735] text-[#f94735] font-bold flex items-center justify-center transition-all duration-300 bg-red-50";
+          } else {
+            btn.className =
+              "w-12 h-12 rounded-xl border border-gray-200 text-gray-400 font-bold flex items-center justify-center hover:border-[#f94735] hover:text-[#f94735] transition-all duration-300";
+          }
+        });
+      }
+    </script>
+    <script src="./navbar.js"></script>
+  </body>
+</html>

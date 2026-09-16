@@ -1,0 +1,666 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Logiver - Navbar</title>
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- FontAwesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+
+    <!-- Custom CSS -->
+    <style>
+      :root {
+        --ember: #f94735;
+        --abyss: #0f313a;
+        --cloud: #ffffff;
+        --coastal: #5094c1;
+        --lagoon: #104a57;
+        --sunbeam: #fac12e;
+      }
+
+      html,
+      body {
+        overflow-x: hidden;
+        max-width: 100vw;
+      }
+
+      body {
+        font-family: "Outfit", sans-serif;
+        background-color: #f8f9fa;
+        margin: 0;
+        padding: 0;
+      }
+
+      /* ================= NAVBAR STYLES ================= */
+      .navHeader {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        background-color: var(--cloud);
+        box-shadow: 0 4px 20px rgba(15, 49, 58, 0.05);
+        width: 100%;
+        overflow: visible !important; /* Prevents clipping dropdowns and scrollbars */
+      }
+
+      /* Top Bar */
+      .navTopBar {
+        background-color: #f1f3f5;
+        border-bottom: 1px solid #e2e8f0;
+        padding: 8px 0;
+        font-size: 0.85rem;
+        color: var(--abyss);
+        display: none; /* Hidden on mobile by default */
+      }
+
+      @media (min-width: 768px) {
+        .navTopBar {
+          display: block;
+        }
+      }
+
+      .navTopBarFlex {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .navContactInfo {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
+
+      .navContactInfo span {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 500;
+      }
+
+      .navContactInfo i {
+        color: var(--sunbeam);
+      }
+
+      .navUtilityLinks {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
+
+      .navUtilityLinks a {
+        color: var(--abyss);
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.3s ease;
+      }
+
+      .navUtilityLinks a:hover {
+        color: var(--ember);
+      }
+
+      .navSocialIcons {
+        display: flex;
+        gap: 10px;
+      }
+
+      .navSocialIcons a {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        border: 1px solid #cbd5e1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #64748b;
+        font-size: 0.75rem;
+        transition: all 0.3s ease;
+      }
+
+      .navSocialIcons a:hover {
+        background-color: var(--ember);
+        border-color: var(--ember);
+        color: white;
+      }
+
+      /* Main Navbar */
+      .navMainNav {
+        padding: 10px 0;
+        position: relative;
+        z-index: 1000;
+      }
+
+      @media (min-width: 1024px) {
+        .navMainNav {
+          padding: 15px 0;
+        }
+      }
+
+      .navMainNavFlex {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+      }
+
+      /* Logo */
+      .navLogo {
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+        text-decoration: none;
+      }
+
+      .navLogoImg {
+        height: 45px;
+        width: auto;
+        object-fit: contain;
+      }
+
+      @media (min-width: 1024px) {
+        .navLogoImg {
+          height: 55px;
+        }
+      }
+
+      /* Desktop Links */
+      .navLinks {
+        display: none;
+        align-items: center;
+        gap: 30px;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        flex: 1;
+        justify-content: center;
+      }
+
+      @media (min-width: 1024px) {
+        .navLinks {
+          display: flex;
+        }
+      }
+
+      .navLink {
+        color: var(--abyss);
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 0.95rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        transition: color 0.3s ease;
+        white-space: nowrap;
+      }
+
+      .navLink:hover {
+        color: var(--ember);
+      }
+
+      /* Actions (Search, Lang, Track) */
+      .navActions {
+        display: none;
+        align-items: center;
+        gap: 15px;
+        flex-shrink: 0;
+      }
+
+      @media (min-width: 1024px) {
+        .navActions {
+          display: flex;
+        }
+      }
+
+      .navSearchBtn {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        background-color: #f1f3f5;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--abyss);
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .navSearchBtn:hover {
+        background-color: var(--abyss);
+        color: white;
+      }
+
+      /* Language Toggle */
+      .navLangToggle {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        padding: 5px 10px;
+        border-radius: 8px;
+        transition: background-color 0.3s ease;
+        z-index: 10000; /* Ensure toggle is above siblings */
+      }
+
+      .navLangToggle:hover {
+        background-color: #f1f3f5;
+      }
+
+      .navLangFlag {
+        width: 32px;
+        height: 22px;
+        object-fit: cover;
+        border-radius: 4px;
+      }
+
+      .navLangToggle i {
+        font-size: 0.7rem;
+        color: var(--abyss);
+      }
+
+      .navLangDropdown {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background-color: var(--cloud);
+        min-width: 180px;
+        box-shadow: 0 10px 30px rgba(15, 49, 58, 0.1);
+        border-radius: 8px;
+        padding: 10px 0;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(10px);
+        transition: all 0.3s ease;
+        z-index: 9999; /* Increased z-index to ensure visibility */
+      }
+
+      /* Invisible bridge to prevent hover gap */
+      .navLangDropdown::before {
+        content: "";
+        position: absolute;
+        top: -20px;
+        left: 0;
+        width: 100%;
+        height: 20px;
+        background: transparent;
+      }
+
+      .navLangToggle:hover .navLangDropdown {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+
+      .navLangItem {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 20px;
+        color: var(--abyss);
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 0.9rem;
+        transition: background-color 0.3s ease;
+      }
+
+      .navLangItem:hover {
+        background-color: #f8f9fa;
+        color: var(--ember);
+      }
+
+      .navLangItem img {
+        width: 24px;
+        height: 16px;
+        object-fit: cover;
+        border-radius: 2px;
+      }
+
+      /* Track Button */
+      .navTrackBtn {
+        background-color: var(--ember);
+        color: white;
+        font-weight: 700;
+        font-size: 0.95rem;
+        padding: 12px 24px;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        white-space: nowrap;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .navTrackBtn:hover {
+        background-color: #d13c2c;
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(249, 71, 53, 0.3);
+      }
+
+      /* Mobile Hamburger */
+      .navMobileBtn {
+        display: block;
+        background: none;
+        border: none;
+        font-size: 1.8rem;
+        color: var(--abyss);
+        cursor: pointer;
+        padding: 5px;
+        transition: color 0.3s ease;
+        flex-shrink: 0;
+      }
+
+      .navMobileBtn:hover {
+        color: var(--ember);
+      }
+
+      @media (min-width: 1024px) {
+        .navMobileBtn {
+          display: none;
+        }
+      }
+
+      /* ================= MOBILE MENU (FULL SCREEN) ================= */
+      .navMobileMenu {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: var(--cloud);
+        z-index: 2000;
+        display: flex;
+        flex-direction: column;
+        transform: translateX(100%);
+        transition: transform 0.4s cubic-bezier(0.77, 0, 0.175, 1);
+        overflow-y: auto;
+      }
+
+      .navMobileMenu.navOpen {
+        transform: translateX(0);
+      }
+
+      .navMobileHeader {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        padding: 20px;
+        border-bottom: 1px solid #e2e8f0;
+      }
+
+      .navCloseBtn {
+        background: none;
+        border: none;
+        font-size: 2rem;
+        color: var(--abyss);
+        cursor: pointer;
+        transition: color 0.3s ease;
+      }
+
+      .navCloseBtn:hover {
+        color: var(--ember);
+      }
+
+      .navMobileLinks {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+        gap: 10px;
+        list-style: none;
+        margin: 0;
+      }
+
+      .navMobileLink {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 0;
+        color: var(--abyss);
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 1.1rem;
+        text-transform: uppercase;
+        border-bottom: 1px solid #f1f3f5;
+        transition: color 0.3s ease;
+      }
+
+      .navMobileLink:hover {
+        color: var(--ember);
+      }
+
+      .navMobileLink i {
+        font-size: 0.9rem;
+        color: #cbd5e1;
+      }
+
+      .navMobileActions {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        border-top: 1px solid #e2e8f0;
+      }
+
+      .navMobileTrackBtn {
+        background-color: var(--ember);
+        color: white;
+        font-weight: 700;
+        font-size: 1rem;
+        padding: 15px;
+        border-radius: 8px;
+        text-decoration: none;
+        text-align: center;
+        transition: background-color 0.3s ease;
+      }
+
+      .navMobileTrackBtn:hover {
+        background-color: #d13c2c;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ================= NAVBAR ================= -->
+    <header class="navHeader">
+      <!-- ================= TOP BAR ================= -->
+      <div class="navTopBar">
+        <div class="container mx-auto px-4 md:px-8 navTopBarFlex">
+          <div class="navContactInfo">
+            <span><i class="fas fa-phone-alt"></i> +025 757 576 560</span>
+            <span
+              ><i class="fas fa-clock"></i> Monday to Friday: 9:00am -
+              6:00pm</span
+            >
+          </div>
+          <div class="navUtilityLinks">
+            <a href="./404.html">Careers</a>
+            <a href="./404.html">Terms & Conditions</a>
+            <div class="navSocialIcons">
+              <a href="./404.html"><i class="fab fa-facebook-f"></i></a>
+              <a href="./404.html"><i class="fab fa-instagram"></i></a>
+              <a href="./404.html"><i class="fab fa-youtube"></i></a>
+              <a href="./404.html"><i class="fab fa-twitter"></i></a>
+              <a href="./404.html"><i class="fab fa-pinterest-p"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= MAIN NAVBAR ================= -->
+      <div class="navMainNav">
+        <div class="container mx-auto px-4 md:px-8 navMainNavFlex">
+          <!-- Logo (Visible on Mobile and Desktop) -->
+          <a href="./index.html" class="navLogo">
+            <!-- REPLACE THE 'src' ATTRIBUTE BELOW WITH YOUR LOGO IMAGE URL -->
+            <img
+              src="./assets/logoog.webp"
+              alt="Transpi Logo"
+              class="navLogoImg"
+            />
+          </a>
+
+          <!-- Desktop Links (No Dropdowns) -->
+          <ul class="navLinks">
+            <li><a href="./index.html" class="navLink">HOME</a></li>
+            <li><a href="./about.html" class="navLink">ABOUT US</a></li>
+            <li><a href="./services.html" class="navLink">SERVICES</a></li>
+            <li><a href="./blog.html" class="navLink">BLOG</a></li>
+            <li><a href="./contact.html" class="navLink">CONTACT US</a></li>
+          </ul>
+
+          <!-- Desktop Actions -->
+          <div class="navActions">
+            <!-- Search Button -->
+            <button
+              class="navSearchBtn"
+              aria-label="Search"
+              onclick="window.location.href = './404.html'"
+            >
+              <i class="fas fa-search"></i>
+            </button>
+
+            <!-- Language Toggle -->
+            <div
+              class="navLangToggle"
+              onclick="window.location.href = './404.html'"
+            >
+              <img src="./assets/1.webp" alt="US Flag" class="navLangFlag" />
+              <!-- <i class="fas fa-chevron-down"></i> -->
+              <!-- <div class="navLangDropdown">
+                <a href="#" class="navLangItem">
+                  <img src="https://flagcdn.com/w40/ca.png" alt="Canada Flag" />
+                  Canada
+                </a>
+                <a href="#" class="navLangItem">
+                  <img
+                    src="https://flagcdn.com/w40/au.png"
+                    alt="Australia Flag"
+                  />
+                  Australia
+                </a>
+                <a href="#" class="navLangItem">
+                  <img src="https://flagcdn.com/w40/sa.png" alt="Saudi Flag" />
+                  Arabic
+                </a>
+              </div> -->
+            </div>
+
+            <!-- Track Button -->
+            <a href="./login.html" class="navTrackBtn">SIGN IN </a>
+          </div>
+
+          <!-- Mobile Hamburger (Visible only on Mobile) -->
+          <button class="navMobileBtn" id="navMobileBtn" aria-label="Open Menu">
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- ================= MOBILE MENU (FULL SCREEN) ================= -->
+    <div class="navMobileMenu" id="navMobileMenu">
+      <!-- Mobile Header (Close X Only) -->
+      <div class="navMobileHeader">
+        <button class="navCloseBtn" id="navCloseBtn" aria-label="Close Menu">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <!-- Mobile Links -->
+      <ul class="navMobileLinks">
+        <li>
+          <a href="./index.html" class="navMobileLink"
+            >HOME <i class="fas fa-chevron-right"></i
+          ></a>
+        </li>
+        <li>
+          <a href="./about.html" class="navMobileLink"
+            >ABOUT US <i class="fas fa-chevron-right"></i
+          ></a>
+        </li>
+        <li>
+          <a href="./services.html" class="navMobileLink"
+            >SERVICES <i class="fas fa-chevron-right"></i
+          ></a>
+        </li>
+        <li>
+          <a href="./blog.html" class="navMobileLink"
+            >BLOG <i class="fas fa-chevron-right"></i
+          ></a>
+        </li>
+        <li>
+          <a href="./contact.html" class="navMobileLink"
+            >CONTACT US <i class="fas fa-chevron-right"></i
+          ></a>
+        </li>
+      </ul>
+
+      <!-- Mobile Actions -->
+      <div class="navMobileActions">
+        <!-- Language Toggle (Simplified for Mobile) -->
+        <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
+          <span class="text-sm font-bold text-[#0f313a]">Language:</span>
+          <img
+            src="./assets/1.webp"
+            alt="US Flag"
+            class="w-6 h-4 object-cover rounded cursor-pointer"
+          />
+          <img
+            src="./assets/3.webp"
+            alt="Canada Flag"
+            class="w-6 h-4 object-cover rounded cursor-pointer"
+          />
+          <img
+            src="./assets/4.webp"
+            alt="Australia Flag"
+            class="w-6 h-4 object-cover rounded cursor-pointer"
+          />
+        </div>
+
+        <a href="./login.html" class="navMobileTrackBtn">SIGN IN</a>
+      </div>
+    </div>
+
+    <!-- ================= SCRIPTS ================= -->
+    <!-- Initialization Scripts -->
+    <script>
+      // ================= MOBILE MENU TOGGLE =================
+      const navMobileBtn = document.getElementById("navMobileBtn");
+      const navCloseBtn = document.getElementById("navCloseBtn");
+      const navMobileMenu = document.getElementById("navMobileMenu");
+
+      navMobileBtn.addEventListener("click", () => {
+        navMobileMenu.classList.add("navOpen");
+        document.body.style.overflow = "hidden"; // Prevent background scrolling
+      });
+
+      navCloseBtn.addEventListener("click", () => {
+        navMobileMenu.classList.remove("navOpen");
+        document.body.style.overflow = ""; // Restore background scrolling
+      });
+
+      // Close mobile menu when a link is clicked
+      document
+        .querySelectorAll(".navMobileLink, .navMobileTrackBtn")
+        .forEach((link) => {
+          link.addEventListener("click", () => {
+            navMobileMenu.classList.remove("navOpen");
+            document.body.style.overflow = "";
+          });
+        });
+    </script>
+  </body>
+</html>

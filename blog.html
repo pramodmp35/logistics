@@ -1,0 +1,871 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stackly - Blog & Insights</title>
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Bootstrap 5 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- FontAwesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+
+    <!-- AOS CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    <style>
+      :root {
+        --ember: #f94735;
+        --abyss: #0f313a;
+        --cloud: #ffffff;
+        --coastal: #5094c1;
+        --lagoon: #104a57;
+        --sunbeam: #fac12e;
+      }
+
+      body {
+        font-family: "Outfit", sans-serif;
+        background-color: #f8f9fa;
+        overflow-x: hidden;
+      }
+
+      /* Blog Post Card Hover Effects */
+      .blog-card {
+        transition: all 0.4s ease;
+      }
+      .blog-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(15, 49, 58, 0.1) !important;
+      }
+      .blog-card img {
+        transition: transform 0.6s ease;
+      }
+      .blog-card:hover img {
+        transform: scale(1.05);
+      }
+
+      /* Sidebar Widget Styles */
+      .sidebar-widget {
+        background-color: #f1f3f5;
+        border-radius: 16px;
+        padding: 24px;
+        margin-bottom: 24px;
+      }
+      .sidebar-widget h3 {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--abyss);
+        margin-bottom: 1rem;
+      }
+
+      /* Custom Search Input */
+      .search-input {
+        border: none;
+        border-radius: 8px 0 0 8px;
+        padding: 12px 16px;
+        width: 100%;
+        font-size: 0.95rem;
+        outline: none;
+      }
+      .search-btn {
+        background-color: var(--ember);
+        color: white;
+        border: none;
+        border-radius: 0 8px 8px 0;
+        padding: 0 20px;
+        transition: background-color 0.3s ease;
+      }
+      .search-btn:hover {
+        background-color: #d13c2c;
+      }
+
+      /* Category Links */
+      .category-link {
+        display: block;
+        background-color: white;
+        padding: 12px 20px;
+        border-radius: 8px;
+        color: var(--abyss);
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(15, 49, 58, 0.05);
+      }
+      .category-link:hover {
+        background-color: var(--sunbeam);
+        color: var(--abyss);
+        transform: translateX(5px);
+        box-shadow: 0 4px 12px rgba(250, 193, 46, 0.3);
+      }
+
+      /* Recent Post Items */
+      .recent-post-item {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+        padding-bottom: 16px;
+        border-bottom: 1px solid rgba(15, 49, 58, 0.08);
+      }
+      .recent-post-item:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+      }
+      .recent-post-item img {
+        width: 70px;
+        height: 70px;
+        object-fit: cover;
+        border-radius: 10px;
+        transition: transform 0.3s ease;
+      }
+      .recent-post-item:hover img {
+        transform: scale(1.1);
+      }
+
+      /* Hero Parallax */
+      .hero-bg {
+        background-attachment: fixed;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+
+      /* Explore More Button */
+      .explore-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        text-decoration: none;
+        color: var(--abyss);
+        font-weight: 700;
+        font-size: 0.9rem;
+        letter-spacing: 0.5px;
+        transition: color 0.3s ease;
+      }
+      .explore-btn:hover {
+        color: var(--ember);
+      }
+      .explore-btn .icon-circle {
+        width: 36px;
+        height: 36px;
+        background-color: var(--ember);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+      }
+      .explore-btn:hover .icon-circle {
+        background-color: var(--abyss);
+        transform: translateX(5px);
+      }
+
+      /* Pagination Styles */
+      .pagination-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 42px;
+        height: 42px;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 0.95rem;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(15, 49, 58, 0.15);
+        color: var(--abyss);
+      }
+      .pagination-btn:hover {
+        background-color: var(--sunbeam);
+        border-color: var(--sunbeam);
+        color: var(--abyss);
+        transform: translateY(-3px);
+      }
+      .pagination-btn.active {
+        background-color: var(--ember);
+        border-color: var(--ember);
+        color: white;
+        box-shadow: 0 8px 16px rgba(249, 71, 53, 0.3);
+      }
+      .pagination-btn.disabled {
+        opacity: 0.5;
+        pointer-events: none;
+      }
+    </style>
+    <link rel="stylesheet" href="./navbar.css" />
+    <link rel="stylesheet" href="./footer.css" />
+  </head>
+  <body>
+    <!-- ================= NAVBAR ================= -->
+    <header class="navHeader">
+      <!-- ================= TOP BAR ================= -->
+      <div class="navTopBar">
+        <div class="container mx-auto px-4 md:px-8 navTopBarFlex">
+          <div class="navContactInfo">
+            <span><i class="fas fa-phone-alt"></i> +025 757 576 560</span>
+            <span
+              ><i class="fas fa-clock"></i> Monday to Friday: 9:00am -
+              6:00pm</span
+            >
+          </div>
+          <div class="navUtilityLinks">
+            <a href="./404.html">Careers</a>
+            <a href="./404.html">Terms & Conditions</a>
+            <div class="navSocialIcons">
+              <a href="./404.html"><i class="fab fa-facebook-f"></i></a>
+              <a href="./404.html"><i class="fab fa-instagram"></i></a>
+              <a href="./404.html"><i class="fab fa-youtube"></i></a>
+              <a href="./404.html"><i class="fab fa-twitter"></i></a>
+              <a href="./404.html"><i class="fab fa-pinterest-p"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= MAIN NAVBAR ================= -->
+      <div class="navMainNav">
+        <div class="container mx-auto px-4 md:px-8 navMainNavFlex">
+          <!-- Logo (Visible on Mobile and Desktop) -->
+          <a href="./index.html" class="navLogo">
+            <!-- REPLACE THE 'src' ATTRIBUTE BELOW WITH YOUR LOGO IMAGE URL -->
+            <img
+              src="./assets/logoog.webp"
+              alt="Transpi Logo"
+              class="navLogoImg"
+            />
+          </a>
+
+          <!-- Desktop Links (No Dropdowns) -->
+          <ul class="navLinks">
+            <li><a href="./index.html" class="navLink">HOME</a></li>
+            <li><a href="./about.html" class="navLink">ABOUT US</a></li>
+            <li><a href="./services.html" class="navLink">SERVICES</a></li>
+            <li><a href="./blog.html" class="navLink">BLOG</a></li>
+            <li><a href="./contact.html" class="navLink">CONTACT US</a></li>
+          </ul>
+
+          <!-- Desktop Actions -->
+          <div class="navActions">
+            <!-- Search Button -->
+            <button
+              class="navSearchBtn"
+              aria-label="Search"
+              onclick="window.location.href = './404.html'"
+            >
+              <i class="fas fa-search"></i>
+            </button>
+
+            <!-- Language Toggle -->
+            <div
+              class="navLangToggle"
+              onclick="window.location.href = './404.html'"
+            >
+              <img src="./assets/1.webp" alt="US Flag" class="navLangFlag" />
+              <!-- <i class="fas fa-chevron-down"></i> -->
+              <!-- <div class="navLangDropdown">
+                <a href="#" class="navLangItem">
+                  <img src="https://flagcdn.com/w40/ca.png" alt="Canada Flag" />
+                  Canada
+                </a>
+                <a href="#" class="navLangItem">
+                  <img
+                    src="https://flagcdn.com/w40/au.png"
+                    alt="Australia Flag"
+                  />
+                  Australia
+                </a>
+                <a href="#" class="navLangItem">
+                  <img src="https://flagcdn.com/w40/sa.png" alt="Saudi Flag" />
+                  Arabic
+                </a>
+              </div> -->
+            </div>
+
+            <!-- Track Button -->
+            <a href="./login.html" class="navTrackBtn">SIGN IN </a>
+          </div>
+
+          <!-- Mobile Hamburger (Visible only on Mobile) -->
+          <button class="navMobileBtn" id="navMobileBtn" aria-label="Open Menu">
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- ================= MOBILE MENU (FULL SCREEN) ================= -->
+    <div class="navMobileMenu" id="navMobileMenu">
+      <!-- Mobile Header (Close X Only) -->
+      <div class="navMobileHeader">
+        <button class="navCloseBtn" id="navCloseBtn" aria-label="Close Menu">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <!-- Mobile Links -->
+      <ul class="navMobileLinks">
+        <li>
+          <a href="./index.html" class="navMobileLink"
+            >HOME <i class="fas fa-chevron-right"></i
+          ></a>
+        </li>
+        <li>
+          <a href="./about.html" class="navMobileLink"
+            >ABOUT US <i class="fas fa-chevron-right"></i
+          ></a>
+        </li>
+        <li>
+          <a href="./services.html" class="navMobileLink"
+            >SERVICES <i class="fas fa-chevron-right"></i
+          ></a>
+        </li>
+        <li>
+          <a href="./blog.html" class="navMobileLink"
+            >BLOG <i class="fas fa-chevron-right"></i
+          ></a>
+        </li>
+        <li>
+          <a href="./contact.html" class="navMobileLink"
+            >CONTACT US <i class="fas fa-chevron-right"></i
+          ></a>
+        </li>
+      </ul>
+
+      <!-- Mobile Actions -->
+      <div class="navMobileActions">
+        <!-- Language Toggle (Simplified for Mobile) -->
+        <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
+          <span class="text-sm font-bold text-[#0f313a]">Language:</span>
+          <img
+            src="./assets/1.webp"
+            alt="US Flag"
+            class="w-6 h-4 object-cover rounded cursor-pointer"
+          />
+          <img
+            src="./assets/3.webp"
+            alt="Canada Flag"
+            class="w-6 h-4 object-cover rounded cursor-pointer"
+          />
+          <img
+            src="./assets/4.webp"
+            alt="Australia Flag"
+            class="w-6 h-4 object-cover rounded cursor-pointer"
+          />
+        </div>
+
+        <a href="./login.html" class="navMobileTrackBtn">SIGN IN</a>
+      </div>
+    </div>
+    <!-- ================= HERO SECTION ================= -->
+    <section
+      class="relative h-[40vh] md:h-[50vh] flex items-center justify-center hero-bg bg-[url('./assets/service33.webp')]"
+    >
+      <div class="absolute inset-0 bg-[#0f313a] opacity-80"></div>
+      <div
+        class="relative z-10 text-center text-white px-4"
+        data-aos="fade-up"
+        data-aos-duration="1000"
+      >
+        <h1 class="text-4xl md:text-6xl font-extrabold mb-4 tracking-tight">
+          Our Blog
+        </h1>
+        <nav
+          class="flex items-center justify-center space-x-2 text-sm md:text-base font-medium text-gray-300"
+        >
+          <a href="./index.html" class="hover:text-[#fac12e] transition-colors"
+            >Home</a
+          >
+          <i class="fas fa-chevron-right text-xs text-[#fac12e]"></i>
+          <span class="text-[#fac12e]">Blog</span>
+        </nav>
+      </div>
+    </section>
+
+    <!-- ================= BLOG CONTENT & SIDEBAR ================= -->
+    <section class="py-16 bg-gray-50">
+      <div class="container mx-auto px-4 md:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+          <!-- ================= MAIN CONTENT (LEFT) ================= -->
+          <div class="lg:col-span-8 space-y-12">
+            <!-- Blog Post 1 -->
+            <article
+              class="blog-card bg-white rounded-2xl shadow-md overflow-hidden"
+              data-aos="fade-up"
+              data-aos-duration="800"
+            >
+              <div class="overflow-hidden">
+                <img
+                  src="./assets/blog1.webp"
+                  alt="Logistics Truck"
+                  class="w-full h-64 md:h-80 object-cover"
+                />
+              </div>
+              <div class="p-6 md:p-8">
+                <!-- Meta -->
+                <div
+                  class="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-gray-500 mb-4"
+                >
+                  <div class="flex items-center gap-2">
+                    <i class="fas fa-user text-[#f94735]"></i> logiver
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <i class="fas fa-comment text-[#f94735]"></i> No Comments
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <i class="fas fa-calendar text-[#f94735]"></i> November 2,
+                    2025
+                  </div>
+                </div>
+                <!-- Category -->
+                <div class="flex items-center gap-2 text-sm text-gray-500 mb-4">
+                  <i class="fas fa-folder text-[#f94735]"></i> Service
+                  transportation
+                </div>
+                <!-- Title -->
+                <h2
+                  class="text-2xl md:text-3xl font-bold text-[#0f313a] mb-4 leading-tight hover:text-[#f94735] transition-colors"
+                >
+                  Advanced Tracking Enhances Reliability in Global Logistics ...
+                </h2>
+                <!-- Excerpt -->
+                <p class="text-gray-600 mb-6 leading-relaxed">
+                  Celebrating cultural influences in design is a powerful way to
+                  empower diversity, as it acknowledges and values the unique
+                  perspectives that different cultures bring. By incorporating
+                  diverse cultural elements into design practices, we create
+                  more inclusive and representative experiences that resonate
+                  with a broader audience. This approach not only enriches the
+                  design process but [...]
+                </p>
+                <!-- Button -->
+                <a href="./404.html" class="explore-btn">
+                  EXPLORE MORE
+                  <span class="icon-circle"
+                    ><i class="fas fa-arrow-right"></i
+                  ></span>
+                </a>
+              </div>
+            </article>
+
+            <!-- Blog Post 2 -->
+            <article
+              class="blog-card bg-white rounded-2xl shadow-md overflow-hidden"
+              data-aos="fade-up"
+              data-aos-duration="800"
+            >
+              <div class="overflow-hidden">
+                <img
+                  src="./assets/blog2.webp"
+                  alt="Container Ship"
+                  class="w-full h-64 md:h-80 object-cover"
+                />
+              </div>
+              <div class="p-6 md:p-8">
+                <!-- Meta -->
+                <div
+                  class="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-gray-500 mb-4"
+                >
+                  <div class="flex items-center gap-2">
+                    <i class="fas fa-user text-[#f94735]"></i> logiver
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <i class="fas fa-comment text-[#f94735]"></i> 1 Comment
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <i class="fas fa-calendar text-[#f94735]"></i> November 2,
+                    2025
+                  </div>
+                </div>
+                <!-- Category -->
+                <div class="flex items-center gap-2 text-sm text-gray-500 mb-4">
+                  <i class="fas fa-folder text-[#f94735]"></i> Transport
+                </div>
+                <!-- Title -->
+                <h2
+                  class="text-2xl md:text-3xl font-bold text-[#0f313a] mb-4 leading-tight hover:text-[#f94735] transition-colors"
+                >
+                  Global Logistics Industry Adopts Greener Transportation
+                  Practices ...
+                </h2>
+                <!-- Excerpt -->
+                <p class="text-gray-600 mb-6 leading-relaxed">
+                  Sustainability is no longer just a buzzword in the logistics
+                  industry; it is a fundamental shift in how companies operate.
+                  From electric delivery fleets to optimized route planning,
+                  businesses are actively reducing their carbon footprint. This
+                  article explores the innovative green technologies and
+                  sustainable practices that are reshaping global supply chains
+                  and setting new industry standards.
+                </p>
+                <!-- Button -->
+                <a href="./404.html" class="explore-btn">
+                  EXPLORE MORE
+                  <span class="icon-circle"
+                    ><i class="fas fa-arrow-right"></i
+                  ></span>
+                </a>
+              </div>
+            </article>
+
+            <!-- ================= PAGINATION ================= -->
+            <div
+              class="flex justify-center mt-12 pt-8 border-t border-gray-200"
+              data-aos="fade-up"
+              data-aos-duration="800"
+            >
+              <ul class="flex items-center gap-2 md:gap-3">
+                <!-- Previous Button -->
+                <li>
+                  <a
+                    href="#"
+                    class="pagination-btn disabled"
+                    aria-label="Previous"
+                  >
+                    <i class="fas fa-chevron-left"></i>
+                  </a>
+                </li>
+                <!-- Page 1 -->
+                <li>
+                  <a href="./404.html" class="pagination-btn active">1</a>
+                </li>
+                <!-- Page 2 (Active) -->
+                <li>
+                  <a href="./404.html" class="pagination-btn">2</a>
+                </li>
+                <!-- Page 3 -->
+                <li>
+                  <a href="./404.html" class="pagination-btn">3</a>
+                </li>
+                <!-- Next Button -->
+                <li>
+                  <a href="./404.html" class="pagination-btn" aria-label="Next">
+                    <i class="fas fa-chevron-right"></i>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- ================= SIDEBAR (RIGHT) ================= -->
+          <div class="lg:col-span-4 space-y-6">
+            <!-- Search Widget -->
+            <form
+              class="sidebar-widget"
+              data-aos="fade-left"
+              data-aos-duration="800"
+              action="./404.html"
+            >
+              <h3>Search</h3>
+              <div class="flex">
+                <input
+                  type="text"
+                  class="search-input"
+                  placeholder="Search..."
+                  required
+                />
+                <button class="search-btn">
+                  <i class="fas fa-search"></i>
+                </button>
+              </div>
+            </form>
+
+            <!-- Categories Widget -->
+            <div
+              class="sidebar-widget"
+              data-aos="fade-left"
+              data-aos-duration="800"
+              data-aos-delay="100"
+            >
+              <h3>Categories</h3>
+              <div class="space-y-3">
+                <a href="./404.html" class="category-link">Service Logistic</a>
+                <a href="./404.html" class="category-link"
+                  >Service transportation</a
+                >
+                <a href="./404.html" class="category-link">Transport</a>
+              </div>
+            </div>
+
+            <!-- Recent Posts Widget -->
+            <div
+              class="sidebar-widget"
+              data-aos="fade-left"
+              data-aos-duration="800"
+              data-aos-delay="200"
+            >
+              <h3>Recent Post</h3>
+              <div class="space-y-4">
+                <!-- Recent Post 1 -->
+                <div class="recent-post-item">
+                  <img src="./assets/service1.webp" alt="Recent Post" />
+                  <div>
+                    <div
+                      class="flex items-center gap-1 text-xs font-semibold text-[#f94735] mb-1"
+                    >
+                      <i class="fas fa-calendar"></i> November 2, 2025
+                    </div>
+                    <h4
+                      class="text-sm font-bold text-[#0f313a] leading-tight hover:text-[#f94735] transition-colors cursor-pointer"
+                      onclick="window.location.href = './404.html'"
+                    >
+                      Advanced Tracking Enhances Reliability in Global Logistics
+                      ...
+                    </h4>
+                  </div>
+                </div>
+
+                <!-- Recent Post 2 -->
+                <div class="recent-post-item">
+                  <img src="./assets/service2.webp" alt="Recent Post" />
+                  <div>
+                    <div
+                      class="flex items-center gap-1 text-xs font-semibold text-[#f94735] mb-1"
+                    >
+                      <i class="fas fa-calendar"></i> November 2, 2025
+                    </div>
+                    <h4
+                      class="text-sm font-bold text-[#0f313a] leading-tight hover:text-[#f94735] transition-colors cursor-pointer"
+                      onclick="window.location.href = './404.html'"
+                    >
+                      Global Logistics Industry Adopts Greener Transportation
+                      Practices ...
+                    </h4>
+                  </div>
+                </div>
+
+                <!-- Recent Post 3 -->
+                <div class="recent-post-item">
+                  <img src="./assets/service3.webp" alt="Recent Post" />
+                  <div>
+                    <div
+                      class="flex items-center gap-1 text-xs font-semibold text-[#f94735] mb-1"
+                    >
+                      <i class="fas fa-calendar"></i> November 2, 2025
+                    </div>
+                    <h4
+                      class="text-sm font-bold text-[#0f313a] leading-tight hover:text-[#f94735] transition-colors cursor-pointer"
+                      onclick="window.location.href = './404.html'"
+                    >
+                      The Future of Supply Chain Management in 2026 ...
+                    </h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <footer class="ftrroot">
+      <div class="ftraccent"></div>
+
+      <!-- ============ NEWSLETTER BAR ============ -->
+      <div class="ftrnewsbar">
+        <div class="ftrnewslogo">
+          <!-- REPLACE src WITH YOUR LOGO URL -->
+          <img
+            src="./assets/logoog.webp"
+            alt="Stackly Worldwide Logistics"
+            onclick="window.location.href = './index.html'"
+            style="cursor: pointer"
+          />
+        </div>
+
+        <div class="ftrnewscontent">
+          <h3 class="ftrnewstitle">Subscribe Newsletter</h3>
+
+          <form class="ftrnewsform" action="./404.html">
+            <input
+              class="ftrnewsinp"
+              type="email"
+              name="ftremail"
+              placeholder="Your Email Address"
+              aria-label="Your Email Address"
+              required
+            />
+            <button class="ftrnewsbtn" type="submit">Subscribe Now</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- ============ MAIN BODY ============ -->
+      <div class="ftrmain">
+        <div class="ftrgrid">
+          <!-- CONTACT -->
+          <div class="ftrcol">
+            <h4 class="ftrhead">Get In Touch</h4>
+
+            <div class="ftrrow">
+              <span class="ftricon">
+                <svg viewBox="0 0 384 512" aria-hidden="true">
+                  <path
+                    d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 128a64 64 0 1 1 0 128 64 64 0 1 1 0-128z"
+                  />
+                </svg>
+              </span>
+              <div>
+                <p class="ftrrowtitle">Corporate Office</p>
+                <p class="ftrrowtext">
+                  3891 Salem Tamilnadu Dr. Richardson, India 62639
+                </p>
+              </div>
+            </div>
+
+            <div class="ftrdivider"></div>
+
+            <p class="ftrline">
+              <b>Call Us:</b>
+              <a class="ftrlink" href="./404.html">+91-416-8241228</a>
+            </p>
+
+            <p class="ftrline">
+              <b>Email:</b>
+              <a class="ftrlink" href="./404.html">info@stackly.com</a>
+            </p>
+          </div>
+
+          <!-- SERVICE -->
+          <div class="ftrcol">
+            <h4 class="ftrhead">Service</h4>
+            <ul class="ftrlist">
+              <li>
+                <a class="ftrlistlink" href="./404.html"
+                  >Freight Transportation</a
+                >
+              </li>
+              <li>
+                <a class="ftrlistlink" href="./404.html"
+                  >Warehousing &amp; Distribution</a
+                >
+              </li>
+              <li>
+                <a class="ftrlistlink" href="./404.html"
+                  >Supply Chain Management</a
+                >
+              </li>
+              <li>
+                <a class="ftrlistlink" href="./404.html"
+                  >E-Commerce Solutions</a
+                >
+              </li>
+              <li>
+                <a class="ftrlistlink" href="./404.html"
+                  >Rebranding and Brand Refresh</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <!-- QUICK LINK -->
+          <div class="ftrcol">
+            <h4 class="ftrhead">Quick Link</h4>
+            <ul class="ftrlist">
+              <li><a class="ftrlistlink" href="./index.html">Home</a></li>
+              <li><a class="ftrlistlink" href="./about.html">About</a></li>
+              <li>
+                <a class="ftrlistlink" href="./services.html">Services</a>
+              </li>
+              <li><a class="ftrlistlink" href="./blog.html">Blog</a></li>
+              <li><a class="ftrlistlink" href="./contact.html">Contact</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ BOTTOM BAR ============ -->
+      <div class="ftrbottom">
+        <p class="ftrcopy">
+          © All Copyright 2025 by
+          <a class="ftrcopylink" href="./index.html">Stackly</a>
+        </p>
+
+        <div class="ftrsocials">
+          <a class="ftrsocial" href="./404.html" aria-label="Facebook">
+            <svg viewBox="0 0 320 512" aria-hidden="true">
+              <path
+                d="M80 299.3V512H196V299.3h86.5l18-97.8H196V166.9c0-51.7 20.3-71.5 72.7-71.5c16.3 0 29.4 .4 37 1.2V7.9C291.4 4 256.4 0 236.2 0C129.3 0 80 50.5 80 159.4v42.1H14v97.8H80z"
+              />
+            </svg>
+          </a>
+
+          <a class="ftrsocial" href="./404.html" aria-label="X">
+            <svg viewBox="0 0 512 512" aria-hidden="true">
+              <path
+                d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"
+              />
+            </svg>
+          </a>
+
+          <a class="ftrsocial" href="./404.html" aria-label="LinkedIn">
+            <svg viewBox="0 0 448 512" aria-hidden="true">
+              <path
+                d="M100.3 448H7.4V148.9h92.9zM53.8 108.1C24.1 108.1 0 83.5 0 53.8a53.8 53.8 0 0 1 107.6 0c0 29.7-24.1 54.3-53.8 54.3zM447.9 448h-92.7V302.4c0-34.7-.7-79.2-48.3-79.2-48.3 0-55.7 37.7-55.7 76.7V448h-92.8V148.9h89.1v40.8h1.3c12.4-23.5 42.7-48.3 87.9-48.3c94 0 111.3 61.9 111.3 142.3V448z"
+              />
+            </svg>
+          </a>
+
+          <a class="ftrsocial" href="./404.html" aria-label="YouTube">
+            <svg viewBox="0 0 576 512" aria-hidden="true">
+              <path
+                d="M549.7 124.1c-6.3-23.7-24.8-42.3-48.3-48.6C458.8 64 288 64 288 64S117.2 64 74.6 75.5c-23.5 6.3-42 24.9-48.3 48.6-11.4 42.9-11.4 132.3-11.4 132.3s0 89.4 11.4 132.3c6.3 23.7 24.8 41.5 48.3 47.8C117.2 448 288 448 288 448s170.8 0 213.4-11.5c23.5-6.3 42-24.2 48.3-47.8 11.4-42.9 11.4-132.3 11.4-132.3s0-89.4-11.4-132.3zm-317.5 213.5V175.2l142.7 81.2-142.7 81.2z"
+              />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </footer>
+    <!-- ================= SCRIPTS ================= -->
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- AOS JS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <!-- Initialization Scripts -->
+    <script>
+      // Initialize AOS
+      AOS.init({
+        duration: 800,
+        once: true,
+        offset: 100,
+        easing: "ease-out-cubic",
+      });
+
+      // GSAP Parallax Effect for Hero
+      gsap.registerPlugin(ScrollTrigger);
+
+      gsap.to(".hero-bg", {
+        backgroundPosition: "50% 100%",
+        ease: "none",
+        scrollTrigger: {
+          trigger: ".hero-bg",
+          start: "top top",
+          end: "bottom top",
+          scrub: true,
+        },
+      });
+    </script>
+    <script src="./navbar.js"></script>
+  </body>
+</html>

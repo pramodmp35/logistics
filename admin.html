@@ -1,0 +1,5156 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stackly — Admin Dashboard</title>
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- FontAwesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+    <style>
+      :root {
+        --ember: #f94735;
+        --abyss: #0f313a;
+        --cloud: #ffffff;
+        --coastal: #5094c1;
+        --lagoon: #104a57;
+        --sunbeam: #fac12e;
+
+        --sidebar-w: 280px;
+        --topbar-h: 68px;
+        --radius: 20px;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html {
+        -webkit-text-size-adjust: 100%;
+      }
+
+      body {
+        margin: 0;
+        font-family:
+          "Outfit",
+          system-ui,
+          -apple-system,
+          sans-serif;
+        background-color: #eef3f7;
+        background-image:
+          radial-gradient(
+            circle at 6% 0%,
+            rgba(80, 148, 193, 0.1) 0%,
+            transparent 26%
+          ),
+          radial-gradient(
+            circle at 96% 100%,
+            rgba(250, 193, 46, 0.13) 0%,
+            transparent 26%
+          );
+        color: var(--abyss);
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+
+      body.no-scroll {
+        overflow: hidden;
+      }
+
+      ::selection {
+        background: rgba(250, 193, 46, 0.35);
+      }
+
+      /* ============================================================
+         SIDEBAR
+      ============================================================ */
+      .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: var(--sidebar-w);
+        z-index: 70;
+        display: flex;
+        flex-direction: column;
+        background: linear-gradient(
+          168deg,
+          var(--abyss) 0%,
+          var(--lagoon) 100%
+        );
+        transform: translateX(-100%);
+        transition: transform 0.42s cubic-bezier(0.16, 1, 0.3, 1);
+        box-shadow: 12px 0 44px -20px rgba(15, 49, 58, 0.6);
+      }
+
+      .sidebar::before {
+        content: "";
+        position: absolute;
+        top: -28%;
+        right: -45%;
+        width: 110%;
+        height: 62%;
+        background: radial-gradient(
+          circle,
+          rgba(250, 193, 46, 0.16) 0%,
+          transparent 68%
+        );
+        pointer-events: none;
+      }
+
+      .sidebar::after {
+        content: "";
+        position: absolute;
+        bottom: -30%;
+        left: -35%;
+        width: 100%;
+        height: 55%;
+        background: radial-gradient(
+          circle,
+          rgba(80, 148, 193, 0.2) 0%,
+          transparent 68%
+        );
+        pointer-events: none;
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .sidebar-head {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+        padding: 1.15rem 1.25rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+        flex-shrink: 0;
+      }
+
+      .sidebar-logo {
+        height: 42px;
+        width: auto;
+        object-fit: contain;
+        display: block;
+      }
+
+      .sidebar-nav {
+        position: relative;
+        z-index: 2;
+        flex: 1;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        padding: 1.15rem 1rem 1.5rem;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(255, 255, 255, 0.18) transparent;
+      }
+
+      .sidebar-nav::-webkit-scrollbar {
+        width: 5px;
+      }
+      .sidebar-nav::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.18);
+        border-radius: 99px;
+      }
+
+      .nav-label {
+        font-size: 0.65rem;
+        font-weight: 800;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.35);
+        padding: 0 0.8rem;
+        margin: 1.35rem 0 0.5rem;
+      }
+      .nav-label:first-child {
+        margin-top: 0;
+      }
+
+      .nav-link {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        padding: 0.72rem 0.85rem;
+        margin-bottom: 0.2rem;
+        border-radius: 12px;
+        border: 1px solid transparent;
+        color: rgba(255, 255, 255, 0.72);
+        font-size: 0.875rem;
+        font-weight: 600;
+        cursor: pointer;
+        user-select: none;
+        transition: all 0.25s ease;
+        text-decoration: none;
+      }
+
+      .nav-link i:first-child {
+        width: 20px;
+        text-align: center;
+        font-size: 0.92rem;
+        flex-shrink: 0;
+      }
+
+      .nav-link:hover {
+        background: rgba(255, 255, 255, 0.08);
+        color: #fff;
+      }
+
+      .nav-link.active {
+        background: rgba(250, 193, 46, 0.14);
+        border-color: rgba(250, 193, 46, 0.35);
+        color: #fff;
+        box-shadow: 0 10px 24px -14px rgba(250, 193, 46, 0.75);
+      }
+
+      .nav-link.active::before {
+        content: "";
+        position: absolute;
+        left: -1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 4px;
+        height: 58%;
+        background: var(--sunbeam);
+        border-radius: 0 6px 6px 0;
+      }
+
+      .nav-badge {
+        margin-left: auto;
+        font-size: 0.62rem;
+        font-weight: 800;
+        letter-spacing: 0.02em;
+        padding: 0.16rem 0.5rem;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.15);
+        color: #fff;
+      }
+
+      .nav-badge.danger {
+        background: var(--ember);
+      }
+
+      .sidebar-foot {
+        position: relative;
+        z-index: 2;
+        padding: 0.9rem 1rem 1.15rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.09);
+        flex-shrink: 0;
+      }
+
+      .side-profile {
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+        padding: 0.65rem 0.7rem;
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .side-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        font-weight: 800;
+        font-size: 0.85rem;
+        color: var(--abyss);
+        background: linear-gradient(135deg, var(--sunbeam), #ffd968);
+        flex-shrink: 0;
+      }
+
+      .side-home {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-top: 0.65rem;
+        padding: 0.65rem;
+        border-radius: 12px;
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        color: #fff;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        text-decoration: none;
+        transition: all 0.28s ease;
+      }
+
+      .side-home:hover {
+        background: var(--sunbeam);
+        border-color: var(--sunbeam);
+        color: var(--abyss);
+      }
+
+      /* ============================================================
+         OVERLAY
+      ============================================================ */
+      .overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 65;
+        background: rgba(15, 49, 58, 0.55);
+        backdrop-filter: blur(3px);
+        -webkit-backdrop-filter: blur(3px);
+        opacity: 0;
+        visibility: hidden;
+        transition:
+          opacity 0.3s ease,
+          visibility 0.3s ease;
+      }
+
+      .overlay.show {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      /* ============================================================
+         LAYOUT
+      ============================================================ */
+      .main {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        transition: margin 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .page-wrap {
+        flex: 1;
+        width: 100%;
+        padding: 1rem 1rem 3rem;
+        max-width: 1600px;
+        margin: 0 auto;
+      }
+
+      /* ============================================================
+         TOPBAR
+      ============================================================ */
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        min-height: var(--topbar-h);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+        padding: 0 1rem;
+        background: rgba(255, 255, 255, 0.86);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border-bottom: 1px solid rgba(15, 49, 58, 0.08);
+      }
+
+      .topbar-logo {
+        height: 34px;
+        width: auto;
+        max-width: 130px;
+        object-fit: contain;
+        display: block;
+      }
+
+      .icon-btn {
+        width: 40px;
+        height: 40px;
+        display: grid;
+        place-items: center;
+        border-radius: 12px;
+        border: 1px solid rgba(15, 49, 58, 0.08);
+        background: #fff;
+        color: var(--abyss);
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: all 0.25s ease;
+        flex-shrink: 0;
+        position: relative;
+      }
+
+      .icon-btn:hover {
+        background: var(--abyss);
+        border-color: var(--abyss);
+        color: #fff;
+        transform: translateY(-2px);
+      }
+
+      .icon-btn .dot {
+        position: absolute;
+        top: 7px;
+        right: 8px;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--ember);
+        border: 2px solid #fff;
+      }
+
+      .icon-btn .dot::after {
+        content: "";
+        position: absolute;
+        inset: -2px;
+        border-radius: 50%;
+        background: var(--ember);
+        opacity: 0.6;
+        animation: ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+      }
+
+      @keyframes ping {
+        0% {
+          transform: scale(1);
+          opacity: 0.6;
+        }
+        80%,
+        100% {
+          transform: scale(2.1);
+          opacity: 0;
+        }
+      }
+
+      .search-input {
+        width: 100%;
+        padding: 0.7rem 1rem 0.7rem 2.6rem;
+        border-radius: 12px;
+        border: 1px solid #e2e8f0;
+        background: #f8fafc;
+        font-size: 0.82rem;
+        font-family: inherit;
+        color: var(--abyss);
+        transition: all 0.25s ease;
+      }
+
+      .search-input::placeholder {
+        color: #94a3b8;
+      }
+
+      .search-input:focus {
+        outline: none;
+        background: #fff;
+        border-color: var(--coastal);
+        box-shadow: 0 0 0 4px rgba(80, 148, 193, 0.14);
+      }
+
+      .profile-chip {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        padding: 0.35rem 0.35rem 0.35rem 0.35rem;
+        border-radius: 14px;
+        border: 1px solid rgba(15, 49, 58, 0.08);
+        background: #fff;
+        transition: all 0.25s ease;
+        cursor: pointer;
+      }
+
+      .profile-chip:hover {
+        box-shadow: 0 10px 26px -16px rgba(15, 49, 58, 0.55);
+        transform: translateY(-2px);
+      }
+
+      .chip-avatar {
+        width: 34px;
+        height: 34px;
+        border-radius: 11px;
+        display: grid;
+        place-items: center;
+        font-weight: 800;
+        font-size: 0.8rem;
+        color: var(--abyss);
+        background: linear-gradient(135deg, var(--sunbeam), #ffd968);
+        flex-shrink: 0;
+      }
+
+      /* ============================================================
+         PAGES
+      ============================================================ */
+      .page {
+        display: none;
+      }
+
+      .page.active {
+        display: block;
+        animation: pageIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      @keyframes pageIn {
+        from {
+          opacity: 0;
+          transform: translateY(16px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+
+      /* Scroll reveal */
+      .reveal {
+        opacity: 0;
+        transform: translateY(24px);
+        transition:
+          opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+          transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+        will-change: opacity, transform;
+      }
+
+      .reveal.in {
+        opacity: 1;
+        transform: none;
+      }
+
+      .reveal[data-d="1"] {
+        transition-delay: 0.08s;
+      }
+      .reveal[data-d="2"] {
+        transition-delay: 0.16s;
+      }
+      .reveal[data-d="3"] {
+        transition-delay: 0.24s;
+      }
+      .reveal[data-d="4"] {
+        transition-delay: 0.32s;
+      }
+      .reveal[data-d="5"] {
+        transition-delay: 0.4s;
+      }
+
+      /* ============================================================
+         HERO BANNER
+      ============================================================ */
+      .hero-banner {
+        position: relative;
+        overflow: hidden;
+        border-radius: 24px;
+        padding: 1.75rem 1.35rem 5.5rem;
+        color: #fff;
+        background: linear-gradient(
+          135deg,
+          var(--abyss) 0%,
+          var(--lagoon) 100%
+        );
+        box-shadow: 0 30px 60px -30px rgba(15, 49, 58, 0.75);
+      }
+
+      .hero-banner::before {
+        content: "";
+        position: absolute;
+        top: -55%;
+        right: -18%;
+        width: 62%;
+        height: 170%;
+        background: radial-gradient(
+          circle,
+          rgba(250, 193, 46, 0.2) 0%,
+          transparent 66%
+        );
+        border-radius: 50%;
+        pointer-events: none;
+      }
+
+      .hero-banner::after {
+        content: "";
+        position: absolute;
+        bottom: -70%;
+        left: -12%;
+        width: 58%;
+        height: 155%;
+        background: radial-gradient(
+          circle,
+          rgba(80, 148, 193, 0.28) 0%,
+          transparent 66%
+        );
+        border-radius: 50%;
+        pointer-events: none;
+      }
+
+      .hero-inner {
+        position: relative;
+        z-index: 2;
+      }
+
+      .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        padding: 0.35rem 0.8rem;
+        border-radius: 999px;
+        font-size: 0.68rem;
+        font-weight: 800;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--sunbeam);
+        background: rgba(250, 193, 46, 0.12);
+        border: 1px solid rgba(250, 193, 46, 0.3);
+        margin-bottom: 0.9rem;
+      }
+
+      .hero-title {
+        font-size: 1.55rem;
+        line-height: 1.2;
+        font-weight: 800;
+        margin: 0 0 0.5rem;
+        letter-spacing: -0.02em;
+      }
+
+      .hero-sub {
+        font-size: 0.875rem;
+        color: rgba(255, 255, 255, 0.72);
+        margin: 0 0 0.9rem;
+        max-width: 52ch;
+        line-height: 1.6;
+      }
+
+      .hero-meta {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.5rem 0.75rem;
+        font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.8);
+      }
+
+      .hero-meta .sep {
+        color: rgba(255, 255, 255, 0.3);
+      }
+
+      .hero-role {
+        padding: 0.16rem 0.55rem;
+        border-radius: 999px;
+        font-size: 0.62rem;
+        font-weight: 800;
+        letter-spacing: 0.1em;
+        background: var(--sunbeam);
+        color: var(--abyss);
+      }
+
+      .hero-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.7rem 1.25rem;
+        border-radius: 12px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        text-decoration: none;
+        cursor: pointer;
+        border: 1px solid transparent;
+        transition: all 0.28s ease;
+        white-space: nowrap;
+      }
+
+      .hero-btn-solid {
+        background: var(--ember);
+        color: #fff;
+        box-shadow: 0 12px 26px -14px rgba(249, 71, 53, 0.9);
+      }
+
+      .hero-btn-solid:hover {
+        background: #d13c2c;
+        transform: translateY(-2px);
+      }
+
+      .hero-btn-ghost {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.28);
+        color: #fff;
+        backdrop-filter: blur(6px);
+      }
+
+      .hero-btn-ghost:hover {
+        background: var(--sunbeam);
+        border-color: var(--sunbeam);
+        color: var(--abyss);
+        transform: translateY(-2px);
+      }
+
+      /* Compact hero for sub-pages */
+      .page-hero {
+        position: relative;
+        overflow: hidden;
+        border-radius: 22px;
+        padding: 1.5rem 1.25rem;
+        color: #fff;
+        background: linear-gradient(
+          135deg,
+          var(--abyss) 0%,
+          var(--lagoon) 100%
+        );
+        box-shadow: 0 24px 48px -28px rgba(15, 49, 58, 0.75);
+      }
+
+      .page-hero::before {
+        content: "";
+        position: absolute;
+        top: -70%;
+        right: -12%;
+        width: 55%;
+        height: 190%;
+        background: radial-gradient(
+          circle,
+          rgba(250, 193, 46, 0.18) 0%,
+          transparent 66%
+        );
+        border-radius: 50%;
+        pointer-events: none;
+      }
+
+      .page-hero > * {
+        position: relative;
+        z-index: 2;
+      }
+
+      .page-hero h2 {
+        font-size: 1.3rem;
+        font-weight: 800;
+        margin: 0 0 0.3rem;
+        letter-spacing: -0.015em;
+      }
+
+      .page-hero p {
+        font-size: 0.82rem;
+        color: rgba(255, 255, 255, 0.7);
+        margin: 0;
+      }
+
+      /* ============================================================
+         CARDS
+      ============================================================ */
+      .card {
+        background: #fff;
+        border-radius: var(--radius);
+        border: 1px solid rgba(15, 49, 58, 0.07);
+        box-shadow: 0 14px 34px -24px rgba(15, 49, 58, 0.5);
+      }
+
+      .card-head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 0.75rem;
+        padding: 1.15rem 1.25rem;
+        border-bottom: 1px solid #f1f5f9;
+      }
+
+      .card-title {
+        font-size: 0.95rem;
+        font-weight: 800;
+        color: var(--abyss);
+        margin: 0;
+        letter-spacing: -0.01em;
+      }
+
+      .card-sub {
+        font-size: 0.75rem;
+        color: #94a3b8;
+        margin: 0.2rem 0 0;
+      }
+
+      .link-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: var(--coastal);
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        transition: all 0.22s ease;
+        white-space: nowrap;
+      }
+
+      .link-btn:hover {
+        color: var(--ember);
+        gap: 0.6rem;
+      }
+
+      /* ============================================================
+         STAT CARDS
+      ============================================================ */
+      .stat-card {
+        position: relative;
+        overflow: hidden;
+        background: #fff;
+        border-radius: 18px;
+        border: 1px solid rgba(15, 49, 58, 0.07);
+        box-shadow: 0 16px 36px -26px rgba(15, 49, 58, 0.6);
+        padding: 1.1rem;
+        transition:
+          transform 0.32s cubic-bezier(0.16, 1, 0.3, 1),
+          box-shadow 0.32s ease;
+      }
+
+      .stat-card::after {
+        content: "";
+        position: absolute;
+        top: -40%;
+        right: -25%;
+        width: 70%;
+        height: 130%;
+        background: radial-gradient(
+          circle,
+          rgba(80, 148, 193, 0.07) 0%,
+          transparent 68%
+        );
+        pointer-events: none;
+      }
+
+      .stat-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 26px 50px -26px rgba(15, 49, 58, 0.65);
+      }
+
+      .stat-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 13px;
+        display: grid;
+        place-items: center;
+        font-size: 1rem;
+      }
+
+      .trend {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        font-size: 0.68rem;
+        font-weight: 800;
+        padding: 0.22rem 0.5rem;
+        border-radius: 999px;
+      }
+
+      .trend.up {
+        background: rgba(16, 185, 129, 0.12);
+        color: #047857;
+      }
+
+      .trend.down {
+        background: rgba(249, 71, 53, 0.12);
+        color: #c0301f;
+      }
+
+      .stat-label {
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: #94a3b8;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        margin: 0.9rem 0 0.2rem;
+      }
+
+      .stat-value {
+        font-size: 1.6rem;
+        font-weight: 800;
+        color: var(--abyss);
+        letter-spacing: -0.03em;
+        margin: 0;
+        line-height: 1.1;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .stat-foot {
+        font-size: 0.72rem;
+        color: #94a3b8;
+        margin: 0.35rem 0 0;
+      }
+
+      /* ============================================================
+         PILLS / BADGES
+      ============================================================ */
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        padding: 0.26rem 0.65rem;
+        border-radius: 999px;
+        font-size: 0.68rem;
+        font-weight: 800;
+        letter-spacing: 0.02em;
+        white-space: nowrap;
+      }
+
+      .pill::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: currentColor;
+      }
+
+      .pill-delivered {
+        background: rgba(16, 185, 129, 0.13);
+        color: #047857;
+      }
+      .pill-transit {
+        background: rgba(80, 148, 193, 0.16);
+        color: #2c6c93;
+      }
+      .pill-pending {
+        background: rgba(250, 193, 46, 0.2);
+        color: #8a6200;
+      }
+      .pill-delayed {
+        background: rgba(249, 71, 53, 0.13);
+        color: #c0301f;
+      }
+      .pill-neutral {
+        background: rgba(15, 49, 58, 0.07);
+        color: #475569;
+      }
+
+      .pill-high {
+        background: rgba(249, 71, 53, 0.13);
+        color: #c0301f;
+      }
+      .pill-medium {
+        background: rgba(250, 193, 46, 0.2);
+        color: #8a6200;
+      }
+      .pill-low {
+        background: rgba(16, 185, 129, 0.13);
+        color: #047857;
+      }
+
+      /* ============================================================
+         TABLE
+      ============================================================ */
+      .table-scroll {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .data-table {
+        width: 100%;
+        min-width: 760px;
+        border-collapse: collapse;
+      }
+
+      .data-table th {
+        text-align: left;
+        font-size: 0.68rem;
+        font-weight: 800;
+        letter-spacing: 0.09em;
+        text-transform: uppercase;
+        color: #94a3b8;
+        background: #f8fafc;
+        padding: 0.8rem 1.15rem;
+        border-bottom: 1px solid #eef2f7;
+        white-space: nowrap;
+      }
+
+      .data-table td {
+        padding: 0.9rem 1.15rem;
+        font-size: 0.83rem;
+        color: #334155;
+        border-bottom: 1px solid #f4f7fa;
+        vertical-align: middle;
+      }
+
+      .data-table tbody tr {
+        transition: background 0.2s ease;
+      }
+
+      .data-table tbody tr:hover {
+        background: #f8fafc;
+      }
+
+      .data-table tbody tr:last-child td {
+        border-bottom: none;
+      }
+
+      .cell-strong {
+        font-weight: 700;
+        color: var(--abyss);
+      }
+
+      .cell-mono {
+        font-variant-numeric: tabular-nums;
+        font-weight: 700;
+        color: var(--coastal);
+      }
+
+      .avatar-xs {
+        width: 30px;
+        height: 30px;
+        border-radius: 10px;
+        display: grid;
+        place-items: center;
+        font-size: 0.7rem;
+        font-weight: 800;
+        color: #fff;
+        flex-shrink: 0;
+      }
+
+      /* ============================================================
+         MISC COMPONENTS
+      ============================================================ */
+      .chart-box {
+        position: relative;
+        width: 100%;
+        height: 280px;
+        padding: 0.75rem 0.75rem 0.5rem;
+      }
+
+      .chart-box.sm {
+        height: 240px;
+      }
+
+      .progress {
+        height: 7px;
+        border-radius: 99px;
+        background: #eef2f7;
+        overflow: hidden;
+      }
+
+      .progress > span {
+        display: block;
+        height: 100%;
+        border-radius: 99px;
+        transition: width 1.1s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .list-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.85rem;
+        padding: 0.9rem 1.25rem;
+        border-bottom: 1px solid #f4f7fa;
+        transition: background 0.2s ease;
+      }
+
+      .list-row:last-child {
+        border-bottom: none;
+      }
+
+      .list-row:hover {
+        background: #f8fafc;
+      }
+
+      .ticket-row {
+        display: flex;
+        align-items: center;
+        gap: 0.85rem;
+        padding: 0.9rem 1.25rem;
+        border-bottom: 1px solid #f4f7fa;
+        transition: background 0.2s ease;
+        cursor: pointer;
+      }
+
+      .ticket-row:last-child {
+        border-bottom: none;
+      }
+
+      .ticket-row:hover {
+        background: #f8fafc;
+      }
+
+      .toggle input {
+        display: none;
+      }
+
+      .toggle-track {
+        width: 46px;
+        height: 26px;
+        border-radius: 999px;
+        background: #cbd5e1;
+        display: block;
+        position: relative;
+        cursor: pointer;
+        transition: background 0.28s ease;
+        flex-shrink: 0;
+      }
+
+      .toggle-thumb {
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #fff;
+        box-shadow: 0 2px 6px rgba(15, 49, 58, 0.28);
+        transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .toggle input:checked + .toggle-track {
+        background: var(--coastal);
+      }
+
+      .toggle input:checked + .toggle-track .toggle-thumb {
+        transform: translateX(20px);
+      }
+
+      .form-field {
+        width: 100%;
+        padding: 0.72rem 0.95rem;
+        border-radius: 12px;
+        border: 1px solid #e2e8f0;
+        background: #f8fafc;
+        font-size: 0.83rem;
+        font-family: inherit;
+        color: var(--abyss);
+        transition: all 0.25s ease;
+      }
+
+      .form-field:focus {
+        outline: none;
+        background: #fff;
+        border-color: var(--coastal);
+        box-shadow: 0 0 0 4px rgba(80, 148, 193, 0.14);
+      }
+
+      .field-label {
+        display: block;
+        font-size: 0.74rem;
+        font-weight: 800;
+        color: var(--abyss);
+        margin-bottom: 0.4rem;
+        letter-spacing: 0.02em;
+      }
+
+      .btn-primary {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        background: var(--ember);
+        color: #fff;
+        font-weight: 700;
+        font-size: 0.82rem;
+        padding: 0.72rem 1.35rem;
+        border-radius: 12px;
+        border: none;
+        cursor: pointer;
+        transition: all 0.28s ease;
+      }
+
+      .btn-primary:hover {
+        background: #d13c2c;
+        transform: translateY(-2px);
+        box-shadow: 0 12px 26px -12px rgba(249, 71, 53, 0.8);
+      }
+
+      .btn-ghost {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        background: #fff;
+        color: var(--abyss);
+        font-weight: 700;
+        font-size: 0.82rem;
+        padding: 0.72rem 1.35rem;
+        border-radius: 12px;
+        border: 1px solid #e2e8f0;
+        cursor: pointer;
+        transition: all 0.28s ease;
+      }
+
+      .btn-ghost:hover {
+        border-color: var(--abyss);
+        transform: translateY(-2px);
+      }
+
+      .mini-stat {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        padding: 1rem;
+        border-radius: 16px;
+        background: #fff;
+        border: 1px solid rgba(15, 49, 58, 0.07);
+        box-shadow: 0 14px 30px -26px rgba(15, 49, 58, 0.6);
+      }
+
+      .mini-icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 12px;
+        display: grid;
+        place-items: center;
+        font-size: 0.9rem;
+        flex-shrink: 0;
+      }
+
+      /* Scrollbar for horizontal filters */
+      .no-bar::-webkit-scrollbar {
+        display: none;
+      }
+
+      .no-bar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+
+      /* ============================================================
+         RESPONSIVE
+      ============================================================ */
+      @media (min-width: 640px) {
+        .hero-title {
+          font-size: 1.85rem;
+        }
+        .page-hero h2 {
+          font-size: 1.5rem;
+        }
+        .stat-value {
+          font-size: 1.75rem;
+        }
+      }
+
+      @media (min-width: 1024px) {
+        .sidebar {
+          transform: translateX(0);
+        }
+
+        .overlay {
+          display: none;
+        }
+
+        .main {
+          margin-left: var(--sidebar-w);
+        }
+
+        .topbar {
+          padding: 0 2rem;
+        }
+
+        .page-wrap {
+          padding: 1.75rem 2rem 3.5rem;
+        }
+
+        .hero-banner {
+          padding: 2.5rem 2.25rem 6rem;
+        }
+
+        .hero-title {
+          font-size: 2.1rem;
+        }
+
+        .hero-sub {
+          font-size: 0.95rem;
+        }
+
+        .page-hero {
+          padding: 1.85rem 2rem;
+        }
+
+        .chart-box {
+          height: 320px;
+        }
+      }
+
+      @media (min-width: 1280px) {
+        .hero-banner {
+          padding: 2.75rem 2.5rem 6.25rem;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.001ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.001ms !important;
+        }
+        .reveal {
+          opacity: 1;
+          transform: none;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- ================= SIDEBAR ================= -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-head">
+        <a href="./admin.html" aria-label="Logiver home">
+          <!-- REPLACE src WITH YOUR LOGO URL -->
+          <img
+            src="./assets/logoog.webp"
+            alt="Logiver Logo"
+            class="sidebar-logo"
+          />
+        </a>
+        <button
+          type="button"
+          id="closeSidebar"
+          class="lg:hidden w-9 h-9 rounded-lg grid place-items-center text-white/60 hover:text-white hover:bg-white/10 transition"
+          aria-label="Close menu"
+        >
+          <i class="fas fa-xmark"></i>
+        </button>
+      </div>
+
+      <nav class="sidebar-nav" id="sidebarNav">
+        <p class="nav-label">Overview</p>
+        <a class="nav-link active" data-page="dashboard" data-title="Dashboard">
+          <i class="fas fa-gauge-high"></i><span>Dashboard</span>
+        </a>
+        <a class="nav-link" data-page="tracking" data-title="Live Tracking">
+          <i class="fas fa-location-crosshairs"></i><span>Live Tracking</span>
+        </a>
+        <a class="nav-link" data-page="shipments" data-title="Shipments">
+          <i class="fas fa-box"></i><span>Shipments</span>
+          <span class="nav-badge">18</span>
+        </a>
+
+        <p class="nav-label">Operations</p>
+        <a class="nav-link" data-page="fleet" data-title="Fleet">
+          <i class="fas fa-truck-fast"></i><span>Fleet</span>
+        </a>
+        <a class="nav-link" data-page="drivers" data-title="Drivers">
+          <i class="fas fa-id-card"></i><span>Drivers</span>
+        </a>
+        <a class="nav-link" data-page="customers" data-title="Customers">
+          <i class="fas fa-users"></i><span>Customers</span>
+        </a>
+
+        <p class="nav-label">Finance</p>
+        <a class="nav-link" data-page="invoices" data-title="Invoices">
+          <i class="fas fa-file-invoice-dollar"></i><span>Invoices</span>
+        </a>
+        <a class="nav-link" data-page="reports" data-title="Reports">
+          <i class="fas fa-chart-pie"></i><span>Reports</span>
+        </a>
+
+        <p class="nav-label">Support</p>
+        <a class="nav-link" data-page="messages" data-title="Messages">
+          <i class="fas fa-comment-dots"></i><span>Messages</span>
+          <span class="nav-badge danger">8</span>
+        </a>
+        <a class="nav-link" data-page="tickets" data-title="Tickets">
+          <i class="fas fa-headset"></i><span>Tickets</span>
+          <span class="nav-badge danger">3</span>
+        </a>
+
+        <p class="nav-label">System</p>
+        <a class="nav-link" data-page="settings" data-title="Settings">
+          <i class="fas fa-gear"></i><span>Settings</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-foot">
+        <div class="side-profile">
+          <div class="side-avatar" data-user-initial>A</div>
+          <div class="min-w-0 flex-1">
+            <p class="text-white text-xs font-bold truncate m-0" data-user-name>
+              Admin
+            </p>
+            <p class="text-white/45 text-[11px] truncate m-0" data-user-email>
+              admin@stackly.com
+            </p>
+          </div>
+        </div>
+        <a href="./login.html" class="side-home">
+          <i class="fas fa-house"></i> LOGOUT
+        </a>
+      </div>
+    </aside>
+
+    <!-- ================= OVERLAY ================= -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- ================= MAIN ================= -->
+    <div class="main">
+      <!-- ============ TOPBAR ============ -->
+      <header class="topbar">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <button
+            type="button"
+            class="icon-btn lg:hidden"
+            id="menuBtn"
+            aria-label="Open menu"
+          >
+            <i class="fas fa-bars"></i>
+          </button>
+
+          <!-- MOBILE LOGO (outside hamburger) -->
+          <!-- REPLACE src WITH YOUR LOGO URL -->
+          <img
+            src="./assets/logoog.webp"
+            alt="Logiver"
+            class="topbar-logo lg:hidden"
+          />
+
+          <div class="hidden lg:block min-w-0">
+            <h1
+              id="pageTitle"
+              class="text-[17px] font-extrabold text-[#0f313a] leading-tight m-0 truncate"
+            >
+              Dashboard
+            </h1>
+            <p class="text-[11px] text-slate-400 m-0 truncate">
+              Welcome back,
+              <span class="font-semibold" data-user-name>Admin</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="hidden md:flex flex-1 max-w-md mx-2">
+          <div class="relative w-full">
+            <i
+              class="fas fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-xs"
+            ></i>
+            <input
+              type="text"
+              class="search-input"
+              placeholder="Search shipments, tickets, customers…"
+            />
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 flex-shrink-0">
+          <button
+            type="button"
+            class="icon-btn"
+            aria-label="Notifications"
+            onclick="window.location.href = './404.html'"
+          >
+            <i class="fas fa-bell"></i>
+            <span class="dot"></span>
+          </button>
+          <button
+            type="button"
+            class="icon-btn hidden sm:grid"
+            aria-label="Messages"
+            onclick="window.location.href = './404.html'"
+          >
+            <i class="fas fa-comment-dots"></i>
+          </button>
+
+          <div
+            class="profile-chip"
+            onclick="window.location.href = './404.html'"
+          >
+            <div class="chip-avatar" data-user-initial>A</div>
+            <div class="hidden lg:block pr-2 text-left">
+              <p
+                class="text-[12px] font-bold text-[#0f313a] leading-tight m-0 max-w-[150px] truncate"
+                data-user-email
+              >
+                admin@stackly.com
+              </p>
+              <p class="text-[10px] text-slate-400 m-0 leading-tight">
+                Administrator
+              </p>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- ============ PAGE CONTENT ============ -->
+      <div class="page-wrap">
+        <!-- ==========================================================
+             PAGE: DASHBOARD
+        =========================================================== -->
+        <section class="page active" id="page-dashboard">
+          <!-- HERO -->
+          <div class="hero-banner reveal">
+            <div
+              class="hero-inner flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6"
+            >
+              <div class="max-w-2xl">
+                <span class="hero-badge">
+                  <i class="fas fa-bolt"></i> Live Operations
+                </span>
+                <h2 class="hero-title">
+                  Welcome back,
+                  <span data-user-name>Admin</span> 👋
+                </h2>
+                <p class="hero-sub">
+                  Here's what's happening across your global logistics network
+                  today. Track performance, manage shipments and keep your fleet
+                  moving.
+                </p>
+                <div class="hero-meta">
+                  <span>
+                    <i class="fas fa-envelope mr-1.5"></i>
+                    <span data-user-email>admin@stackly.com</span>
+                  </span>
+                  <span class="sep">•</span>
+                  <span class="hero-role">ADMIN</span>
+                  <span class="sep">•</span>
+                  <span>
+                    <i class="fas fa-calendar-day mr-1.5"></i>
+                    <span id="todayDate">—</span>
+                  </span>
+                </div>
+              </div>
+
+              <div class="flex flex-wrap gap-3">
+                <button
+                  type="button"
+                  class="hero-btn hero-btn-solid"
+                  onclick="window.location.href = './404.html'"
+                >
+                  <i class="fas fa-plus"></i> New Shipment
+                </button>
+                <button
+                  type="button"
+                  class="hero-btn hero-btn-ghost"
+                  onclick="window.location.href = './404.html'"
+                >
+                  <i class="fas fa-file-arrow-down"></i> Export Report
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- STATS -->
+          <div
+            class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 -mt-14 relative z-20"
+          >
+            <div class="stat-card reveal" data-d="1">
+              <div class="flex items-start justify-between">
+                <div
+                  class="stat-icon"
+                  style="background: rgba(80, 148, 193, 0.13); color: #5094c1"
+                >
+                  <i class="fas fa-box"></i>
+                </div>
+                <span class="trend up">
+                  <i class="fas fa-arrow-up"></i> 12.4%
+                </span>
+              </div>
+              <p class="stat-label">Total Shipments</p>
+              <h3 class="stat-value" data-count="18420">0</h3>
+              <p class="stat-foot">vs 16,382 last month</p>
+            </div>
+
+            <div class="stat-card reveal" data-d="2">
+              <div class="flex items-start justify-between">
+                <div
+                  class="stat-icon"
+                  style="background: rgba(250, 193, 46, 0.18); color: #b8860b"
+                >
+                  <i class="fas fa-truck-fast"></i>
+                </div>
+                <span class="trend up">
+                  <i class="fas fa-arrow-up"></i> 6.1%
+                </span>
+              </div>
+              <p class="stat-label">In Transit</p>
+              <h3 class="stat-value" data-count="1284">0</h3>
+              <p class="stat-foot">Across 42 active routes</p>
+            </div>
+
+            <div class="stat-card reveal" data-d="3">
+              <div class="flex items-start justify-between">
+                <div
+                  class="stat-icon"
+                  style="background: rgba(16, 185, 129, 0.13); color: #047857"
+                >
+                  <i class="fas fa-circle-check"></i>
+                </div>
+                <span class="trend up">
+                  <i class="fas fa-arrow-up"></i> 9.8%
+                </span>
+              </div>
+              <p class="stat-label">Delivered</p>
+              <h3 class="stat-value" data-count="16902">0</h3>
+              <p class="stat-foot">98.2% on-time rate</p>
+            </div>
+
+            <div class="stat-card reveal" data-d="4">
+              <div class="flex items-start justify-between">
+                <div
+                  class="stat-icon"
+                  style="background: rgba(249, 71, 53, 0.13); color: #f94735"
+                >
+                  <i class="fas fa-sack-dollar"></i>
+                </div>
+                <span class="trend down">
+                  <i class="fas fa-arrow-down"></i> 2.3%
+                </span>
+              </div>
+              <p class="stat-label">Revenue</p>
+              <h3
+                class="stat-value"
+                data-count="1.28"
+                data-decimals="2"
+                data-prefix="$"
+                data-suffix="M"
+              >
+                $0.00M
+              </h3>
+              <p class="stat-foot">Net of operating cost</p>
+            </div>
+          </div>
+
+          <!-- CHARTS ROW 1 -->
+          <div class="grid grid-cols-1 xl:grid-cols-3 gap-5 mt-5">
+            <div class="card xl:col-span-2 reveal" data-d="1">
+              <div class="card-head">
+                <div>
+                  <h3 class="card-title">Shipment Volume</h3>
+                  <p class="card-sub">
+                    Total vs delivered shipments — last 12 months
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  class="link-btn"
+                  onclick="window.location.href = './404.html'"
+                >
+                  Details <i class="fas fa-arrow-right"></i>
+                </button>
+              </div>
+              <div class="chart-box">
+                <canvas id="chartVolume"></canvas>
+              </div>
+            </div>
+
+            <div class="card reveal" data-d="2">
+              <div class="card-head">
+                <div>
+                  <h3 class="card-title">Status Distribution</h3>
+                  <p class="card-sub">Current shipment breakdown</p>
+                </div>
+              </div>
+              <div class="chart-box">
+                <canvas id="chartStatus"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- CHARTS ROW 2 -->
+          <div class="grid grid-cols-1 xl:grid-cols-3 gap-5 mt-5">
+            <div class="card xl:col-span-2 reveal" data-d="1">
+              <div class="card-head">
+                <div>
+                  <h3 class="card-title">Revenue vs Operating Cost</h3>
+                  <p class="card-sub">Monthly financial performance in USD</p>
+                </div>
+                <div class="hidden sm:flex items-center gap-2">
+                  <span class="pill pill-transit">Revenue</span>
+                  <span class="pill pill-pending">Cost</span>
+                </div>
+              </div>
+              <div class="chart-box">
+                <canvas id="chartRevenue"></canvas>
+              </div>
+            </div>
+
+            <div class="card reveal" data-d="2">
+              <div class="card-head">
+                <div>
+                  <h3 class="card-title">Operational Score</h3>
+                  <p class="card-sub">Quarter over quarter</p>
+                </div>
+              </div>
+              <div class="chart-box">
+                <canvas id="chartPerf"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- TABLE + TOP ROUTES -->
+          <div class="grid grid-cols-1 xl:grid-cols-3 gap-5 mt-5">
+            <div class="card xl:col-span-2 overflow-hidden reveal" data-d="1">
+              <div class="card-head">
+                <div>
+                  <h3 class="card-title">Recent Shipments</h3>
+                  <p class="card-sub">Latest movements across all routes</p>
+                </div>
+                <button
+                  type="button"
+                  class="link-btn"
+                  data-goto="shipments"
+                  onclick="window.location.href = './404.html'"
+                >
+                  View all <i class="fas fa-arrow-right"></i>
+                </button>
+              </div>
+              <div class="table-scroll">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Tracking ID</th>
+                      <th>Customer</th>
+                      <th>Route</th>
+                      <th>Status</th>
+                      <th>ETA</th>
+                      <th style="text-align: right">Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="cell-mono">LGV-90241</td>
+                      <td class="cell-strong">Aurora Retail</td>
+                      <td>Mumbai → Dubai</td>
+                      <td><span class="pill pill-transit">In Transit</span></td>
+                      <td>18 Sep</td>
+                      <td style="text-align: right" class="cell-strong">
+                        $4,280
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="cell-mono">LGV-90238</td>
+                      <td class="cell-strong">Northwind Co.</td>
+                      <td>Delhi → Singapore</td>
+                      <td>
+                        <span class="pill pill-delivered">Delivered</span>
+                      </td>
+                      <td>14 Sep</td>
+                      <td style="text-align: right" class="cell-strong">
+                        $2,150
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="cell-mono">LGV-90235</td>
+                      <td class="cell-strong">Vertex Pharma</td>
+                      <td>Pune → Frankfurt</td>
+                      <td><span class="pill pill-pending">Pending</span></td>
+                      <td>22 Sep</td>
+                      <td style="text-align: right" class="cell-strong">
+                        $8,940
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="cell-mono">LGV-90231</td>
+                      <td class="cell-strong">Bluewave Foods</td>
+                      <td>Chennai → Doha</td>
+                      <td><span class="pill pill-delayed">Delayed</span></td>
+                      <td>19 Sep</td>
+                      <td style="text-align: right" class="cell-strong">
+                        $3,610
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="cell-mono">LGV-90228</td>
+                      <td class="cell-strong">Kite Logistics</td>
+                      <td>Kolkata → Bangkok</td>
+                      <td>
+                        <span class="pill pill-delivered">Delivered</span>
+                      </td>
+                      <td>12 Sep</td>
+                      <td style="text-align: right" class="cell-strong">
+                        $1,980
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="cell-mono">LGV-90224</td>
+                      <td class="cell-strong">Helios Tech</td>
+                      <td>Bengaluru → Tokyo</td>
+                      <td><span class="pill pill-transit">In Transit</span></td>
+                      <td>21 Sep</td>
+                      <td style="text-align: right" class="cell-strong">
+                        $6,420
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="card reveal" data-d="2">
+              <div class="card-head">
+                <div>
+                  <h3 class="card-title">Top Routes</h3>
+                  <p class="card-sub">By shipment volume this month</p>
+                </div>
+              </div>
+              <div class="p-5 pt-4 space-y-4">
+                <div>
+                  <div class="flex justify-between text-xs mb-2">
+                    <span class="font-bold text-[#0f313a]">Mumbai → Dubai</span>
+                    <span class="font-bold text-slate-400">1,842</span>
+                  </div>
+                  <div class="progress">
+                    <span
+                      style="
+                        width: 92%;
+                        background: linear-gradient(90deg, #5094c1, #104a57);
+                      "
+                    ></span>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="flex justify-between text-xs mb-2">
+                    <span class="font-bold text-[#0f313a]"
+                      >Delhi → Singapore</span
+                    >
+                    <span class="font-bold text-slate-400">1,410</span>
+                  </div>
+                  <div class="progress">
+                    <span
+                      style="
+                        width: 72%;
+                        background: linear-gradient(90deg, #fac12e, #e0a800);
+                      "
+                    ></span>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="flex justify-between text-xs mb-2">
+                    <span class="font-bold text-[#0f313a]"
+                      >Pune → Frankfurt</span
+                    >
+                    <span class="font-bold text-slate-400">1,120</span>
+                  </div>
+                  <div class="progress">
+                    <span
+                      style="
+                        width: 58%;
+                        background: linear-gradient(90deg, #f94735, #c0301f);
+                      "
+                    ></span>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="flex justify-between text-xs mb-2">
+                    <span class="font-bold text-[#0f313a]">Chennai → Doha</span>
+                    <span class="font-bold text-slate-400">864</span>
+                  </div>
+                  <div class="progress">
+                    <span
+                      style="
+                        width: 45%;
+                        background: linear-gradient(90deg, #104a57, #0f313a);
+                      "
+                    ></span>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="flex justify-between text-xs mb-2">
+                    <span class="font-bold text-[#0f313a]"
+                      >Kolkata → Bangkok</span
+                    >
+                    <span class="font-bold text-slate-400">612</span>
+                  </div>
+                  <div class="progress">
+                    <span
+                      style="
+                        width: 32%;
+                        background: linear-gradient(90deg, #5094c1, #3d7ba3);
+                      "
+                    ></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- MESSAGES + TICKETS -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-5">
+            <div class="card overflow-hidden reveal" data-d="1">
+              <div class="card-head">
+                <div>
+                  <h3 class="card-title">Recent Messages</h3>
+                  <p class="card-sub">8 unread conversations</p>
+                </div>
+                <button
+                  type="button"
+                  class="link-btn"
+                  data-goto="messages"
+                  onclick="window.location.href = './404.html'"
+                >
+                  Inbox <i class="fas fa-arrow-right"></i>
+                </button>
+              </div>
+
+              <div class="list-row">
+                <div
+                  class="avatar-xs"
+                  style="background: linear-gradient(135deg, #5094c1, #104a57)"
+                >
+                  AR
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center justify-between gap-2">
+                    <p
+                      class="text-[13px] font-bold text-[#0f313a] m-0 truncate"
+                    >
+                      Aurora Retail
+                    </p>
+                    <span class="text-[10px] text-slate-400 flex-shrink-0"
+                      >2m ago</span
+                    >
+                  </div>
+                  <p class="text-[12px] text-slate-500 m-0 truncate">
+                    Can we reschedule the Dubai pickup to Friday morning?
+                  </p>
+                </div>
+                <span
+                  class="w-2 h-2 rounded-full flex-shrink-0 mt-2"
+                  style="background: #f94735"
+                ></span>
+              </div>
+
+              <div class="list-row">
+                <div
+                  class="avatar-xs"
+                  style="background: linear-gradient(135deg, #fac12e, #e0a800)"
+                >
+                  VP
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center justify-between gap-2">
+                    <p
+                      class="text-[13px] font-bold text-[#0f313a] m-0 truncate"
+                    >
+                      Vertex Pharma
+                    </p>
+                    <span class="text-[10px] text-slate-400 flex-shrink-0"
+                      >18m ago</span
+                    >
+                  </div>
+                  <p class="text-[12px] text-slate-500 m-0 truncate">
+                    Temperature logs for shipment LGV-90235 please.
+                  </p>
+                </div>
+                <span
+                  class="w-2 h-2 rounded-full flex-shrink-0 mt-2"
+                  style="background: #f94735"
+                ></span>
+              </div>
+
+              <div class="list-row">
+                <div
+                  class="avatar-xs"
+                  style="background: linear-gradient(135deg, #104a57, #0f313a)"
+                >
+                  HT
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center justify-between gap-2">
+                    <p
+                      class="text-[13px] font-bold text-[#0f313a] m-0 truncate"
+                    >
+                      Helios Tech
+                    </p>
+                    <span class="text-[10px] text-slate-400 flex-shrink-0"
+                      >1h ago</span
+                    >
+                  </div>
+                  <p class="text-[12px] text-slate-500 m-0 truncate">
+                    Invoice #INV-2291 has been approved for payment.
+                  </p>
+                </div>
+              </div>
+
+              <div class="list-row">
+                <div
+                  class="avatar-xs"
+                  style="background: linear-gradient(135deg, #f94735, #c0301f)"
+                >
+                  BW
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center justify-between gap-2">
+                    <p
+                      class="text-[13px] font-bold text-[#0f313a] m-0 truncate"
+                    >
+                      Bluewave Foods
+                    </p>
+                    <span class="text-[10px] text-slate-400 flex-shrink-0"
+                      >3h ago</span
+                    >
+                  </div>
+                  <p class="text-[12px] text-slate-500 m-0 truncate">
+                    Delay on the Doha route — need an updated ETA.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="card overflow-hidden reveal" data-d="2">
+              <div class="card-head">
+                <div>
+                  <h3 class="card-title">Support Tickets</h3>
+                  <p class="card-sub">3 open · 1 critical</p>
+                </div>
+                <button
+                  type="button"
+                  class="link-btn"
+                  data-goto="tickets"
+                  onclick="window.location.href = './404.html'"
+                >
+                  All tickets <i class="fas fa-arrow-right"></i>
+                </button>
+              </div>
+
+              <div class="ticket-row">
+                <div
+                  class="w-9 h-9 rounded-xl grid place-items-center flex-shrink-0"
+                  style="background: rgba(249, 71, 53, 0.12); color: #f94735"
+                >
+                  <i class="fas fa-triangle-exclamation text-xs"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <p class="text-[13px] font-bold text-[#0f313a] m-0 truncate">
+                    #TKT-4821 · Customs hold at Dubai
+                  </p>
+                  <p class="text-[11px] text-slate-400 m-0">
+                    Aurora Retail · 12 min ago
+                  </p>
+                </div>
+                <span class="pill pill-high">High</span>
+              </div>
+
+              <div class="ticket-row">
+                <div
+                  class="w-9 h-9 rounded-xl grid place-items-center flex-shrink-0"
+                  style="background: rgba(250, 193, 46, 0.18); color: #b8860b"
+                >
+                  <i class="fas fa-clock text-xs"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <p class="text-[13px] font-bold text-[#0f313a] m-0 truncate">
+                    #TKT-4819 · Reschedule pickup
+                  </p>
+                  <p class="text-[11px] text-slate-400 m-0">
+                    Kite Logistics · 46 min ago
+                  </p>
+                </div>
+                <span class="pill pill-medium">Medium</span>
+              </div>
+
+              <div class="ticket-row">
+                <div
+                  class="w-9 h-9 rounded-xl grid place-items-center flex-shrink-0"
+                  style="background: rgba(16, 185, 129, 0.13); color: #047857"
+                >
+                  <i class="fas fa-circle-check text-xs"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <p class="text-[13px] font-bold text-[#0f313a] m-0 truncate">
+                    #TKT-4815 · Invoice discrepancy
+                  </p>
+                  <p class="text-[11px] text-slate-400 m-0">
+                    Northwind Co. · 2 h ago
+                  </p>
+                </div>
+                <span class="pill pill-low">Low</span>
+              </div>
+
+              <div class="ticket-row">
+                <div
+                  class="w-9 h-9 rounded-xl grid place-items-center flex-shrink-0"
+                  style="background: rgba(80, 148, 193, 0.14); color: #5094c1"
+                >
+                  <i class="fas fa-route text-xs"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <p class="text-[13px] font-bold text-[#0f313a] m-0 truncate">
+                    #TKT-4810 · Route optimization request
+                  </p>
+                  <p class="text-[11px] text-slate-400 m-0">
+                    Helios Tech · 5 h ago
+                  </p>
+                </div>
+                <span class="pill pill-low">Low</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==========================================================
+             PAGE: SHIPMENTS
+        =========================================================== -->
+        <section class="page" id="page-shipments">
+          <div class="page-hero reveal">
+            <div
+              class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4"
+            >
+              <div>
+                <h2>Shipments</h2>
+                <p>
+                  Manage, filter and track every consignment in your network
+                </p>
+              </div>
+              <button
+                type="button"
+                class="hero-btn hero-btn-solid"
+                onclick="window.location.href = './404.html'"
+              >
+                <i class="fas fa-plus"></i> Create Shipment
+              </button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-5">
+            <div class="mini-stat reveal" data-d="1">
+              <div
+                class="mini-icon"
+                style="background: rgba(80, 148, 193, 0.13); color: #5094c1"
+              >
+                <i class="fas fa-box"></i>
+              </div>
+              <div>
+                <p
+                  class="text-[10px] font-bold uppercase tracking-wider text-slate-400 m-0"
+                >
+                  Total
+                </p>
+                <p
+                  class="text-lg font-extrabold text-[#0f313a] m-0"
+                  data-count="18420"
+                >
+                  0
+                </p>
+              </div>
+            </div>
+            <div class="mini-stat reveal" data-d="2">
+              <div
+                class="mini-icon"
+                style="background: rgba(250, 193, 46, 0.18); color: #b8860b"
+              >
+                <i class="fas fa-truck-fast"></i>
+              </div>
+              <div>
+                <p
+                  class="text-[10px] font-bold uppercase tracking-wider text-slate-400 m-0"
+                >
+                  Transit
+                </p>
+                <p
+                  class="text-lg font-extrabold text-[#0f313a] m-0"
+                  data-count="1284"
+                >
+                  0
+                </p>
+              </div>
+            </div>
+            <div class="mini-stat reveal" data-d="3">
+              <div
+                class="mini-icon"
+                style="background: rgba(16, 185, 129, 0.13); color: #047857"
+              >
+                <i class="fas fa-circle-check"></i>
+              </div>
+              <div>
+                <p
+                  class="text-[10px] font-bold uppercase tracking-wider text-slate-400 m-0"
+                >
+                  Delivered
+                </p>
+                <p
+                  class="text-lg font-extrabold text-[#0f313a] m-0"
+                  data-count="16902"
+                >
+                  0
+                </p>
+              </div>
+            </div>
+            <div class="mini-stat reveal" data-d="4">
+              <div
+                class="mini-icon"
+                style="background: rgba(249, 71, 53, 0.13); color: #f94735"
+              >
+                <i class="fas fa-clock-rotate-left"></i>
+              </div>
+              <div>
+                <p
+                  class="text-[10px] font-bold uppercase tracking-wider text-slate-400 m-0"
+                >
+                  Delayed
+                </p>
+                <p
+                  class="text-lg font-extrabold text-[#0f313a] m-0"
+                  data-count="180"
+                >
+                  0
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="card mt-5 overflow-hidden reveal" data-d="1">
+            <div class="card-head flex-col sm:flex-row sm:items-center gap-3">
+              <div>
+                <h3 class="card-title">All Shipments</h3>
+                <p class="card-sub">18,420 records · showing 1–10</p>
+              </div>
+              <div
+                class="flex flex-wrap items-center gap-2 w-full sm:w-auto sm:ml-auto"
+              >
+                <div class="relative flex-1 sm:flex-none min-w-[150px]">
+                  <i
+                    class="fas fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-[11px]"
+                  ></i>
+                  <input
+                    type="text"
+                    class="form-field pl-9"
+                    placeholder="Search ID…"
+                  />
+                </div>
+                <select class="form-field sm:w-auto">
+                  <option>All Status</option>
+                  <option>In Transit</option>
+                  <option>Delivered</option>
+                  <option>Pending</option>
+                  <option>Delayed</option>
+                </select>
+                <button
+                  type="button"
+                  class="btn-ghost"
+                  onclick="window.location.href = './404.html'"
+                >
+                  <i class="fas fa-filter"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="table-scroll">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Tracking ID</th>
+                    <th>Customer</th>
+                    <th>Route</th>
+                    <th>Carrier</th>
+                    <th>Status</th>
+                    <th>ETA</th>
+                    <th style="text-align: right">Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="cell-mono">LGV-90241</td>
+                    <td class="cell-strong">Aurora Retail</td>
+                    <td>Mumbai → Dubai</td>
+                    <td>Stackly Air</td>
+                    <td><span class="pill pill-transit">In Transit</span></td>
+                    <td>18 Sep 2025</td>
+                    <td style="text-align: right" class="cell-strong">
+                      $4,280
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="cell-mono">LGV-90238</td>
+                    <td class="cell-strong">Northwind Co.</td>
+                    <td>Delhi → Singapore</td>
+                    <td>Stackly Sea</td>
+                    <td><span class="pill pill-delivered">Delivered</span></td>
+                    <td>14 Sep 2025</td>
+                    <td style="text-align: right" class="cell-strong">
+                      $2,150
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="cell-mono">LGV-90235</td>
+                    <td class="cell-strong">Vertex Pharma</td>
+                    <td>Pune → Frankfurt</td>
+                    <td>Stackly Cold</td>
+                    <td><span class="pill pill-pending">Pending</span></td>
+                    <td>22 Sep 2025</td>
+                    <td style="text-align: right" class="cell-strong">
+                      $8,940
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="cell-mono">LGV-90231</td>
+                    <td class="cell-strong">Bluewave Foods</td>
+                    <td>Chennai → Doha</td>
+                    <td>Stackly Sea</td>
+                    <td><span class="pill pill-delayed">Delayed</span></td>
+                    <td>19 Sep 2025</td>
+                    <td style="text-align: right" class="cell-strong">
+                      $3,610
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="cell-mono">LGV-90228</td>
+                    <td class="cell-strong">Kite Logistics</td>
+                    <td>Kolkata → Bangkok</td>
+                    <td>Stackly Air</td>
+                    <td><span class="pill pill-delivered">Delivered</span></td>
+                    <td>12 Sep 2025</td>
+                    <td style="text-align: right" class="cell-strong">
+                      $1,980
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="cell-mono">LGV-90224</td>
+                    <td class="cell-strong">Helios Tech</td>
+                    <td>Bengaluru → Tokyo</td>
+                    <td>Stackly Air</td>
+                    <td><span class="pill pill-transit">In Transit</span></td>
+                    <td>21 Sep 2025</td>
+                    <td style="text-align: right" class="cell-strong">
+                      $6,420
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="cell-mono">LGV-90219</td>
+                    <td class="cell-strong">Cobalt Textiles</td>
+                    <td>Surat → Milan</td>
+                    <td>Stackly Sea</td>
+                    <td><span class="pill pill-transit">In Transit</span></td>
+                    <td>25 Sep 2025</td>
+                    <td style="text-align: right" class="cell-strong">
+                      $5,120
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="cell-mono">LGV-90214</td>
+                    <td class="cell-strong">Orbit Electronics</td>
+                    <td>Noida → Seoul</td>
+                    <td>Stackly Air</td>
+                    <td><span class="pill pill-delivered">Delivered</span></td>
+                    <td>09 Sep 2025</td>
+                    <td style="text-align: right" class="cell-strong">
+                      $7,340
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="cell-mono">LGV-90208</td>
+                    <td class="cell-strong">Silverline Auto</td>
+                    <td>Manesar → Hamburg</td>
+                    <td>Stackly Sea</td>
+                    <td><span class="pill pill-pending">Pending</span></td>
+                    <td>28 Sep 2025</td>
+                    <td style="text-align: right" class="cell-strong">
+                      $9,870
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="cell-mono">LGV-90203</td>
+                    <td class="cell-strong">Pinewood Agro</td>
+                    <td>Nashik → Muscat</td>
+                    <td>Stackly Cold</td>
+                    <td><span class="pill pill-delivered">Delivered</span></td>
+                    <td>07 Sep 2025</td>
+                    <td style="text-align: right" class="cell-strong">
+                      $2,760
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div
+              class="flex flex-col sm:flex-row items-center justify-between gap-3 p-5 border-t border-slate-100"
+            >
+              <p class="text-xs text-slate-400 m-0">
+                Showing <strong class="text-[#0f313a]">1–10</strong> of
+                <strong class="text-[#0f313a]">18,420</strong> shipments
+              </p>
+              <div class="flex items-center gap-1.5">
+                <button
+                  type="button"
+                  class="icon-btn !w-9 !h-9"
+                  onclick="window.location.href = './404.html'"
+                >
+                  <i class="fas fa-chevron-left text-xs"></i>
+                </button>
+                <button
+                  type="button"
+                  class="w-9 h-9 rounded-xl text-xs font-bold text-white"
+                  style="background: var(--abyss)"
+                  onclick="window.location.href = './404.html'"
+                >
+                  1
+                </button>
+                <button
+                  type="button"
+                  class="w-9 h-9 rounded-xl text-xs font-bold text-slate-500 hover:bg-slate-100 transition"
+                  onclick="window.location.href = './404.html'"
+                >
+                  2
+                </button>
+                <button
+                  type="button"
+                  class="w-9 h-9 rounded-xl text-xs font-bold text-slate-500 hover:bg-slate-100 transition"
+                  onclick="window.location.href = './404.html'"
+                >
+                  3
+                </button>
+                <button
+                  type="button"
+                  class="icon-btn !w-9 !h-9"
+                  onclick="window.location.href = './404.html'"
+                >
+                  <i class="fas fa-chevron-right text-xs"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==========================================================
+             PAGE: LIVE TRACKING
+        =========================================================== -->
+        <section class="page" id="page-tracking">
+          <div class="page-hero reveal">
+            <div
+              class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4"
+            >
+              <div>
+                <h2>Live Tracking</h2>
+                <p>Real-time visibility across every active consignment</p>
+              </div>
+              <div class="relative w-full sm:w-72">
+                <i
+                  class="fas fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-white/50 text-xs"
+                ></i>
+                <input
+                  type="text"
+                  placeholder="Enter tracking ID…"
+                  class="w-full pl-10 pr-4 py-2.5 rounded-xl text-sm bg-white/10 border border-white/25 text-white placeholder-white/45 focus:outline-none focus:bg-white/15 transition"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 xl:grid-cols-3 gap-5 mt-5">
+            <div class="card xl:col-span-2 reveal" data-d="1">
+              <div class="card-head">
+                <div>
+                  <h3 class="card-title">LGV-90241 · Mumbai → Dubai</h3>
+                  <p class="card-sub">
+                    Aurora Retail · Air Freight · ETA 18 Sep 2025
+                  </p>
+                </div>
+                <span class="pill pill-transit">In Transit</span>
+              </div>
+
+              <div class="p-5">
+                <div class="progress mb-6" style="height: 9px">
+                  <span
+                    style="
+                      width: 68%;
+                      background: linear-gradient(90deg, #5094c1, #104a57);
+                    "
+                  ></span>
+                </div>
+
+                <div class="space-y-5">
+                  <div class="flex gap-4">
+                    <div class="flex flex-col items-center">
+                      <span
+                        class="w-8 h-8 rounded-full grid place-items-center text-[11px] text-white flex-shrink-0"
+                        style="background: #047857"
+                      >
+                        <i class="fas fa-check"></i>
+                      </span>
+                      <span
+                        class="w-0.5 flex-1 my-1"
+                        style="background: #e2e8f0"
+                      ></span>
+                    </div>
+                    <div class="pb-2">
+                      <p class="text-[13px] font-bold text-[#0f313a] m-0">
+                        Shipment Picked Up
+                      </p>
+                      <p class="text-[11px] text-slate-400 m-0 mt-0.5">
+                        Mumbai Warehouse · 14 Sep, 08:42 IST
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="flex gap-4">
+                    <div class="flex flex-col items-center">
+                      <span
+                        class="w-8 h-8 rounded-full grid place-items-center text-[11px] text-white flex-shrink-0"
+                        style="background: #047857"
+                      >
+                        <i class="fas fa-check"></i>
+                      </span>
+                      <span
+                        class="w-0.5 flex-1 my-1"
+                        style="background: #e2e8f0"
+                      ></span>
+                    </div>
+                    <div class="pb-2">
+                      <p class="text-[13px] font-bold text-[#0f313a] m-0">
+                        Departed Origin Hub
+                      </p>
+                      <p class="text-[11px] text-slate-400 m-0 mt-0.5">
+                        CSMIA Cargo Terminal · 14 Sep, 21:10 IST
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="flex gap-4">
+                    <div class="flex flex-col items-center">
+                      <span
+                        class="w-8 h-8 rounded-full grid place-items-center text-[11px] text-white flex-shrink-0"
+                        style="background: #5094c1"
+                      >
+                        <i class="fas fa-plane"></i>
+                      </span>
+                      <span
+                        class="w-0.5 flex-1 my-1"
+                        style="background: #e2e8f0"
+                      ></span>
+                    </div>
+                    <div class="pb-2">
+                      <p class="text-[13px] font-bold text-[#0f313a] m-0">
+                        In Transit — International
+                      </p>
+                      <p class="text-[11px] text-slate-400 m-0 mt-0.5">
+                        Current position: over Arabian Sea · 17 Sep, 03:25 GST
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="flex gap-4">
+                    <div class="flex flex-col items-center">
+                      <span
+                        class="w-8 h-8 rounded-full grid place-items-center text-[11px] flex-shrink-0"
+                        style="background: #eef2f7; color: #94a3b8"
+                      >
+                        <i class="fas fa-warehouse"></i>
+                      </span>
+                      <span
+                        class="w-0.5 flex-1 my-1"
+                        style="background: #e2e8f0"
+                      ></span>
+                    </div>
+                    <div class="pb-2">
+                      <p class="text-[13px] font-bold text-slate-400 m-0">
+                        Arrival at Destination Hub
+                      </p>
+                      <p class="text-[11px] text-slate-400 m-0 mt-0.5">
+                        Dubai DWC · Expected 18 Sep, 06:00 GST
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="flex gap-4">
+                    <div class="flex flex-col items-center">
+                      <span
+                        class="w-8 h-8 rounded-full grid place-items-center text-[11px] flex-shrink-0"
+                        style="background: #eef2f7; color: #94a3b8"
+                      >
+                        <i class="fas fa-house"></i>
+                      </span>
+                    </div>
+                    <div>
+                      <p class="text-[13px] font-bold text-slate-400 m-0">
+                        Out for Delivery
+                      </p>
+                      <p class="text-[11px] text-slate-400 m-0 mt-0.5">
+                        Pending customs clearance
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="space-y-5">
+              <div class="card reveal" data-d="2">
+                <div class="card-head">
+                  <div>
+                    <h3 class="card-title">Shipment Details</h3>
+                    <p class="card-sub">Consignment information</p>
+                  </div>
+                </div>
+                <div class="p-5 space-y-3">
+                  <div class="flex justify-between text-[12px]">
+                    <span class="text-slate-400 font-semibold">Carrier</span>
+                    <span class="font-bold text-[#0f313a]">Stackly Air</span>
+                  </div>
+                  <div class="flex justify-between text-[12px]">
+                    <span class="text-slate-400 font-semibold">Weight</span>
+                    <span class="font-bold text-[#0f313a]">1,240 kg</span>
+                  </div>
+                  <div class="flex justify-between text-[12px]">
+                    <span class="text-slate-400 font-semibold">Packages</span>
+                    <span class="font-bold text-[#0f313a]">48 cartons</span>
+                  </div>
+                  <div class="flex justify-between text-[12px]">
+                    <span class="text-slate-400 font-semibold">Service</span>
+                    <span class="font-bold text-[#0f313a]">Express Air</span>
+                  </div>
+                  <div class="flex justify-between text-[12px]">
+                    <span class="text-slate-400 font-semibold">Value</span>
+                    <span class="font-bold text-[#0f313a]">$4,280</span>
+                  </div>
+                  <div class="flex justify-between text-[12px]">
+                    <span class="text-slate-400 font-semibold">Driver</span>
+                    <span class="font-bold text-[#0f313a]">R. Mehta</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card reveal" data-d="3">
+                <div class="card-head">
+                  <div>
+                    <h3 class="card-title">Active Shipments</h3>
+                    <p class="card-sub">1,284 currently moving</p>
+                  </div>
+                </div>
+                <div class="list-row">
+                  <div
+                    class="avatar-xs"
+                    style="
+                      background: linear-gradient(135deg, #5094c1, #104a57);
+                    "
+                  >
+                    <i class="fas fa-plane text-[10px]"></i>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-[12px] font-bold text-[#0f313a] m-0">
+                      LGV-90219
+                    </p>
+                    <p class="text-[11px] text-slate-400 m-0">
+                      Surat → Milan · 54%
+                    </p>
+                  </div>
+                  <span class="pill pill-transit">Transit</span>
+                </div>
+                <div class="list-row">
+                  <div
+                    class="avatar-xs"
+                    style="
+                      background: linear-gradient(135deg, #fac12e, #e0a800);
+                    "
+                  >
+                    <i class="fas fa-ship text-[10px]"></i>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-[12px] font-bold text-[#0f313a] m-0">
+                      LGV-90212
+                    </p>
+                    <p class="text-[11px] text-slate-400 m-0">
+                      Kochi → Jeddah · 31%
+                    </p>
+                  </div>
+                  <span class="pill pill-transit">Transit</span>
+                </div>
+                <div class="list-row">
+                  <div
+                    class="avatar-xs"
+                    style="
+                      background: linear-gradient(135deg, #f94735, #c0301f);
+                    "
+                  >
+                    <i class="fas fa-truck text-[10px]"></i>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-[12px] font-bold text-[#0f313a] m-0">
+                      LGV-90207
+                    </p>
+                    <p class="text-[11px] text-slate-400 m-0">
+                      Jaipur → Kabul · 78%
+                    </p>
+                  </div>
+                  <span class="pill pill-delayed">Delayed</span>
+                </div>
+                <div class="list-row">
+                  <div
+                    class="avatar-xs"
+                    style="
+                      background: linear-gradient(135deg, #104a57, #0f313a);
+                    "
+                  >
+                    <i class="fas fa-plane text-[10px]"></i>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-[12px] font-bold text-[#0f313a] m-0">
+                      LGV-90224
+                    </p>
+                    <p class="text-[11px] text-slate-400 m-0">
+                      Bengaluru → Tokyo · 62%
+                    </p>
+                  </div>
+                  <span class="pill pill-transit">Transit</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==========================================================
+             PAGE: FLEET
+        =========================================================== -->
+        <section class="page" id="page-fleet">
+          <div class="page-hero reveal">
+            <div
+              class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4"
+            >
+              <div>
+                <h2>Fleet Management</h2>
+                <p>Monitor vehicle health, capacity and utilisation</p>
+              </div>
+              <button
+                type="button"
+                class="hero-btn hero-btn-solid"
+                onclick="window.location.href = './404.html'"
+              >
+                <i class="fas fa-plus"></i> Add Vehicle
+              </button>
+            </div>
+          </div>
+
+          <div
+            class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 mt-5"
+          >
+            <div class="card p-5 reveal" data-d="1">
+              <div class="flex items-start justify-between mb-4">
+                <div
+                  class="stat-icon"
+                  style="background: rgba(80, 148, 193, 0.13); color: #5094c1"
+                >
+                  <i class="fas fa-truck"></i>
+                </div>
+                <span class="pill pill-transit">On Route</span>
+              </div>
+              <h3 class="text-base font-extrabold text-[#0f313a] m-0">
+                TRK-1042 · Volvo FH16
+              </h3>
+              <p class="text-[12px] text-slate-400 m-0 mt-1">
+                Plate MH-12-AB-4821 · Driver: R. Mehta
+              </p>
+              <div class="mt-4">
+                <div class="flex justify-between text-[11px] mb-1.5">
+                  <span class="text-slate-400 font-semibold">Utilisation</span>
+                  <span class="font-bold text-[#0f313a]">82%</span>
+                </div>
+                <div class="progress">
+                  <span
+                    style="
+                      width: 82%;
+                      background: linear-gradient(90deg, #5094c1, #104a57);
+                    "
+                  ></span>
+                </div>
+              </div>
+              <div
+                class="grid grid-cols-3 gap-2 mt-4 pt-4 border-t border-slate-100"
+              >
+                <div>
+                  <p class="text-[10px] text-slate-400 m-0 font-bold uppercase">
+                    Load
+                  </p>
+                  <p class="text-[13px] font-extrabold text-[#0f313a] m-0">
+                    18.4 T
+                  </p>
+                </div>
+                <div>
+                  <p class="text-[10px] text-slate-400 m-0 font-bold uppercase">
+                    Fuel
+                  </p>
+                  <p class="text-[13px] font-extrabold text-[#0f313a] m-0">
+                    64%
+                  </p>
+                </div>
+                <div>
+                  <p class="text-[10px] text-slate-400 m-0 font-bold uppercase">
+                    Health
+                  </p>
+                  <p class="text-[13px] font-extrabold text-[#047857] m-0">
+                    Good
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="card p-5 reveal" data-d="2">
+              <div class="flex items-start justify-between mb-4">
+                <div
+                  class="stat-icon"
+                  style="background: rgba(250, 193, 46, 0.18); color: #b8860b"
+                >
+                  <i class="fas fa-truck-ramp-box"></i>
+                </div>
+                <span class="pill pill-pending">Loading</span>
+              </div>
+              <h3 class="text-base font-extrabold text-[#0f313a] m-0">
+                TRK-2087 · Scania R450
+              </h3>
+              <p class="text-[12px] text-slate-400 m-0 mt-1">
+                Plate DL-08-CD-1190 · Driver: S. Kapoor
+              </p>
+              <div class="mt-4">
+                <div class="flex justify-between text-[11px] mb-1.5">
+                  <span class="text-slate-400 font-semibold">Utilisation</span>
+                  <span class="font-bold text-[#0f313a]">47%</span>
+                </div>
+                <div class="progress">
+                  <span
+                    style="
+                      width: 47%;
+                      background: linear-gradient(90deg, #fac12e, #e0a800);
+                    "
+                  ></span>
+                </div>
+              </div>
+              <div
+                class="grid grid-cols-3 gap-2 mt-4 pt-4 border-t border-slate-100"
+              >
+                <div>
+                  <p class="text-[10px] text-slate-400 m-0 font-bold uppercase">
+                    Load
+                  </p>
+                  <p class="text-[13px] font-extrabold text-[#0f313a] m-0">
+                    9.2 T
+                  </p>
+                </div>
+                <div>
+                  <p class="text-[10px] text-slate-400 m-0 font-bold uppercase">
+                    Fuel
+                  </p>
+                  <p class="text-[13px] font-extrabold text-[#0f313a] m-0">
+                    91%
+                  </p>
+                </div>
+                <div>
+                  <p class="text-[10px] text-slate-400 m-0 font-bold uppercase">
+                    Health
+                  </p>
+                  <p class="text-[13px] font-extrabold text-[#047857] m-0">
+                    Good
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="card p-5 reveal" data-d="3">
+              <div class="flex items-start justify-between mb-4">
+                <div
+                  class="stat-icon"
+                  style="background: rgba(249, 71, 53, 0.13); color: #f94735"
+                >
+                  <i class="fas fa-screwdriver-wrench"></i>
+                </div>
+                <span class="pill pill-delayed">Maintenance</span>
+              </div>
+              <h3 class="text-base font-extrabold text-[#0f313a] m-0">
+                TRK-3311 · MAN TGX
+              </h3>
+              <p class="text-[12px] text-slate-400 m-0 mt-1">
+                Plate KA-05-EF-7742 · Driver: Unassigned
+              </p>
+              <div class="mt-4">
+                <div class="flex justify-between text-[11px] mb-1.5">
+                  <span class="text-slate-400 font-semibold">Utilisation</span>
+                  <span class="font-bold text-[#0f313a]">0%</span>
+                </div>
+                <div class="progress">
+                  <span
+                    style="
+                      width: 4%;
+                      background: linear-gradient(90deg, #f94735, #c0301f);
+                    "
+                  ></span>
+                </div>
+              </div>
+              <div
+                class="grid grid-cols-3 gap-2 mt-4 pt-4 border-t border-slate-100"
+              >
+                <div>
+                  <p class="text-[10px] text-slate-400 m-0 font-bold uppercase">
+                    Load
+                  </p>
+                  <p class="text-[13px] font-extrabold text-[#0f313a] m-0">
+                    0 T
+                  </p>
+                </div>
+                <div>
+                  <p class="text-[10px] text-slate-400 m-0 font-bold uppercase">
+                    Fuel
+                  </p>
+                  <p class="text-[13px] font-extrabold text-[#0f313a] m-0">
+                    22%
+                  </p>
+                </div>
+                <div>
+                  <p class="text-[10px] text-slate-400 m-0 font-bold uppercase">
+                    Health
+                  </p>
+                  <p class="text-[13px] font-extrabold text-[#c0301f] m-0">
+                    Service
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="card p-5 reveal" data-d="1">
+              <div class="flex items-start justify-between mb-4">
+                <div
+                  class="stat-icon"
+                  style="background: rgba(80, 148, 193, 0.13); color: #5094c1"
+                >
+                  <i class="fas fa-truck"></i>
+                </div>
+                <span class="pill pill-transit">On Route</span>
+              </div>
+              <h3 class="text-base font-extrabold text-[#0f313a] m-0">
+                TRK-4478 · Tata Prima
+              </h3>
+              <p class="text-[12px] text-slate-400 m-0 mt-1">
+                Plate TN-09-GH-2231 · Driver: A. Iyer
+              </p>
+              <div class="mt-4">
+                <div class="flex justify-between text-[11px] mb-1.5">
+                  <span class="text-slate-400 font-semibold">Utilisation</span>
+                  <span class="font-bold text-[#0f313a]">68%</span>
+                </div>
+                <div class="progress">
+                  <span
+                    style="
+                      width: 68%;
+                      background: linear-gradient(90deg, #5094c1, #104a57);
+                    "
+                  ></span>
+                </div>
+              </div>
+              <div
+                class="grid grid-cols-3 gap-2 mt-4 pt-4 border-t border-slate-100"
+              >
+                <div>
+                  <p class="text-[10px] text-slate-400 m-0 font-bold uppercase">
+                    Load
+                  </p>
+                  <p class="text-[13px] font-extrabold text-[#0f313a] m-0">
+                    14.1 T
+                  </p>
+                </div>
+                <div>
+                  <p class="text-[10px] text-slate-400 m-0 font-bold uppercase">
+                    Fuel
+                  </p>
+                  <p class="text-[13px] font-extrabold text-[#0f313a] m-0">
+                    58%
+                  </p>
+                </div>
+                <div>
+                  <p class="text-[10px] text-slate-400 m-0 font-bold uppercase">
+                    Health
+                  </p>
+                  <p class="text-[13px] font-extrabold text-[#047857] m-0">
+                    Good
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="card p-5 reveal" data-d="2">
+              <div class="flex items-start justify-between mb-4">
+                <div
+                  class="stat-icon"
+                  style="background: rgba(16, 185, 129, 0.13); color: #047857"
+                >
+                  <i class="fas fa-truck-medical"></i>
+                </div>
+                <span class="pill pill-delivered">Available</span>
+              </div>
+              <h3 class="text-base font-extrabold text-[#0f313a] m-0">
+                TRK-5520 · Ashok Leyland
+              </h3>
+              <p class="text-[12px] text-slate-400 m-0 mt-1">
+                Plate GJ-01-IJ-9087 · Driver: P. Shah
+              </p>
+              <div class="mt-4">
+                <div class="flex justify-between text-[11px] mb-1.5">
+                  <span class="text-slate-400 font-semibold">Utilisation</span>
+                  <span class="font-bold text-[#0f313a]">12%</span>
+                </div>
+                <div class="progress">
+                  <span
+                    style="
+                      width: 12%;
+                      background: linear-gradient(90deg, #10b981, #047857);
+                    "
+                  ></span>
+                </div>
+              </div>
+              <div
+                class="grid grid-cols-3 gap-2 mt-4 pt-4 border-t border-slate-100"
+              >
+                <div>
+                  <p class="text-[10px] text-slate-400 m-0 font-bold uppercase">
+                    Load
+                  </p>
+                  <p class="text-[13px] font-extrabold text-[#0f313a] m-0">
+                    2.1 T
+                  </p>
+                </div>
+                <div>
+                  <p class="text-[10px] text-slate-400 m-0 font-bold uppercase">
+                    Fuel
+                  </p>
+                  <p class="text-[13px] font-extrabold text-[#0f313a] m-0">
+                    100%
+                  </p>
+                </div>
+                <div>
+                  <p class="text-[10px] text-slate-400 m-0 font-bold uppercase">
+                    Health
+                  </p>
+                  <p class="text-[13px] font-extrabold text-[#047857] m-0">
+                    Good
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="card p-5 reveal" data-d="3">
+              <div class="flex items-start justify-between mb-4">
+                <div
+                  class="stat-icon"
+                  style="background: rgba(15, 49, 58, 0.1); color: #0f313a"
+                >
+                  <i class="fas fa-trailer"></i>
+                </div>
+                <span class="pill pill-transit">On Route</span>
+              </div>
+              <h3 class="text-base font-extrabold text-[#0f313a] m-0">
+                TRK-6634 · BharatBenz
+              </h3>
+              <p class="text-[12px] text-slate-400 m-0 mt-1">
+                Plate RJ-14-KL-3345 · Driver: M. Rathore
+              </p>
+              <div class="mt-4">
+                <div class="flex justify-between text-[11px] mb-1.5">
+                  <span class="text-slate-400 font-semibold">Utilisation</span>
+                  <span class="font-bold text-[#0f313a]">74%</span>
+                </div>
+                <div class="progress">
+                  <span
+                    style="
+                      width: 74%;
+                      background: linear-gradient(90deg, #5094c1, #104a57);
+                    "
+                  ></span>
+                </div>
+              </div>
+              <div
+                class="grid grid-cols-3 gap-2 mt-4 pt-4 border-t border-slate-100"
+              >
+                <div>
+                  <p class="text-[10px] text-slate-400 m-0 font-bold uppercase">
+                    Load
+                  </p>
+                  <p class="text-[13px] font-extrabold text-[#0f313a] m-0">
+                    16.8 T
+                  </p>
+                </div>
+                <div>
+                  <p class="text-[10px] text-slate-400 m-0 font-bold uppercase">
+                    Fuel
+                  </p>
+                  <p class="text-[13px] font-extrabold text-[#0f313a] m-0">
+                    39%
+                  </p>
+                </div>
+                <div>
+                  <p class="text-[10px] text-slate-400 m-0 font-bold uppercase">
+                    Health
+                  </p>
+                  <p class="text-[13px] font-extrabold text-[#047857] m-0">
+                    Good
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==========================================================
+             PAGE: DRIVERS
+        =========================================================== -->
+        <section class="page" id="page-drivers">
+          <div class="page-hero reveal">
+            <div
+              class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4"
+            >
+              <div>
+                <h2>Drivers</h2>
+                <p>Manage your driver roster, ratings and assignments</p>
+              </div>
+              <button
+                type="button"
+                class="hero-btn hero-btn-solid"
+                onclick="window.location.href = './404.html'"
+              >
+                <i class="fas fa-user-plus"></i> Add Driver
+              </button>
+            </div>
+          </div>
+
+          <div
+            class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 mt-5"
+          >
+            <div class="card p-5 text-center reveal" data-d="1">
+              <div
+                class="w-16 h-16 rounded-2xl mx-auto grid place-items-center text-lg font-extrabold text-white"
+                style="background: linear-gradient(135deg, #5094c1, #104a57)"
+              >
+                RM
+              </div>
+              <h3 class="text-[15px] font-extrabold text-[#0f313a] m-0 mt-3">
+                Rajesh Mehta
+              </h3>
+              <p class="text-[11px] text-slate-400 m-0">
+                TRK-1042 · Mumbai Hub
+              </p>
+              <div class="flex items-center justify-center gap-1 mt-2">
+                <i class="fas fa-star text-[11px]" style="color: #fac12e"></i>
+                <span class="text-[12px] font-bold text-[#0f313a]">4.9</span>
+                <span class="text-[11px] text-slate-400">(312 trips)</span>
+              </div>
+              <div class="mt-4">
+                <span class="pill pill-transit">On Duty</span>
+              </div>
+            </div>
+
+            <div class="card p-5 text-center reveal" data-d="2">
+              <div
+                class="w-16 h-16 rounded-2xl mx-auto grid place-items-center text-lg font-extrabold text-white"
+                style="background: linear-gradient(135deg, #fac12e, #e0a800)"
+              >
+                SK
+              </div>
+              <h3 class="text-[15px] font-extrabold text-[#0f313a] m-0 mt-3">
+                Sunil Kapoor
+              </h3>
+              <p class="text-[11px] text-slate-400 m-0">TRK-2087 · Delhi Hub</p>
+              <div class="flex items-center justify-center gap-1 mt-2">
+                <i class="fas fa-star text-[11px]" style="color: #fac12e"></i>
+                <span class="text-[12px] font-bold text-[#0f313a]">4.7</span>
+                <span class="text-[11px] text-slate-400">(268 trips)</span>
+              </div>
+              <div class="mt-4">
+                <span class="pill pill-pending">On Break</span>
+              </div>
+            </div>
+
+            <div class="card p-5 text-center reveal" data-d="3">
+              <div
+                class="w-16 h-16 rounded-2xl mx-auto grid place-items-center text-lg font-extrabold text-white"
+                style="background: linear-gradient(135deg, #104a57, #0f313a)"
+              >
+                AI
+              </div>
+              <h3 class="text-[15px] font-extrabold text-[#0f313a] m-0 mt-3">
+                Arjun Iyer
+              </h3>
+              <p class="text-[11px] text-slate-400 m-0">
+                TRK-4478 · Chennai Hub
+              </p>
+              <div class="flex items-center justify-center gap-1 mt-2">
+                <i class="fas fa-star text-[11px]" style="color: #fac12e"></i>
+                <span class="text-[12px] font-bold text-[#0f313a]">4.8</span>
+                <span class="text-[11px] text-slate-400">(401 trips)</span>
+              </div>
+              <div class="mt-4">
+                <span class="pill pill-transit">On Duty</span>
+              </div>
+            </div>
+
+            <div class="card p-5 text-center reveal" data-d="4">
+              <div
+                class="w-16 h-16 rounded-2xl mx-auto grid place-items-center text-lg font-extrabold text-white"
+                style="background: linear-gradient(135deg, #f94735, #c0301f)"
+              >
+                PS
+              </div>
+              <h3 class="text-[15px] font-extrabold text-[#0f313a] m-0 mt-3">
+                Priya Shah
+              </h3>
+              <p class="text-[11px] text-slate-400 m-0">
+                TRK-5520 · Ahmedabad Hub
+              </p>
+              <div class="flex items-center justify-center gap-1 mt-2">
+                <i class="fas fa-star text-[11px]" style="color: #fac12e"></i>
+                <span class="text-[12px] font-bold text-[#0f313a]">5.0</span>
+                <span class="text-[11px] text-slate-400">(189 trips)</span>
+              </div>
+              <div class="mt-4">
+                <span class="pill pill-delivered">Available</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card mt-5 overflow-hidden reveal" data-d="1">
+            <div class="card-head">
+              <div>
+                <h3 class="card-title">Driver Performance</h3>
+                <p class="card-sub">Top performers this quarter</p>
+              </div>
+            </div>
+            <div class="table-scroll">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Driver</th>
+                    <th>Assigned Vehicle</th>
+                    <th>Hub</th>
+                    <th>Trips</th>
+                    <th>Rating</th>
+                    <th>On-Time %</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="cell-strong">Priya Shah</td>
+                    <td>TRK-5520</td>
+                    <td>Ahmedabad</td>
+                    <td>189</td>
+                    <td class="cell-strong">5.0</td>
+                    <td class="cell-strong">99.1%</td>
+                    <td><span class="pill pill-delivered">Available</span></td>
+                  </tr>
+                  <tr>
+                    <td class="cell-strong">Rajesh Mehta</td>
+                    <td>TRK-1042</td>
+                    <td>Mumbai</td>
+                    <td>312</td>
+                    <td class="cell-strong">4.9</td>
+                    <td class="cell-strong">98.4%</td>
+                    <td><span class="pill pill-transit">On Duty</span></td>
+                  </tr>
+                  <tr>
+                    <td class="cell-strong">Arjun Iyer</td>
+                    <td>TRK-4478</td>
+                    <td>Chennai</td>
+                    <td>401</td>
+                    <td class="cell-strong">4.8</td>
+                    <td class="cell-strong">97.2%</td>
+                    <td><span class="pill pill-transit">On Duty</span></td>
+                  </tr>
+                  <tr>
+                    <td class="cell-strong">Sunil Kapoor</td>
+                    <td>TRK-2087</td>
+                    <td>Delhi</td>
+                    <td>268</td>
+                    <td class="cell-strong">4.7</td>
+                    <td class="cell-strong">95.8%</td>
+                    <td><span class="pill pill-pending">On Break</span></td>
+                  </tr>
+                  <tr>
+                    <td class="cell-strong">Mahesh Rathore</td>
+                    <td>TRK-6634</td>
+                    <td>Jaipur</td>
+                    <td>233</td>
+                    <td class="cell-strong">4.6</td>
+                    <td class="cell-strong">94.3%</td>
+                    <td><span class="pill pill-transit">On Duty</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==========================================================
+             PAGE: CUSTOMERS
+        =========================================================== -->
+        <section class="page" id="page-customers">
+          <div class="page-hero reveal">
+            <div
+              class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4"
+            >
+              <div>
+                <h2>Customers</h2>
+                <p>Your client base, contracts and lifetime value</p>
+              </div>
+              <button
+                type="button"
+                class="hero-btn hero-btn-solid"
+                onclick="window.location.href = './404.html'"
+              >
+                <i class="fas fa-user-plus"></i> New Customer
+              </button>
+            </div>
+          </div>
+
+          <div class="card mt-5 overflow-hidden reveal" data-d="1">
+            <div class="card-head flex-col sm:flex-row sm:items-center gap-3">
+              <div>
+                <h3 class="card-title">Customer Directory</h3>
+                <p class="card-sub">248 active accounts</p>
+              </div>
+              <div class="relative w-full sm:w-64 sm:ml-auto">
+                <i
+                  class="fas fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-[11px]"
+                ></i>
+                <input
+                  type="text"
+                  class="form-field pl-9"
+                  placeholder="Search customer…"
+                />
+              </div>
+            </div>
+            <div class="table-scroll">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Company</th>
+                    <th>Contact</th>
+                    <th>Industry</th>
+                    <th>Shipments</th>
+                    <th>Lifetime Value</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="cell-strong">Aurora Retail</td>
+                    <td>priya@aurora.com</td>
+                    <td>Retail</td>
+                    <td>1,284</td>
+                    <td class="cell-strong">$412,800</td>
+                    <td><span class="pill pill-delivered">Active</span></td>
+                  </tr>
+                  <tr>
+                    <td class="cell-strong">Vertex Pharma</td>
+                    <td>ops@vertexpharma.io</td>
+                    <td>Healthcare</td>
+                    <td>942</td>
+                    <td class="cell-strong">$386,120</td>
+                    <td><span class="pill pill-delivered">Active</span></td>
+                  </tr>
+                  <tr>
+                    <td class="cell-strong">Northwind Co.</td>
+                    <td>hello@northwind.co</td>
+                    <td>Manufacturing</td>
+                    <td>768</td>
+                    <td class="cell-strong">$298,450</td>
+                    <td><span class="pill pill-delivered">Active</span></td>
+                  </tr>
+                  <tr>
+                    <td class="cell-strong">Helios Tech</td>
+                    <td>logistics@helios.dev</td>
+                    <td>Electronics</td>
+                    <td>654</td>
+                    <td class="cell-strong">$271,900</td>
+                    <td><span class="pill pill-delivered">Active</span></td>
+                  </tr>
+                  <tr>
+                    <td class="cell-strong">Bluewave Foods</td>
+                    <td>supply@bluewave.fm</td>
+                    <td>FMCG</td>
+                    <td>512</td>
+                    <td class="cell-strong">$184,300</td>
+                    <td><span class="pill pill-pending">Review</span></td>
+                  </tr>
+                  <tr>
+                    <td class="cell-strong">Kite Logistics</td>
+                    <td>team@kitelog.com</td>
+                    <td>3PL</td>
+                    <td>388</td>
+                    <td class="cell-strong">$142,760</td>
+                    <td><span class="pill pill-delivered">Active</span></td>
+                  </tr>
+                  <tr>
+                    <td class="cell-strong">Silverline Auto</td>
+                    <td>parts@silverline.in</td>
+                    <td>Automotive</td>
+                    <td>276</td>
+                    <td class="cell-strong">$118,540</td>
+                    <td><span class="pill pill-delayed">Overdue</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==========================================================
+             PAGE: INVOICES
+        =========================================================== -->
+        <section class="page" id="page-invoices">
+          <div class="page-hero reveal">
+            <div
+              class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4"
+            >
+              <div>
+                <h2>Invoices</h2>
+                <p>Billing, payments and outstanding balances</p>
+              </div>
+              <button
+                type="button"
+                class="hero-btn hero-btn-solid"
+                onclick="window.location.href = './404.html'"
+              >
+                <i class="fas fa-file-circle-plus"></i> New Invoice
+              </button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-5">
+            <div class="stat-card reveal" data-d="1">
+              <p class="stat-label" style="margin-top: 0">Total Billed</p>
+              <h3
+                class="stat-value"
+                data-count="4.82"
+                data-decimals="2"
+                data-prefix="$"
+                data-suffix="M"
+              >
+                $0.00M
+              </h3>
+              <p class="stat-foot">This financial year</p>
+            </div>
+            <div class="stat-card reveal" data-d="2">
+              <p class="stat-label" style="margin-top: 0">Collected</p>
+              <h3
+                class="stat-value"
+                data-count="4.31"
+                data-decimals="2"
+                data-prefix="$"
+                data-suffix="M"
+              >
+                $0.00M
+              </h3>
+              <p class="stat-foot">89.4% collection rate</p>
+            </div>
+            <div class="stat-card reveal" data-d="3">
+              <p class="stat-label" style="margin-top: 0">Outstanding</p>
+              <h3
+                class="stat-value"
+                data-count="0.51"
+                data-decimals="2"
+                data-prefix="$"
+                data-suffix="M"
+              >
+                $0.00M
+              </h3>
+              <p class="stat-foot">Across 42 invoices</p>
+            </div>
+            <div class="stat-card reveal" data-d="4">
+              <p class="stat-label" style="margin-top: 0">Overdue</p>
+              <h3 class="stat-value" data-count="7" data-suffix=" invoices">
+                0
+              </h3>
+              <p class="stat-foot">Needs immediate follow-up</p>
+            </div>
+          </div>
+
+          <div class="card mt-5 overflow-hidden reveal" data-d="1">
+            <div class="card-head">
+              <div>
+                <h3 class="card-title">Invoice Ledger</h3>
+                <p class="card-sub">Most recent billing activity</p>
+              </div>
+              <button type="button" class="link-btn">
+                <i class="fas fa-file-arrow-down"></i> Export CSV
+              </button>
+            </div>
+            <div class="table-scroll">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Invoice #</th>
+                    <th>Customer</th>
+                    <th>Issued</th>
+                    <th>Due</th>
+                    <th style="text-align: right">Amount</th>
+                    <th>Status</th>
+                    <th style="text-align: right">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="cell-mono">INV-2291</td>
+                    <td class="cell-strong">Helios Tech</td>
+                    <td>02 Sep 2025</td>
+                    <td>17 Sep 2025</td>
+                    <td style="text-align: right" class="cell-strong">
+                      $18,420
+                    </td>
+                    <td><span class="pill pill-pending">Pending</span></td>
+                    <td style="text-align: right">
+                      <button type="button" class="link-btn">
+                        <i class="fas fa-eye"></i> View
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="cell-mono">INV-2288</td>
+                    <td class="cell-strong">Aurora Retail</td>
+                    <td>28 Aug 2025</td>
+                    <td>12 Sep 2025</td>
+                    <td style="text-align: right" class="cell-strong">
+                      $24,760
+                    </td>
+                    <td><span class="pill pill-delivered">Paid</span></td>
+                    <td style="text-align: right">
+                      <button type="button" class="link-btn">
+                        <i class="fas fa-eye"></i> View
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="cell-mono">INV-2284</td>
+                    <td class="cell-strong">Vertex Pharma</td>
+                    <td>24 Aug 2025</td>
+                    <td>08 Sep 2025</td>
+                    <td style="text-align: right" class="cell-strong">
+                      $31,900
+                    </td>
+                    <td><span class="pill pill-delayed">Overdue</span></td>
+                    <td style="text-align: right">
+                      <button type="button" class="link-btn">
+                        <i class="fas fa-paper-plane"></i> Remind
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="cell-mono">INV-2279</td>
+                    <td class="cell-strong">Northwind Co.</td>
+                    <td>19 Aug 2025</td>
+                    <td>03 Sep 2025</td>
+                    <td style="text-align: right" class="cell-strong">
+                      $12,340
+                    </td>
+                    <td><span class="pill pill-delivered">Paid</span></td>
+                    <td style="text-align: right">
+                      <button type="button" class="link-btn">
+                        <i class="fas fa-eye"></i> View
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="cell-mono">INV-2274</td>
+                    <td class="cell-strong">Bluewave Foods</td>
+                    <td>15 Aug 2025</td>
+                    <td>30 Aug 2025</td>
+                    <td style="text-align: right" class="cell-strong">
+                      $9,870
+                    </td>
+                    <td><span class="pill pill-delayed">Overdue</span></td>
+                    <td style="text-align: right">
+                      <button type="button" class="link-btn">
+                        <i class="fas fa-paper-plane"></i> Remind
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="cell-mono">INV-2268</td>
+                    <td class="cell-strong">Kite Logistics</td>
+                    <td>10 Aug 2025</td>
+                    <td>25 Aug 2025</td>
+                    <td style="text-align: right" class="cell-strong">
+                      $7,420
+                    </td>
+                    <td><span class="pill pill-delivered">Paid</span></td>
+                    <td style="text-align: right">
+                      <button type="button" class="link-btn">
+                        <i class="fas fa-eye"></i> View
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==========================================================
+             PAGE: REPORTS
+        =========================================================== -->
+        <section class="page" id="page-reports">
+          <div class="page-hero reveal">
+            <div
+              class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4"
+            >
+              <div>
+                <h2>Reports & Analytics</h2>
+                <p>Deep insights into routes, performance and revenue</p>
+              </div>
+              <button
+                type="button"
+                class="hero-btn hero-btn-ghost"
+                onclick="window.location.href = './404.html'"
+              >
+                <i class="fas fa-calendar"></i> Last 12 Months
+              </button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 xl:grid-cols-2 gap-5 mt-5">
+            <div class="card reveal" data-d="1">
+              <div class="card-head">
+                <div>
+                  <h3 class="card-title">Top Routes by Volume</h3>
+                  <p class="card-sub">Shipment count per corridor</p>
+                </div>
+              </div>
+              <div class="chart-box">
+                <canvas id="chartRoutes"></canvas>
+              </div>
+            </div>
+
+            <div class="card reveal" data-d="2">
+              <div class="card-head">
+                <div>
+                  <h3 class="card-title">On-Time Delivery Rate</h3>
+                  <p class="card-sub">Monthly percentage trend</p>
+                </div>
+              </div>
+              <div class="chart-box">
+                <canvas id="chartOnTime"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mt-5"
+          >
+            <div class="card p-5 reveal" data-d="1">
+              <div
+                class="stat-icon mb-3"
+                style="background: rgba(80, 148, 193, 0.13); color: #5094c1"
+              >
+                <i class="fas fa-file-lines"></i>
+              </div>
+              <h4 class="text-[14px] font-extrabold text-[#0f313a] m-0">
+                Monthly Operations
+              </h4>
+              <p class="text-[12px] text-slate-400 mt-1 mb-4">
+                Full breakdown of September.
+              </p>
+              <button
+                type="button"
+                class="btn-ghost w-full"
+                onclick="window.location.href = './404.html'"
+              >
+                <i class="fas fa-download"></i> PDF
+              </button>
+            </div>
+
+            <div class="card p-5 reveal" data-d="2">
+              <div
+                class="stat-icon mb-3"
+                style="background: rgba(250, 193, 46, 0.18); color: #b8860b"
+              >
+                <i class="fas fa-chart-line"></i>
+              </div>
+              <h4 class="text-[14px] font-extrabold text-[#0f313a] m-0">
+                Revenue Analysis
+              </h4>
+              <p class="text-[12px] text-slate-400 mt-1 mb-4">
+                Quarterly revenue and margin.
+              </p>
+              <button
+                type="button"
+                class="btn-ghost w-full"
+                onclick="window.location.href = './404.html'"
+              >
+                <i class="fas fa-download"></i> XLSX
+              </button>
+            </div>
+
+            <div class="card p-5 reveal" data-d="3">
+              <div
+                class="stat-icon mb-3"
+                style="background: rgba(16, 185, 129, 0.13); color: #047857"
+              >
+                <i class="fas fa-leaf"></i>
+              </div>
+              <h4 class="text-[14px] font-extrabold text-[#0f313a] m-0">
+                Carbon Footprint
+              </h4>
+              <p class="text-[12px] text-slate-400 mt-1 mb-4">
+                Emissions per route and carrier
+              </p>
+              <button
+                type="button"
+                class="btn-ghost w-full"
+                onclick="window.location.href = './404.html'"
+              >
+                <i class="fas fa-download"></i> PDF
+              </button>
+            </div>
+
+            <div class="card p-5 reveal" data-d="4">
+              <div
+                class="stat-icon mb-3"
+                style="background: rgba(249, 71, 53, 0.13); color: #f94735"
+              >
+                <i class="fas fa-users-gear"></i>
+              </div>
+              <h4 class="text-[14px] font-extrabold text-[#0f313a] m-0">
+                Driver Performance
+              </h4>
+              <p class="text-[12px] text-slate-400 mt-1 mb-4">
+                Ratings, punctuality and safety
+              </p>
+              <button
+                type="button"
+                class="btn-ghost w-full"
+                onclick="window.location.href = './404.html'"
+              >
+                <i class="fas fa-download"></i> CSV
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==========================================================
+             PAGE: MESSAGES
+        =========================================================== -->
+        <section class="page" id="page-messages">
+          <div class="page-hero reveal">
+            <div>
+              <h2>Messages</h2>
+              <p>8 unread conversations · average response time 14 min</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 mt-5">
+            <div class="lg:col-span-5 card overflow-hidden reveal" data-d="1">
+              <div class="card-head flex-col gap-3 items-stretch">
+                <div class="flex items-center justify-between">
+                  <h3 class="card-title">Inbox</h3>
+                  <span class="pill pill-high">8 new</span>
+                </div>
+                <div class="relative">
+                  <i
+                    class="fas fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-[11px]"
+                  ></i>
+                  <input
+                    type="text"
+                    class="form-field pl-9"
+                    placeholder="Search conversations…"
+                  />
+                </div>
+              </div>
+
+              <div class="list-row" style="background: #f8fafc">
+                <div
+                  class="avatar-xs"
+                  style="background: linear-gradient(135deg, #5094c1, #104a57)"
+                >
+                  AR
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center justify-between gap-2">
+                    <p
+                      class="text-[13px] font-bold text-[#0f313a] m-0 truncate"
+                    >
+                      Aurora Retail
+                    </p>
+                    <span class="text-[10px] text-slate-400 flex-shrink-0"
+                      >2m</span
+                    >
+                  </div>
+                  <p class="text-[12px] text-slate-500 m-0 truncate">
+                    Can we reschedule the Dubai pickup to Friday morning?
+                  </p>
+                </div>
+                <span
+                  class="w-2 h-2 rounded-full flex-shrink-0 mt-2"
+                  style="background: #f94735"
+                ></span>
+              </div>
+
+              <div class="list-row">
+                <div
+                  class="avatar-xs"
+                  style="background: linear-gradient(135deg, #fac12e, #e0a800)"
+                >
+                  VP
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center justify-between gap-2">
+                    <p
+                      class="text-[13px] font-bold text-[#0f313a] m-0 truncate"
+                    >
+                      Vertex Pharma
+                    </p>
+                    <span class="text-[10px] text-slate-400 flex-shrink-0"
+                      >18m</span
+                    >
+                  </div>
+                  <p class="text-[12px] text-slate-500 m-0 truncate">
+                    Temperature logs for shipment LGV-90235 please.
+                  </p>
+                </div>
+                <span
+                  class="w-2 h-2 rounded-full flex-shrink-0 mt-2"
+                  style="background: #f94735"
+                ></span>
+              </div>
+
+              <div class="list-row">
+                <div
+                  class="avatar-xs"
+                  style="background: linear-gradient(135deg, #104a57, #0f313a)"
+                >
+                  HT
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center justify-between gap-2">
+                    <p
+                      class="text-[13px] font-bold text-[#0f313a] m-0 truncate"
+                    >
+                      Helios Tech
+                    </p>
+                    <span class="text-[10px] text-slate-400 flex-shrink-0"
+                      >1h</span
+                    >
+                  </div>
+                  <p class="text-[12px] text-slate-500 m-0 truncate">
+                    Invoice #INV-2291 has been approved for payment.
+                  </p>
+                </div>
+              </div>
+
+              <div class="list-row">
+                <div
+                  class="avatar-xs"
+                  style="background: linear-gradient(135deg, #f94735, #c0301f)"
+                >
+                  BW
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center justify-between gap-2">
+                    <p
+                      class="text-[13px] font-bold text-[#0f313a] m-0 truncate"
+                    >
+                      Bluewave Foods
+                    </p>
+                    <span class="text-[10px] text-slate-400 flex-shrink-0"
+                      >3h</span
+                    >
+                  </div>
+                  <p class="text-[12px] text-slate-500 m-0 truncate">
+                    Delay on the Doha route — need an updated ETA.
+                  </p>
+                </div>
+              </div>
+
+              <div class="list-row">
+                <div
+                  class="avatar-xs"
+                  style="background: linear-gradient(135deg, #5094c1, #3d7ba3)"
+                >
+                  KL
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center justify-between gap-2">
+                    <p
+                      class="text-[13px] font-bold text-[#0f313a] m-0 truncate"
+                    >
+                      Kite Logistics
+                    </p>
+                    <span class="text-[10px] text-slate-400 flex-shrink-0"
+                      >5h</span
+                    >
+                  </div>
+                  <p class="text-[12px] text-slate-500 m-0 truncate">
+                    Thanks for the quick turnaround on the Bangkok run.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="hidden lg:flex lg:col-span-7 card flex-col overflow-hidden reveal"
+              data-d="2"
+            >
+              <div
+                class="card-head items-center"
+                style="border-bottom: 1px solid #f1f5f9"
+              >
+                <div class="flex items-center gap-3">
+                  <div
+                    class="avatar-xs"
+                    style="
+                      background: linear-gradient(135deg, #5094c1, #104a57);
+                    "
+                  >
+                    AR
+                  </div>
+                  <div>
+                    <h3 class="card-title">Aurora Retail</h3>
+                    <p class="card-sub">priya@aurora.com · Online</p>
+                  </div>
+                </div>
+                <div class="flex items-center gap-2">
+                  <button
+                    type="button"
+                    class="icon-btn !w-9 !h-9"
+                    onclick="window.location.href = './404.html'"
+                  >
+                    <i class="fas fa-phone text-xs"></i>
+                  </button>
+                  <button
+                    type="button"
+                    class="icon-btn !w-9 !h-9"
+                    onclick="window.location.href = './404.html'"
+                  >
+                    <i class="fas fa-ellipsis-vertical text-xs"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="flex-1 p-5 space-y-4" style="min-height: 320px">
+                <div class="flex gap-3">
+                  <div
+                    class="avatar-xs flex-shrink-0"
+                    style="
+                      background: linear-gradient(135deg, #5094c1, #104a57);
+                    "
+                  >
+                    AR
+                  </div>
+                  <div
+                    class="max-w-[75%] rounded-2xl rounded-tl-sm px-4 py-2.5"
+                    style="background: #f1f5f9"
+                  >
+                    <p class="text-[13px] text-[#0f313a] m-0">
+                      Hi team, we need to reschedule the Dubai pickup. Can we
+                      move it to Friday morning?
+                    </p>
+                    <p class="text-[10px] text-slate-400 m-0 mt-1">09:12</p>
+                  </div>
+                </div>
+
+                <div class="flex gap-3 justify-end">
+                  <div
+                    class="max-w-[75%] rounded-2xl rounded-tr-sm px-4 py-2.5 text-white"
+                    style="
+                      background: linear-gradient(135deg, #104a57, #0f313a);
+                    "
+                  >
+                    <p class="text-[13px] m-0">
+                      Absolutely Priya. Friday 08:00 works — I'll update the
+                      manifest and confirm within the hour.
+                    </p>
+                    <p class="text-[10px] text-white/50 m-0 mt-1 text-right">
+                      09:18
+                    </p>
+                  </div>
+                  <div class="chip-avatar flex-shrink-0" data-user-initial>
+                    A
+                  </div>
+                </div>
+
+                <div class="flex gap-3">
+                  <div
+                    class="avatar-xs flex-shrink-0"
+                    style="
+                      background: linear-gradient(135deg, #5094c1, #104a57);
+                    "
+                  >
+                    AR
+                  </div>
+                  <div
+                    class="max-w-[75%] rounded-2xl rounded-tl-sm px-4 py-2.5"
+                    style="background: #f1f5f9"
+                  >
+                    <p class="text-[13px] text-[#0f313a] m-0">
+                      Perfect, thank you! Also please share the updated customs
+                      docs.
+                    </p>
+                    <p class="text-[10px] text-slate-400 m-0 mt-1">09:21</p>
+                  </div>
+                </div>
+              </div>
+
+              <form
+                action="./404.html"
+                class="p-4 border-t border-slate-100 flex items-center gap-2"
+              >
+                <input
+                  type="text"
+                  class="form-field"
+                  placeholder="Type your message…"
+                  required
+                />
+                <button type="button" class="btn-primary !px-4">
+                  <i class="fas fa-paper-plane"></i>
+                </button>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==========================================================
+             PAGE: TICKETS
+        =========================================================== -->
+        <section class="page" id="page-tickets">
+          <div class="page-hero reveal">
+            <div
+              class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4"
+            >
+              <div>
+                <h2>Support Tickets</h2>
+                <p>Track, assign and resolve customer issues</p>
+              </div>
+              <button
+                type="button"
+                class="hero-btn hero-btn-solid"
+                onclick="window.location.href = './404.html'"
+              >
+                <i class="fas fa-plus"></i> New Ticket
+              </button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-5">
+            <div class="mini-stat reveal" data-d="1">
+              <div
+                class="mini-icon"
+                style="background: rgba(80, 148, 193, 0.13); color: #5094c1"
+              >
+                <i class="fas fa-ticket"></i>
+              </div>
+              <div>
+                <p
+                  class="text-[10px] font-bold uppercase tracking-wider text-slate-400 m-0"
+                >
+                  Open
+                </p>
+                <p
+                  class="text-lg font-extrabold text-[#0f313a] m-0"
+                  data-count="24"
+                >
+                  0
+                </p>
+              </div>
+            </div>
+            <div class="mini-stat reveal" data-d="2">
+              <div
+                class="mini-icon"
+                style="background: rgba(249, 71, 53, 0.13); color: #f94735"
+              >
+                <i class="fas fa-fire"></i>
+              </div>
+              <div>
+                <p
+                  class="text-[10px] font-bold uppercase tracking-wider text-slate-400 m-0"
+                >
+                  Critical
+                </p>
+                <p
+                  class="text-lg font-extrabold text-[#0f313a] m-0"
+                  data-count="3"
+                >
+                  0
+                </p>
+              </div>
+            </div>
+            <div class="mini-stat reveal" data-d="3">
+              <div
+                class="mini-icon"
+                style="background: rgba(250, 193, 46, 0.18); color: #b8860b"
+              >
+                <i class="fas fa-hourglass-half"></i>
+              </div>
+              <div>
+                <p
+                  class="text-[10px] font-bold uppercase tracking-wider text-slate-400 m-0"
+                >
+                  Pending
+                </p>
+                <p
+                  class="text-lg font-extrabold text-[#0f313a] m-0"
+                  data-count="11"
+                >
+                  0
+                </p>
+              </div>
+            </div>
+            <div class="mini-stat reveal" data-d="4">
+              <div
+                class="mini-icon"
+                style="background: rgba(16, 185, 129, 0.13); color: #047857"
+              >
+                <i class="fas fa-circle-check"></i>
+              </div>
+              <div>
+                <p
+                  class="text-[10px] font-bold uppercase tracking-wider text-slate-400 m-0"
+                >
+                  Resolved
+                </p>
+                <p
+                  class="text-lg font-extrabold text-[#0f313a] m-0"
+                  data-count="428"
+                >
+                  0
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="card mt-5 overflow-hidden reveal" data-d="1">
+            <div class="card-head flex-col sm:flex-row sm:items-center gap-3">
+              <div>
+                <h3 class="card-title">Ticket Queue</h3>
+                <p class="card-sub">Sorted by priority and recency</p>
+              </div>
+              <div class="flex gap-2 sm:ml-auto">
+                <select class="form-field sm:w-auto">
+                  <option>All Priorities</option>
+                  <option>High</option>
+                  <option>Medium</option>
+                  <option>Low</option>
+                </select>
+                <select class="form-field sm:w-auto">
+                  <option>All Status</option>
+                  <option>Open</option>
+                  <option>Pending</option>
+                  <option>Resolved</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="table-scroll">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Ticket</th>
+                    <th>Subject</th>
+                    <th>Customer</th>
+                    <th>Priority</th>
+                    <th>Assignee</th>
+                    <th>Updated</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="cell-mono">#TKT-4821</td>
+                    <td class="cell-strong">Customs hold at Dubai</td>
+                    <td>Aurora Retail</td>
+                    <td><span class="pill pill-high">High</span></td>
+                    <td>R. Mehta</td>
+                    <td>12 min ago</td>
+                    <td><span class="pill pill-transit">Open</span></td>
+                  </tr>
+                  <tr>
+                    <td class="cell-mono">#TKT-4819</td>
+                    <td class="cell-strong">Reschedule pickup request</td>
+                    <td>Kite Logistics</td>
+                    <td><span class="pill pill-medium">Medium</span></td>
+                    <td>S. Kapoor</td>
+                    <td>46 min ago</td>
+                    <td><span class="pill pill-transit">Open</span></td>
+                  </tr>
+                  <tr>
+                    <td class="cell-mono">#TKT-4815</td>
+                    <td class="cell-strong">Invoice discrepancy</td>
+                    <td>Northwind Co.</td>
+                    <td><span class="pill pill-low">Low</span></td>
+                    <td>A. Iyer</td>
+                    <td>2 h ago</td>
+                    <td><span class="pill pill-pending">Pending</span></td>
+                  </tr>
+                  <tr>
+                    <td class="cell-mono">#TKT-4810</td>
+                    <td class="cell-strong">Route optimization request</td>
+                    <td>Helios Tech</td>
+                    <td><span class="pill pill-low">Low</span></td>
+                    <td>P. Shah</td>
+                    <td>5 h ago</td>
+                    <td><span class="pill pill-pending">Pending</span></td>
+                  </tr>
+                  <tr>
+                    <td class="cell-mono">#TKT-4802</td>
+                    <td class="cell-strong">Damaged packaging claim</td>
+                    <td>Bluewave Foods</td>
+                    <td><span class="pill pill-high">High</span></td>
+                    <td>M. Rathore</td>
+                    <td>9 h ago</td>
+                    <td><span class="pill pill-transit">Open</span></td>
+                  </tr>
+                  <tr>
+                    <td class="cell-mono">#TKT-4795</td>
+                    <td class="cell-strong">Delivery confirmation missing</td>
+                    <td>Silverline Auto</td>
+                    <td><span class="pill pill-medium">Medium</span></td>
+                    <td>R. Mehta</td>
+                    <td>1 d ago</td>
+                    <td><span class="pill pill-delivered">Resolved</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==========================================================
+             PAGE: SETTINGS
+        =========================================================== -->
+        <section class="page" id="page-settings">
+          <div class="page-hero reveal">
+            <div>
+              <h2>Settings</h2>
+              <p>Manage your account, workspace and notification preferences</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 xl:grid-cols-3 gap-5 mt-5">
+            <div class="xl:col-span-2 card reveal" data-d="1">
+              <div class="card-head">
+                <div>
+                  <h3 class="card-title">Profile Information</h3>
+                  <p class="card-sub">Your account details</p>
+                </div>
+              </div>
+              <div class="p-5">
+                <div class="flex items-center gap-4 mb-6">
+                  <div
+                    class="w-16 h-16 rounded-2xl grid place-items-center text-xl font-extrabold text-[#0f313a]"
+                    style="
+                      background: linear-gradient(135deg, #fac12e, #ffd968);
+                    "
+                    data-user-initial
+                  >
+                    A
+                  </div>
+                  <div>
+                    <p class="text-[15px] font-extrabold text-[#0f313a] m-0">
+                      <span data-user-name>Admin</span>
+                    </p>
+                    <p class="text-[12px] text-slate-400 m-0">
+                      <span data-user-email>admin@stackly.com</span>
+                    </p>
+                    <span class="pill pill-transit mt-1.5">Administrator</span>
+                  </div>
+                </div>
+
+                <form
+                  id="settingsForm"
+                  class="grid grid-cols-1 sm:grid-cols-2 gap-4"
+                  action="./404.html"
+                  method="get"
+                >
+                  <label class="field-label" for="settingsFullName"
+                    >Full Name</label
+                  >
+                  <input
+                    id="settingsFullName"
+                    name="fullName"
+                    type="text"
+                    class="form-field"
+                    value="Admin"
+                    data-user-name-input
+                    required
+                  />
+
+                  <label class="field-label" for="settingsEmail"
+                    >Email Address</label
+                  >
+                  <input
+                    id="settingsEmail"
+                    name="email"
+                    type="email"
+                    class="form-field"
+                    data-user-email-input
+                    required
+                  />
+
+                  <label class="field-label" for="settingsPhone">Phone</label>
+                  <input
+                    id="settingsPhone"
+                    name="phone"
+                    type="text"
+                    class="form-field"
+                    value="+91 98200 41122"
+                    required
+                  />
+
+                  <label class="field-label" for="settingsRole">Role</label>
+                  <input
+                    id="settingsRole"
+                    name="role"
+                    type="text"
+                    class="form-field"
+                    value="Admin"
+                    required
+                  />
+
+                  <div class="sm:col-span-2">
+                    <label class="field-label" for="settingsWorkspace"
+                      >Workspace / Company</label
+                    >
+                    <input
+                      id="settingsWorkspace"
+                      name="workspace"
+                      type="text"
+                      class="form-field"
+                      value="Stackly Global Logistics"
+                      required
+                    />
+                  </div>
+
+                  <div class="flex flex-wrap gap-3 mt-6">
+                    <button type="submit" class="btn-primary">
+                      <i class="fas fa-floppy-disk"></i> Save Changes
+                    </button>
+
+                    <button
+                      type="button"
+                      class="btn-ghost"
+                      onclick="window.location.href = './404.html'"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <div class="space-y-5">
+              <div class="card reveal" data-d="2">
+                <div class="card-head">
+                  <div>
+                    <h3 class="card-title">Notifications</h3>
+                    <p class="card-sub">Choose what you receive</p>
+                  </div>
+                </div>
+                <div class="p-5 space-y-4">
+                  <div class="flex items-center justify-between gap-3">
+                    <div>
+                      <p class="text-[13px] font-bold text-[#0f313a] m-0">
+                        Shipment Alerts
+                      </p>
+                      <p class="text-[11px] text-slate-400 m-0">
+                        Status changes & delays
+                      </p>
+                    </div>
+                    <label class="toggle">
+                      <input type="checkbox" checked />
+                      <span class="toggle-track">
+                        <span class="toggle-thumb"></span>
+                      </span>
+                    </label>
+                  </div>
+
+                  <div class="flex items-center justify-between gap-3">
+                    <div>
+                      <p class="text-[13px] font-bold text-[#0f313a] m-0">
+                        New Messages
+                      </p>
+                      <p class="text-[11px] text-slate-400 m-0">
+                        Customer enquiries
+                      </p>
+                    </div>
+                    <label class="toggle">
+                      <input type="checkbox" checked />
+                      <span class="toggle-track">
+                        <span class="toggle-thumb"></span>
+                      </span>
+                    </label>
+                  </div>
+
+                  <div class="flex items-center justify-between gap-3">
+                    <div>
+                      <p class="text-[13px] font-bold text-[#0f313a] m-0">
+                        Invoice Reminders
+                      </p>
+                      <p class="text-[11px] text-slate-400 m-0">
+                        Overdue payment alerts
+                      </p>
+                    </div>
+                    <label class="toggle">
+                      <input type="checkbox" />
+                      <span class="toggle-track">
+                        <span class="toggle-thumb"></span>
+                      </span>
+                    </label>
+                  </div>
+
+                  <div class="flex items-center justify-between gap-3">
+                    <div>
+                      <p class="text-[13px] font-bold text-[#0f313a] m-0">
+                        Weekly Reports
+                      </p>
+                      <p class="text-[11px] text-slate-400 m-0">
+                        Summary every Monday
+                      </p>
+                    </div>
+                    <label class="toggle">
+                      <input type="checkbox" checked />
+                      <span class="toggle-track">
+                        <span class="toggle-thumb"></span>
+                      </span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card reveal" data-d="3">
+                <div class="card-head">
+                  <div>
+                    <h3 class="card-title">Security</h3>
+                    <p class="card-sub">Protect your account</p>
+                  </div>
+                </div>
+                <div class="p-5 space-y-3">
+                  <button
+                    type="button"
+                    class="w-full flex items-center justify-between gap-3 p-3 rounded-xl border border-slate-200 hover:border-[#0f313a] transition text-left"
+                    onclick="window.location.href = './404.html'"
+                  >
+                    <span class="flex items-center gap-3">
+                      <i class="fas fa-key text-[#5094c1]"></i>
+                      <span class="text-[13px] font-bold text-[#0f313a]">
+                        Change Password
+                      </span>
+                    </span>
+                    <i class="fas fa-chevron-right text-xs text-slate-400"></i>
+                  </button>
+
+                  <button
+                    type="button"
+                    class="w-full flex items-center justify-between gap-3 p-3 rounded-xl border border-slate-200 hover:border-[#0f313a] transition text-left"
+                    onclick="window.location.href = './404.html'"
+                  >
+                    <span class="flex items-center gap-3">
+                      <i class="fas fa-shield-halved text-[#5094c1]"></i>
+                      <span class="text-[13px] font-bold text-[#0f313a]">
+                        Two-Factor Auth
+                      </span>
+                    </span>
+                    <span class="pill pill-delivered">On</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    class="w-full flex items-center justify-between gap-3 p-3 rounded-xl border border-slate-200 hover:border-[#0f313a] transition text-left"
+                    onclick="window.location.href = './404.html'"
+                  >
+                    <span class="flex items-center gap-3">
+                      <i class="fas fa-clock-rotate-left text-[#5094c1]"></i>
+                      <span class="text-[13px] font-bold text-[#0f313a]">
+                        Login Activity
+                      </span>
+                    </span>
+                    <i class="fas fa-chevron-right text-xs text-slate-400"></i>
+                  </button>
+
+                  <button
+                    type="button"
+                    class="w-full flex items-center justify-between gap-3 p-3 rounded-xl border transition text-left"
+                    style="border-color: rgba(249, 71, 53, 0.3)"
+                    onclick="window.location.href = './login.html'"
+                  >
+                    <span class="flex items-center gap-3">
+                      <i class="fas fa-right-from-bracket text-[#f94735]"></i>
+                      <span class="text-[13px] font-bold text-[#f94735]">
+                        Sign Out Everywhere
+                      </span>
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- ================= SCRIPTS ================= -->
+    <script>
+      /* ==========================================================
+         AUTH / STORED USER
+      ========================================================== */
+      let user = {
+        email: "admin@stackly.com",
+        name: "Admin",
+        role: "ADMIN",
+      };
+
+      try {
+        const raw = localStorage.getItem("logiverUser");
+        if (raw) user = Object.assign(user, JSON.parse(raw));
+      } catch (e) {
+        /* ignore malformed storage */
+      }
+
+      const initial = (user.name || user.email || "A")
+        .trim()
+        .charAt(0)
+        .toUpperCase();
+
+      document.querySelectorAll("[data-user-email]").forEach((el) => {
+        el.textContent = user.email || "admin@stackly.com";
+      });
+
+      document.querySelectorAll("[data-user-name]").forEach((el) => {
+        el.textContent = user.name || "Admin";
+      });
+
+      document.querySelectorAll("[data-user-initial]").forEach((el) => {
+        el.textContent = initial;
+      });
+
+      const emailInput = document.querySelector("[data-user-email-input]");
+      if (emailInput) emailInput.value = user.email || "";
+
+      const nameInput = document.querySelector("[data-user-name-input]");
+      if (nameInput) nameInput.value = user.name || "Admin";
+
+      /* Today's date */
+      const dateEl = document.getElementById("todayDate");
+      if (dateEl) {
+        dateEl.textContent = new Date().toLocaleDateString(undefined, {
+          weekday: "short",
+          day: "numeric",
+          month: "short",
+          year: "numeric",
+        });
+      }
+
+      /* ==========================================================
+         SIDEBAR
+      ========================================================== */
+      const sidebar = document.getElementById("sidebar");
+      const overlay = document.getElementById("overlay");
+      const menuBtn = document.getElementById("menuBtn");
+      const closeSidebarBtn = document.getElementById("closeSidebar");
+
+      function openSidebar() {
+        sidebar.classList.add("open");
+        overlay.classList.add("show");
+        if (window.innerWidth < 1024) document.body.classList.add("no-scroll");
+      }
+
+      function closeSidebar() {
+        sidebar.classList.remove("open");
+        overlay.classList.remove("show");
+        document.body.classList.remove("no-scroll");
+      }
+
+      menuBtn.addEventListener("click", openSidebar);
+      closeSidebarBtn.addEventListener("click", closeSidebar);
+      overlay.addEventListener("click", closeSidebar);
+
+      window.addEventListener("resize", () => {
+        if (window.innerWidth >= 1024) {
+          overlay.classList.remove("show");
+          document.body.classList.remove("no-scroll");
+        }
+      });
+
+      /* ==========================================================
+         PAGE NAVIGATION
+      ========================================================== */
+      const pageTitle = document.getElementById("pageTitle");
+      const navLinks = document.querySelectorAll(".nav-link[data-page]");
+
+      function goToPage(page) {
+        const link = document.querySelector(`.nav-link[data-page="${page}"]`);
+        if (link) link.click();
+      }
+
+      navLinks.forEach((link) => {
+        link.addEventListener("click", () => {
+          const page = link.dataset.page;
+          const target = document.getElementById("page-" + page);
+          if (!target) return;
+
+          navLinks.forEach((l) => l.classList.remove("active"));
+          link.classList.add("active");
+
+          document.querySelectorAll(".page").forEach((p) => {
+            p.classList.remove("active");
+          });
+          target.classList.add("active");
+
+          if (pageTitle) {
+            pageTitle.textContent =
+              link.dataset.title || link.textContent.trim();
+          }
+
+          if (window.innerWidth < 1024) closeSidebar();
+
+          window.scrollTo({ top: 0, behavior: "smooth" });
+
+          /* Lazy-init charts for the newly visible page */
+          requestAnimationFrame(() => initChartsFor(page));
+        });
+      });
+
+      /* "View all" style buttons */
+      document.querySelectorAll("[data-goto]").forEach((btn) => {
+        btn.addEventListener("click", () => goToPage(btn.dataset.goto));
+      });
+
+      /* ==========================================================
+         ANIMATED COUNTERS
+      ========================================================== */
+      function animateCount(el) {
+        const target = parseFloat(el.dataset.count || "0");
+        const decimals = parseInt(el.dataset.decimals || "0", 10);
+        const prefix = el.dataset.prefix || "";
+        const suffix = el.dataset.suffix || "";
+        const duration = 1700;
+        const start = performance.now();
+
+        function tick(now) {
+          const p = Math.min((now - start) / duration, 1);
+          const eased = 1 - Math.pow(1 - p, 3);
+          const value = target * eased;
+          el.textContent =
+            prefix +
+            value.toLocaleString(undefined, {
+              minimumFractionDigits: decimals,
+              maximumFractionDigits: decimals,
+            }) +
+            suffix;
+          if (p < 1) requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+      }
+
+      const counterObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              animateCount(entry.target);
+              counterObserver.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.35 },
+      );
+
+      document
+        .querySelectorAll("[data-count]")
+        .forEach((el) => counterObserver.observe(el));
+
+      /* ==========================================================
+         SCROLL REVEAL
+      ========================================================== */
+      const revealObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("in");
+              revealObserver.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.08, rootMargin: "0px 0px -40px 0px" },
+      );
+
+      document
+        .querySelectorAll(".reveal")
+        .forEach((el) => revealObserver.observe(el));
+
+      /* ==========================================================
+         CHARTS
+      ========================================================== */
+      Chart.defaults.font.family = "'Outfit', sans-serif";
+      Chart.defaults.font.size = 11;
+      Chart.defaults.color = "#94a3b8";
+
+      const charts = {};
+
+      /* Center label plugin for doughnut */
+      const centerLabelPlugin = {
+        id: "centerLabel",
+        afterDraw(chart) {
+          if (chart.config.type !== "doughnut") return;
+          const {
+            ctx,
+            chartArea: { left, right, top, bottom },
+          } = chart;
+          const x = (left + right) / 2;
+          const y = (top + bottom) / 2;
+          ctx.save();
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.fillStyle = "#0f313a";
+          ctx.font = "800 26px Outfit, sans-serif";
+          ctx.fillText("18.6K", x, y - 8);
+          ctx.fillStyle = "#94a3b8";
+          ctx.font = "700 10px Outfit, sans-serif";
+          ctx.fillText("TOTAL UNITS", x, y + 14);
+          ctx.restore();
+        },
+      };
+      Chart.register(centerLabelPlugin);
+
+      const tooltipStyle = {
+        backgroundColor: "#0f313a",
+        padding: 12,
+        cornerRadius: 10,
+        titleFont: { size: 12, weight: "700" },
+        bodyFont: { size: 11 },
+        usePointStyle: true,
+        displayColors: true,
+        boxPadding: 4,
+      };
+
+      const legendStyle = {
+        position: "top",
+        align: "end",
+        labels: {
+          usePointStyle: true,
+          pointStyle: "circle",
+          boxWidth: 8,
+          boxHeight: 8,
+          padding: 16,
+          font: { size: 11, weight: "700" },
+        },
+      };
+
+      function makeGradient(ctx, color, height) {
+        const g = ctx.createLinearGradient(0, 0, 0, height || 300);
+        g.addColorStop(0, color.replace("ALPHA", "0.35"));
+        g.addColorStop(1, color.replace("ALPHA", "0"));
+        return g;
+      }
+
+      /* ---------- DASHBOARD CHARTS ---------- */
+      function buildVolumeChart() {
+        const canvas = document.getElementById("chartVolume");
+        if (!canvas || charts.volume) return;
+        const ctx = canvas.getContext("2d");
+
+        charts.volume = new Chart(ctx, {
+          type: "line",
+          data: {
+            labels: [
+              "Jan",
+              "Feb",
+              "Mar",
+              "Apr",
+              "May",
+              "Jun",
+              "Jul",
+              "Aug",
+              "Sep",
+              "Oct",
+              "Nov",
+              "Dec",
+            ],
+            datasets: [
+              {
+                label: "Shipments",
+                data: [
+                  820, 940, 1080, 1010, 1240, 1380, 1290, 1460, 1520, 1680,
+                  1740, 1842,
+                ],
+                borderColor: "#5094c1",
+                backgroundColor: makeGradient(
+                  ctx,
+                  "rgba(80,148,193,ALPHA)",
+                  320,
+                ),
+                fill: true,
+                tension: 0.42,
+                borderWidth: 3,
+                pointRadius: 0,
+                pointHoverRadius: 6,
+                pointBackgroundColor: "#5094c1",
+                pointBorderColor: "#fff",
+                pointBorderWidth: 2,
+              },
+              {
+                label: "Delivered",
+                data: [
+                  700, 830, 960, 910, 1120, 1240, 1180, 1330, 1400, 1540, 1610,
+                  1690,
+                ],
+                borderColor: "#fac12e",
+                backgroundColor: makeGradient(
+                  ctx,
+                  "rgba(250,193,46,ALPHA)",
+                  320,
+                ),
+                fill: true,
+                tension: 0.42,
+                borderWidth: 3,
+                pointRadius: 0,
+                pointHoverRadius: 6,
+                pointBackgroundColor: "#fac12e",
+                pointBorderColor: "#fff",
+                pointBorderWidth: 2,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: { mode: "index", intersect: false },
+            plugins: {
+              legend: legendStyle,
+              tooltip: tooltipStyle,
+            },
+            scales: {
+              x: {
+                grid: { display: false },
+                border: { display: false },
+                ticks: { font: { size: 10, weight: "600" } },
+              },
+              y: {
+                beginAtZero: true,
+                grid: { color: "rgba(15,49,58,0.07)" },
+                border: { display: false },
+                ticks: {
+                  maxTicksLimit: 6,
+                  font: { size: 10, weight: "600" },
+                },
+              },
+            },
+          },
+        });
+      }
+
+      function buildStatusChart() {
+        const canvas = document.getElementById("chartStatus");
+        if (!canvas || charts.status) return;
+
+        charts.status = new Chart(canvas.getContext("2d"), {
+          type: "doughnut",
+          data: {
+            labels: ["Delivered", "In Transit", "Pending", "Delayed"],
+            datasets: [
+              {
+                data: [16902, 1284, 234, 180],
+                backgroundColor: ["#104a57", "#5094c1", "#fac12e", "#f94735"],
+                borderWidth: 0,
+                hoverOffset: 10,
+                spacing: 2,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: "70%",
+            plugins: {
+              legend: {
+                position: "bottom",
+                labels: {
+                  usePointStyle: true,
+                  pointStyle: "circle",
+                  boxWidth: 8,
+                  boxHeight: 8,
+                  padding: 14,
+                  font: { size: 11, weight: "700" },
+                },
+              },
+              tooltip: tooltipStyle,
+            },
+          },
+        });
+      }
+
+      function buildRevenueChart() {
+        const canvas = document.getElementById("chartRevenue");
+        if (!canvas || charts.revenue) return;
+
+        charts.revenue = new Chart(canvas.getContext("2d"), {
+          type: "bar",
+          data: {
+            labels: [
+              "Jan",
+              "Feb",
+              "Mar",
+              "Apr",
+              "May",
+              "Jun",
+              "Jul",
+              "Aug",
+              "Sep",
+              "Oct",
+              "Nov",
+              "Dec",
+            ],
+            datasets: [
+              {
+                label: "Revenue",
+                data: [62, 74, 81, 78, 96, 108, 101, 118, 124, 136, 142, 151],
+                backgroundColor: "#5094c1",
+                borderRadius: 8,
+                borderSkipped: false,
+                maxBarThickness: 20,
+              },
+              {
+                label: "Cost",
+                data: [38, 44, 49, 46, 56, 62, 59, 68, 72, 78, 82, 86],
+                backgroundColor: "#fac12e",
+                borderRadius: 8,
+                borderSkipped: false,
+                maxBarThickness: 20,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: legendStyle,
+              tooltip: {
+                ...tooltipStyle,
+                callbacks: {
+                  label: (c) => `${c.dataset.label}: $${c.parsed.y}k`,
+                },
+              },
+            },
+            scales: {
+              x: {
+                grid: { display: false },
+                border: { display: false },
+                ticks: { font: { size: 10, weight: "600" } },
+              },
+              y: {
+                beginAtZero: true,
+                grid: { color: "rgba(15,49,58,0.07)" },
+                border: { display: false },
+                ticks: {
+                  maxTicksLimit: 6,
+                  font: { size: 10, weight: "600" },
+                  callback: (v) => "$" + v + "k",
+                },
+              },
+            },
+          },
+        });
+      }
+
+      function buildPerfChart() {
+        const canvas = document.getElementById("chartPerf");
+        if (!canvas || charts.perf) return;
+
+        charts.perf = new Chart(canvas.getContext("2d"), {
+          type: "radar",
+          data: {
+            labels: [
+              "On-Time",
+              "Safety",
+              "Cost",
+              "Satisfaction",
+              "Coverage",
+              "Speed",
+            ],
+            datasets: [
+              {
+                label: "This Quarter",
+                data: [92, 88, 76, 94, 81, 87],
+                borderColor: "#f94735",
+                backgroundColor: "rgba(249,71,53,0.18)",
+                borderWidth: 2,
+                pointBackgroundColor: "#f94735",
+                pointBorderColor: "#fff",
+                pointBorderWidth: 2,
+                pointRadius: 4,
+              },
+              {
+                label: "Last Quarter",
+                data: [85, 82, 71, 88, 74, 80],
+                borderColor: "#5094c1",
+                backgroundColor: "rgba(80,148,193,0.15)",
+                borderWidth: 2,
+                pointBackgroundColor: "#5094c1",
+                pointBorderColor: "#fff",
+                pointBorderWidth: 2,
+                pointRadius: 4,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: "bottom",
+                labels: {
+                  usePointStyle: true,
+                  pointStyle: "circle",
+                  boxWidth: 8,
+                  boxHeight: 8,
+                  padding: 12,
+                  font: { size: 10, weight: "700" },
+                },
+              },
+              tooltip: tooltipStyle,
+            },
+            scales: {
+              r: {
+                beginAtZero: true,
+                max: 100,
+                grid: { color: "rgba(15,49,58,0.1)" },
+                angleLines: { color: "rgba(15,49,58,0.1)" },
+                pointLabels: {
+                  font: { size: 10, weight: "700" },
+                  color: "#64748b",
+                },
+                ticks: { display: false, stepSize: 25 },
+              },
+            },
+          },
+        });
+      }
+
+      /* ---------- REPORT CHARTS ---------- */
+      function buildRoutesChart() {
+        const canvas = document.getElementById("chartRoutes");
+        if (!canvas || charts.routes) return;
+
+        charts.routes = new Chart(canvas.getContext("2d"), {
+          type: "bar",
+          data: {
+            labels: [
+              "Mumbai → Dubai",
+              "Delhi → Singapore",
+              "Pune → Frankfurt",
+              "Chennai → Doha",
+              "Kolkata → Bangkok",
+              "Bengaluru → Tokyo",
+            ],
+            datasets: [
+              {
+                label: "Shipments",
+                data: [1842, 1410, 1120, 864, 612, 548],
+                backgroundColor: [
+                  "#104a57",
+                  "#5094c1",
+                  "#fac12e",
+                  "#f94735",
+                  "#0f313a",
+                  "#3d7ba3",
+                ],
+                borderRadius: 8,
+                borderSkipped: false,
+                maxBarThickness: 26,
+              },
+            ],
+          },
+          options: {
+            indexAxis: "y",
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { display: false },
+              tooltip: tooltipStyle,
+            },
+            scales: {
+              x: {
+                beginAtZero: true,
+                grid: { color: "rgba(15,49,58,0.07)" },
+                border: { display: false },
+                ticks: { font: { size: 10, weight: "600" } },
+              },
+              y: {
+                grid: { display: false },
+                border: { display: false },
+                ticks: { font: { size: 10, weight: "700" } },
+              },
+            },
+          },
+        });
+      }
+
+      function buildOnTimeChart() {
+        const canvas = document.getElementById("chartOnTime");
+        if (!canvas || charts.onTime) return;
+        const ctx = canvas.getContext("2d");
+
+        charts.onTime = new Chart(ctx, {
+          type: "line",
+          data: {
+            labels: [
+              "Jan",
+              "Feb",
+              "Mar",
+              "Apr",
+              "May",
+              "Jun",
+              "Jul",
+              "Aug",
+              "Sep",
+            ],
+            datasets: [
+              {
+                label: "On-Time %",
+                data: [94.2, 95.1, 93.8, 96.4, 97.1, 96.2, 97.8, 98.0, 98.2],
+                borderColor: "#f94735",
+                backgroundColor: makeGradient(
+                  ctx,
+                  "rgba(249,71,53,ALPHA)",
+                  300,
+                ),
+                fill: true,
+                tension: 0.42,
+                borderWidth: 3,
+                pointRadius: 0,
+                pointHoverRadius: 6,
+                pointBackgroundColor: "#f94735",
+                pointBorderColor: "#fff",
+                pointBorderWidth: 2,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                ...tooltipStyle,
+                callbacks: {
+                  label: (c) => `On-Time: ${c.parsed.y}%`,
+                },
+              },
+            },
+            scales: {
+              x: {
+                grid: { display: false },
+                border: { display: false },
+                ticks: { font: { size: 10, weight: "600" } },
+              },
+              y: {
+                min: 90,
+                max: 100,
+                grid: { color: "rgba(15,49,58,0.07)" },
+                border: { display: false },
+                ticks: {
+                  font: { size: 10, weight: "600" },
+                  callback: (v) => v + "%",
+                },
+              },
+            },
+          },
+        });
+      }
+
+      /* ---------- LAZY CHART INIT ---------- */
+      function initChartsFor(page) {
+        if (page === "dashboard") {
+          buildVolumeChart();
+          buildStatusChart();
+          buildRevenueChart();
+          buildPerfChart();
+        }
+        if (page === "reports") {
+          buildRoutesChart();
+          buildOnTimeChart();
+        }
+      }
+
+      /* Build the default page's charts on load */
+      window.addEventListener("load", () => {
+        initChartsFor("dashboard");
+      });
+    </script>
+  </body>
+</html>

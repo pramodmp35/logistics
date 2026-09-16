@@ -1,0 +1,3553 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stackly — My Dashboard</title>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+    <style>
+      :root {
+        --ember: #f94735;
+        --abyss: #0f313a;
+        --cloud: #ffffff;
+        --coastal: #5094c1;
+        --lagoon: #104a57;
+        --sunbeam: #fac12e;
+
+        --sidebar-w: 270px;
+        --topbar-h: 68px;
+        --radius: 20px;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html {
+        -webkit-text-size-adjust: 100%;
+      }
+
+      body {
+        margin: 0;
+        font-family:
+          "Outfit",
+          system-ui,
+          -apple-system,
+          sans-serif;
+        background-color: #eef3f7;
+        background-image:
+          radial-gradient(
+            circle at 6% 0%,
+            rgba(80, 148, 193, 0.1) 0%,
+            transparent 26%
+          ),
+          radial-gradient(
+            circle at 96% 100%,
+            rgba(250, 193, 46, 0.13) 0%,
+            transparent 26%
+          );
+        color: var(--abyss);
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+
+      body.no-scroll {
+        overflow: hidden;
+      }
+
+      ::selection {
+        background: rgba(250, 193, 46, 0.35);
+      }
+
+      /* ============================================================
+         SIDEBAR
+      ============================================================ */
+      .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: var(--sidebar-w);
+        z-index: 70;
+        display: flex;
+        flex-direction: column;
+        background: linear-gradient(
+          168deg,
+          var(--abyss) 0%,
+          var(--lagoon) 100%
+        );
+        transform: translateX(-100%);
+        transition: transform 0.42s cubic-bezier(0.16, 1, 0.3, 1);
+        box-shadow: 12px 0 44px -20px rgba(15, 49, 58, 0.6);
+      }
+
+      .sidebar::before {
+        content: "";
+        position: absolute;
+        top: -28%;
+        right: -45%;
+        width: 110%;
+        height: 62%;
+        background: radial-gradient(
+          circle,
+          rgba(250, 193, 46, 0.16) 0%,
+          transparent 68%
+        );
+        pointer-events: none;
+      }
+
+      .sidebar::after {
+        content: "";
+        position: absolute;
+        bottom: -30%;
+        left: -35%;
+        width: 100%;
+        height: 55%;
+        background: radial-gradient(
+          circle,
+          rgba(80, 148, 193, 0.2) 0%,
+          transparent 68%
+        );
+        pointer-events: none;
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .sidebar-head {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+        padding: 1.15rem 1.25rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+        flex-shrink: 0;
+      }
+
+      .sidebar-logo {
+        height: 40px;
+        width: auto;
+        object-fit: contain;
+        display: block;
+      }
+
+      .sidebar-nav {
+        position: relative;
+        z-index: 2;
+        flex: 1;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        padding: 1.15rem 1rem 1.5rem;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(255, 255, 255, 0.18) transparent;
+      }
+
+      .sidebar-nav::-webkit-scrollbar {
+        width: 5px;
+      }
+      .sidebar-nav::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.18);
+        border-radius: 99px;
+      }
+
+      .nav-label {
+        font-size: 0.65rem;
+        font-weight: 800;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.35);
+        padding: 0 0.8rem;
+        margin: 1.35rem 0 0.5rem;
+      }
+      .nav-label:first-child {
+        margin-top: 0;
+      }
+
+      .nav-link {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        padding: 0.72rem 0.85rem;
+        margin-bottom: 0.2rem;
+        border-radius: 12px;
+        border: 1px solid transparent;
+        color: rgba(255, 255, 255, 0.72);
+        font-size: 0.875rem;
+        font-weight: 600;
+        cursor: pointer;
+        user-select: none;
+        transition: all 0.25s ease;
+        text-decoration: none;
+      }
+
+      .nav-link i:first-child {
+        width: 20px;
+        text-align: center;
+        font-size: 0.92rem;
+        flex-shrink: 0;
+      }
+
+      .nav-link:hover {
+        background: rgba(255, 255, 255, 0.08);
+        color: #fff;
+      }
+
+      .nav-link.active {
+        background: rgba(250, 193, 46, 0.14);
+        border-color: rgba(250, 193, 46, 0.35);
+        color: #fff;
+        box-shadow: 0 10px 24px -14px rgba(250, 193, 46, 0.75);
+      }
+
+      .nav-link.active::before {
+        content: "";
+        position: absolute;
+        left: -1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 4px;
+        height: 58%;
+        background: var(--sunbeam);
+        border-radius: 0 6px 6px 0;
+      }
+
+      .nav-badge {
+        margin-left: auto;
+        font-size: 0.62rem;
+        font-weight: 800;
+        letter-spacing: 0.02em;
+        padding: 0.16rem 0.5rem;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.15);
+        color: #fff;
+      }
+
+      .nav-badge.danger {
+        background: var(--ember);
+      }
+
+      .sidebar-foot {
+        position: relative;
+        z-index: 2;
+        padding: 0.9rem 1rem 1.15rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.09);
+        flex-shrink: 0;
+      }
+
+      .side-profile {
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+        padding: 0.65rem 0.7rem;
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .side-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        font-weight: 800;
+        font-size: 0.85rem;
+        color: var(--abyss);
+        background: linear-gradient(135deg, var(--sunbeam), #ffd968);
+        flex-shrink: 0;
+      }
+
+      .side-home {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-top: 0.65rem;
+        padding: 0.65rem;
+        border-radius: 12px;
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        color: #fff;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        text-decoration: none;
+        transition: all 0.28s ease;
+      }
+
+      .side-home:hover {
+        background: var(--sunbeam);
+        border-color: var(--sunbeam);
+        color: var(--abyss);
+      }
+
+      /* ============================================================
+         OVERLAY
+      ============================================================ */
+      .overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 65;
+        background: rgba(15, 49, 58, 0.55);
+        backdrop-filter: blur(3px);
+        -webkit-backdrop-filter: blur(3px);
+        opacity: 0;
+        visibility: hidden;
+        transition:
+          opacity 0.3s ease,
+          visibility 0.3s ease;
+      }
+
+      .overlay.show {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      /* ============================================================
+         LAYOUT
+      ============================================================ */
+      .main {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        transition: margin 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .page-wrap {
+        flex: 1;
+        width: 100%;
+        padding: 1rem 1rem 3rem;
+        max-width: 1500px;
+        margin: 0 auto;
+      }
+
+      /* ============================================================
+         TOPBAR
+      ============================================================ */
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        min-height: var(--topbar-h);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+        padding: 0 1rem;
+        background: rgba(255, 255, 255, 0.86);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border-bottom: 1px solid rgba(15, 49, 58, 0.08);
+      }
+
+      .topbar-logo {
+        height: 32px;
+        width: auto;
+        max-width: 120px;
+        object-fit: contain;
+        display: block;
+      }
+
+      .icon-btn {
+        width: 40px;
+        height: 40px;
+        display: grid;
+        place-items: center;
+        border-radius: 12px;
+        border: 1px solid rgba(15, 49, 58, 0.08);
+        background: #fff;
+        color: var(--abyss);
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: all 0.25s ease;
+        flex-shrink: 0;
+        position: relative;
+      }
+
+      .icon-btn:hover {
+        background: var(--abyss);
+        border-color: var(--abyss);
+        color: #fff;
+        transform: translateY(-2px);
+      }
+
+      .icon-btn .dot {
+        position: absolute;
+        top: 7px;
+        right: 8px;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--ember);
+        border: 2px solid #fff;
+      }
+
+      .icon-btn .dot::after {
+        content: "";
+        position: absolute;
+        inset: -2px;
+        border-radius: 50%;
+        background: var(--ember);
+        opacity: 0.6;
+        animation: ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+      }
+
+      @keyframes ping {
+        0% {
+          transform: scale(1);
+          opacity: 0.6;
+        }
+        80%,
+        100% {
+          transform: scale(2.1);
+          opacity: 0;
+        }
+      }
+
+      .profile-chip {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        padding: 0.35rem;
+        border-radius: 14px;
+        border: 1px solid rgba(15, 49, 58, 0.08);
+        background: #fff;
+        transition: all 0.25s ease;
+        cursor: pointer;
+      }
+
+      .profile-chip:hover {
+        box-shadow: 0 10px 26px -16px rgba(15, 49, 58, 0.55);
+        transform: translateY(-2px);
+      }
+
+      .chip-avatar {
+        width: 34px;
+        height: 34px;
+        border-radius: 11px;
+        display: grid;
+        place-items: center;
+        font-weight: 800;
+        font-size: 0.8rem;
+        color: var(--abyss);
+        background: linear-gradient(135deg, var(--sunbeam), #ffd968);
+        flex-shrink: 0;
+      }
+
+      /* ============================================================
+         PAGES
+      ============================================================ */
+      .page {
+        display: none;
+      }
+
+      .page.active {
+        display: block;
+        animation: pageIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      @keyframes pageIn {
+        from {
+          opacity: 0;
+          transform: translateY(16px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+
+      .reveal {
+        opacity: 0;
+        transform: translateY(24px);
+        transition:
+          opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+          transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+        will-change: opacity, transform;
+      }
+
+      .reveal.in {
+        opacity: 1;
+        transform: none;
+      }
+
+      .reveal[data-d="1"] {
+        transition-delay: 0.08s;
+      }
+      .reveal[data-d="2"] {
+        transition-delay: 0.16s;
+      }
+      .reveal[data-d="3"] {
+        transition-delay: 0.24s;
+      }
+      .reveal[data-d="4"] {
+        transition-delay: 0.32s;
+      }
+
+      /* ============================================================
+         HERO BANNER
+      ============================================================ */
+      .hero-banner {
+        position: relative;
+        overflow: hidden;
+        border-radius: 24px;
+        padding: 1.75rem 1.35rem 5.5rem;
+        color: #fff;
+        background: linear-gradient(
+          135deg,
+          var(--abyss) 0%,
+          var(--lagoon) 100%
+        );
+        box-shadow: 0 30px 60px -30px rgba(15, 49, 58, 0.75);
+      }
+
+      .hero-banner::before {
+        content: "";
+        position: absolute;
+        top: -55%;
+        right: -18%;
+        width: 62%;
+        height: 170%;
+        background: radial-gradient(
+          circle,
+          rgba(250, 193, 46, 0.2) 0%,
+          transparent 66%
+        );
+        border-radius: 50%;
+        pointer-events: none;
+      }
+
+      .hero-banner::after {
+        content: "";
+        position: absolute;
+        bottom: -70%;
+        left: -12%;
+        width: 58%;
+        height: 155%;
+        background: radial-gradient(
+          circle,
+          rgba(80, 148, 193, 0.28) 0%,
+          transparent 66%
+        );
+        border-radius: 50%;
+        pointer-events: none;
+      }
+
+      .hero-inner {
+        position: relative;
+        z-index: 2;
+      }
+
+      .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        padding: 0.35rem 0.8rem;
+        border-radius: 999px;
+        font-size: 0.68rem;
+        font-weight: 800;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--sunbeam);
+        background: rgba(250, 193, 46, 0.12);
+        border: 1px solid rgba(250, 193, 46, 0.3);
+        margin-bottom: 0.9rem;
+      }
+
+      .hero-title {
+        font-size: 1.55rem;
+        line-height: 1.2;
+        font-weight: 800;
+        margin: 0 0 0.5rem;
+        letter-spacing: -0.02em;
+      }
+
+      .hero-sub {
+        font-size: 0.875rem;
+        color: rgba(255, 255, 255, 0.72);
+        margin: 0 0 0.9rem;
+        max-width: 52ch;
+        line-height: 1.6;
+      }
+
+      .hero-meta {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.5rem 0.75rem;
+        font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.8);
+      }
+
+      .hero-meta .sep {
+        color: rgba(255, 255, 255, 0.3);
+      }
+
+      .hero-role {
+        padding: 0.16rem 0.55rem;
+        border-radius: 999px;
+        font-size: 0.62rem;
+        font-weight: 800;
+        letter-spacing: 0.1em;
+        background: var(--coastal);
+        color: #fff;
+      }
+
+      .hero-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.7rem 1.25rem;
+        border-radius: 12px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        text-decoration: none;
+        cursor: pointer;
+        border: 1px solid transparent;
+        transition: all 0.28s ease;
+        white-space: nowrap;
+      }
+
+      .hero-btn-solid {
+        background: var(--ember);
+        color: #fff;
+        box-shadow: 0 12px 26px -14px rgba(249, 71, 53, 0.9);
+      }
+
+      .hero-btn-solid:hover {
+        background: #d13c2c;
+        transform: translateY(-2px);
+      }
+
+      .hero-btn-ghost {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.28);
+        color: #fff;
+        backdrop-filter: blur(6px);
+      }
+
+      .hero-btn-ghost:hover {
+        background: var(--sunbeam);
+        border-color: var(--sunbeam);
+        color: var(--abyss);
+        transform: translateY(-2px);
+      }
+
+      .page-hero {
+        position: relative;
+        overflow: hidden;
+        border-radius: 22px;
+        padding: 1.5rem 1.25rem;
+        color: #fff;
+        background: linear-gradient(
+          135deg,
+          var(--abyss) 0%,
+          var(--lagoon) 100%
+        );
+        box-shadow: 0 24px 48px -28px rgba(15, 49, 58, 0.75);
+      }
+
+      .page-hero::before {
+        content: "";
+        position: absolute;
+        top: -70%;
+        right: -12%;
+        width: 55%;
+        height: 190%;
+        background: radial-gradient(
+          circle,
+          rgba(250, 193, 46, 0.18) 0%,
+          transparent 66%
+        );
+        border-radius: 50%;
+        pointer-events: none;
+      }
+
+      .page-hero > * {
+        position: relative;
+        z-index: 2;
+      }
+
+      .page-hero h2 {
+        font-size: 1.3rem;
+        font-weight: 800;
+        margin: 0 0 0.3rem;
+        letter-spacing: -0.015em;
+      }
+
+      .page-hero p {
+        font-size: 0.82rem;
+        color: rgba(255, 255, 255, 0.7);
+        margin: 0;
+      }
+
+      /* ============================================================
+         CARDS
+      ============================================================ */
+      .card {
+        background: #fff;
+        border-radius: var(--radius);
+        border: 1px solid rgba(15, 49, 58, 0.07);
+        box-shadow: 0 14px 34px -24px rgba(15, 49, 58, 0.5);
+      }
+
+      .card-head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 0.75rem;
+        padding: 1.15rem 1.25rem;
+        border-bottom: 1px solid #f1f5f9;
+      }
+
+      .card-title {
+        font-size: 0.95rem;
+        font-weight: 800;
+        color: var(--abyss);
+        margin: 0;
+        letter-spacing: -0.01em;
+      }
+
+      .card-sub {
+        font-size: 0.75rem;
+        color: #94a3b8;
+        margin: 0.2rem 0 0;
+      }
+
+      .link-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: var(--coastal);
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        transition: all 0.22s ease;
+        white-space: nowrap;
+      }
+
+      .link-btn:hover {
+        color: var(--ember);
+        gap: 0.6rem;
+      }
+
+      /* ============================================================
+         STAT CARDS
+      ============================================================ */
+      .stat-card {
+        position: relative;
+        overflow: hidden;
+        background: #fff;
+        border-radius: 18px;
+        border: 1px solid rgba(15, 49, 58, 0.07);
+        box-shadow: 0 16px 36px -26px rgba(15, 49, 58, 0.6);
+        padding: 1.1rem;
+        transition:
+          transform 0.32s cubic-bezier(0.16, 1, 0.3, 1),
+          box-shadow 0.32s ease;
+      }
+
+      .stat-card::after {
+        content: "";
+        position: absolute;
+        top: -40%;
+        right: -25%;
+        width: 70%;
+        height: 130%;
+        background: radial-gradient(
+          circle,
+          rgba(80, 148, 193, 0.07) 0%,
+          transparent 68%
+        );
+        pointer-events: none;
+      }
+
+      .stat-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 26px 50px -26px rgba(15, 49, 58, 0.65);
+      }
+
+      .stat-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 13px;
+        display: grid;
+        place-items: center;
+        font-size: 1rem;
+      }
+
+      .trend {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        font-size: 0.68rem;
+        font-weight: 800;
+        padding: 0.22rem 0.5rem;
+        border-radius: 999px;
+      }
+
+      .trend.up {
+        background: rgba(16, 185, 129, 0.12);
+        color: #047857;
+      }
+
+      .trend.down {
+        background: rgba(249, 71, 53, 0.12);
+        color: #c0301f;
+      }
+
+      .stat-label {
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: #94a3b8;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        margin: 0.9rem 0 0.2rem;
+      }
+
+      .stat-value {
+        font-size: 1.6rem;
+        font-weight: 800;
+        color: var(--abyss);
+        letter-spacing: -0.03em;
+        margin: 0;
+        line-height: 1.1;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .stat-foot {
+        font-size: 0.72rem;
+        color: #94a3b8;
+        margin: 0.35rem 0 0;
+      }
+
+      /* ============================================================
+         PILLS / BADGES
+      ============================================================ */
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        padding: 0.26rem 0.65rem;
+        border-radius: 999px;
+        font-size: 0.68rem;
+        font-weight: 800;
+        letter-spacing: 0.02em;
+        white-space: nowrap;
+      }
+
+      .pill::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: currentColor;
+      }
+
+      .pill-delivered {
+        background: rgba(16, 185, 129, 0.13);
+        color: #047857;
+      }
+      .pill-transit {
+        background: rgba(80, 148, 193, 0.16);
+        color: #2c6c93;
+      }
+      .pill-pending {
+        background: rgba(250, 193, 46, 0.2);
+        color: #8a6200;
+      }
+      .pill-delayed {
+        background: rgba(249, 71, 53, 0.13);
+        color: #c0301f;
+      }
+
+      /* ============================================================
+         TABLE
+      ============================================================ */
+      .table-scroll {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .data-table {
+        width: 100%;
+        min-width: 700px;
+        border-collapse: collapse;
+      }
+
+      .data-table th {
+        text-align: left;
+        font-size: 0.68rem;
+        font-weight: 800;
+        letter-spacing: 0.09em;
+        text-transform: uppercase;
+        color: #94a3b8;
+        background: #f8fafc;
+        padding: 0.8rem 1.15rem;
+        border-bottom: 1px solid #eef2f7;
+        white-space: nowrap;
+      }
+
+      .data-table td {
+        padding: 0.9rem 1.15rem;
+        font-size: 0.83rem;
+        color: #334155;
+        border-bottom: 1px solid #f4f7fa;
+        vertical-align: middle;
+      }
+
+      .data-table tbody tr {
+        transition: background 0.2s ease;
+      }
+
+      .data-table tbody tr:hover {
+        background: #f8fafc;
+      }
+
+      .data-table tbody tr:last-child td {
+        border-bottom: none;
+      }
+
+      .cell-strong {
+        font-weight: 700;
+        color: var(--abyss);
+      }
+
+      .cell-mono {
+        font-variant-numeric: tabular-nums;
+        font-weight: 700;
+        color: var(--coastal);
+      }
+
+      .avatar-xs {
+        width: 30px;
+        height: 30px;
+        border-radius: 10px;
+        display: grid;
+        place-items: center;
+        font-size: 0.7rem;
+        font-weight: 800;
+        color: #fff;
+        flex-shrink: 0;
+      }
+
+      /* ============================================================
+         MISC
+      ============================================================ */
+      .chart-box {
+        position: relative;
+        width: 100%;
+        height: 270px;
+        padding: 0.75rem 0.75rem 0.5rem;
+      }
+
+      .progress {
+        height: 7px;
+        border-radius: 99px;
+        background: #eef2f7;
+        overflow: hidden;
+      }
+
+      .progress > span {
+        display: block;
+        height: 100%;
+        border-radius: 99px;
+      }
+
+      .list-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.85rem;
+        padding: 0.9rem 1.25rem;
+        border-bottom: 1px solid #f4f7fa;
+        transition: background 0.2s ease;
+      }
+
+      .list-row:last-child {
+        border-bottom: none;
+      }
+
+      .list-row:hover {
+        background: #f8fafc;
+      }
+
+      .toggle input {
+        display: none;
+      }
+
+      .toggle-track {
+        width: 46px;
+        height: 26px;
+        border-radius: 999px;
+        background: #cbd5e1;
+        display: block;
+        position: relative;
+        cursor: pointer;
+        transition: background 0.28s ease;
+        flex-shrink: 0;
+      }
+
+      .toggle-thumb {
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #fff;
+        box-shadow: 0 2px 6px rgba(15, 49, 58, 0.28);
+        transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .toggle input:checked + .toggle-track {
+        background: var(--coastal);
+      }
+
+      .toggle input:checked + .toggle-track .toggle-thumb {
+        transform: translateX(20px);
+      }
+
+      .form-field {
+        width: 100%;
+        padding: 0.72rem 0.95rem;
+        border-radius: 12px;
+        border: 1px solid #e2e8f0;
+        background: #f8fafc;
+        font-size: 0.83rem;
+        font-family: inherit;
+        color: var(--abyss);
+        transition: all 0.25s ease;
+      }
+
+      .form-field:focus {
+        outline: none;
+        background: #fff;
+        border-color: var(--coastal);
+        box-shadow: 0 0 0 4px rgba(80, 148, 193, 0.14);
+      }
+
+      .field-label {
+        display: block;
+        font-size: 0.74rem;
+        font-weight: 800;
+        color: var(--abyss);
+        margin-bottom: 0.4rem;
+        letter-spacing: 0.02em;
+      }
+
+      .btn-primary {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        background: var(--ember);
+        color: #fff;
+        font-weight: 700;
+        font-size: 0.82rem;
+        padding: 0.72rem 1.35rem;
+        border-radius: 12px;
+        border: none;
+        cursor: pointer;
+        transition: all 0.28s ease;
+      }
+
+      .btn-primary:hover {
+        background: #d13c2c;
+        transform: translateY(-2px);
+        box-shadow: 0 12px 26px -12px rgba(249, 71, 53, 0.8);
+      }
+
+      .btn-ghost {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        background: #fff;
+        color: var(--abyss);
+        font-weight: 700;
+        font-size: 0.82rem;
+        padding: 0.72rem 1.35rem;
+        border-radius: 12px;
+        border: 1px solid #e2e8f0;
+        cursor: pointer;
+        transition: all 0.28s ease;
+      }
+
+      .btn-ghost:hover {
+        border-color: var(--abyss);
+        transform: translateY(-2px);
+      }
+
+      .mini-stat {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        padding: 1rem;
+        border-radius: 16px;
+        background: #fff;
+        border: 1px solid rgba(15, 49, 58, 0.07);
+        box-shadow: 0 14px 30px -26px rgba(15, 49, 58, 0.6);
+      }
+
+      .mini-icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 12px;
+        display: grid;
+        place-items: center;
+        font-size: 0.9rem;
+        flex-shrink: 0;
+      }
+
+      .timeline-step {
+        display: flex;
+        gap: 1rem;
+      }
+
+      .timeline-dot {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        font-size: 0.7rem;
+        flex-shrink: 0;
+        color: #fff;
+      }
+
+      .timeline-line {
+        width: 2px;
+        flex: 1;
+        margin: 4px auto;
+        background: #e2e8f0;
+      }
+
+      /* ============================================================
+         RESPONSIVE
+      ============================================================ */
+      @media (min-width: 640px) {
+        .hero-title {
+          font-size: 1.85rem;
+        }
+        .page-hero h2 {
+          font-size: 1.5rem;
+        }
+        .stat-value {
+          font-size: 1.75rem;
+        }
+      }
+
+      @media (min-width: 1024px) {
+        .sidebar {
+          transform: translateX(0);
+        }
+
+        .overlay {
+          display: none;
+        }
+
+        .main {
+          margin-left: var(--sidebar-w);
+        }
+
+        .topbar {
+          padding: 0 2rem;
+        }
+
+        .page-wrap {
+          padding: 1.75rem 2rem 3.5rem;
+        }
+
+        .hero-banner {
+          padding: 2.5rem 2.25rem 6rem;
+        }
+
+        .hero-title {
+          font-size: 2.1rem;
+        }
+
+        .hero-sub {
+          font-size: 0.95rem;
+        }
+
+        .page-hero {
+          padding: 1.85rem 2rem;
+        }
+
+        .chart-box {
+          height: 300px;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.001ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.001ms !important;
+        }
+        .reveal {
+          opacity: 1;
+          transform: none;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- ================= SIDEBAR ================= -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-head">
+        <!-- Logo now points to ./user.html -->
+        <a href="./user.html" aria-label="Logiver dashboard">
+          <img
+            src="./assets/logoog.webp"
+            alt="Logiver Logo"
+            class="sidebar-logo"
+          />
+        </a>
+        <button
+          type="button"
+          id="closeSidebar"
+          class="lg:hidden w-9 h-9 rounded-lg grid place-items-center text-white/60 hover:text-white hover:bg-white/10 transition"
+          aria-label="Close menu"
+        >
+          <i class="fas fa-xmark"></i>
+        </button>
+      </div>
+
+      <nav class="sidebar-nav" id="sidebarNav">
+        <p class="nav-label">My Space</p>
+        <a class="nav-link active" data-page="dashboard" data-title="Dashboard">
+          <i class="fas fa-gauge-high"></i><span>Dashboard</span>
+        </a>
+        <a class="nav-link" data-page="shipments" data-title="My Shipments">
+          <i class="fas fa-box"></i><span>My Shipments</span>
+          <span class="nav-badge">6</span>
+        </a>
+        <a class="nav-link" data-page="track" data-title="Track Shipment">
+          <i class="fas fa-location-crosshairs"></i><span>Track Shipment</span>
+        </a>
+
+        <p class="nav-label">Billing</p>
+        <a class="nav-link" data-page="invoices" data-title="My Invoices">
+          <i class="fas fa-file-invoice-dollar"></i><span>My Invoices</span>
+        </a>
+
+        <p class="nav-label">Help</p>
+        <a class="nav-link" data-page="messages" data-title="Messages">
+          <i class="fas fa-comment-dots"></i><span>Messages</span>
+          <span class="nav-badge danger">3</span>
+        </a>
+        <a class="nav-link" data-page="support" data-title="Support">
+          <i class="fas fa-headset"></i><span>Support</span>
+        </a>
+
+        <p class="nav-label">Account</p>
+        <a class="nav-link" data-page="settings" data-title="Settings">
+          <i class="fas fa-gear"></i><span>Settings</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-foot">
+        <div class="side-profile">
+          <div class="side-avatar" data-user-initial>U</div>
+          <div class="min-w-0 flex-1">
+            <p class="text-white text-xs font-bold truncate m-0" data-user-name>
+              User
+            </p>
+            <p class="text-white/45 text-[11px] truncate m-0" data-user-email>
+              user@logiver.com
+            </p>
+          </div>
+        </div>
+        <!-- Back to Home now points to ./login.html -->
+        <a href="./login.html" class="side-home">
+          <i class="fas fa-house"></i> LOGOUT
+        </a>
+      </div>
+    </aside>
+
+    <!-- ================= OVERLAY ================= -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- ================= MAIN ================= -->
+    <div class="main">
+      <!-- ============ TOPBAR ============ -->
+      <header class="topbar">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <button
+            type="button"
+            class="icon-btn lg:hidden"
+            id="menuBtn"
+            aria-label="Open menu"
+          >
+            <i class="fas fa-bars"></i>
+          </button>
+
+          <!-- MOBILE LOGO wrapped in link to ./user.html -->
+          <a
+            href="./user.html"
+            aria-label="Logiver dashboard"
+            class="lg:hidden"
+          >
+            <img src="./assets/logoog.webp" alt="Logiver" class="topbar-logo" />
+          </a>
+
+          <div class="hidden lg:block min-w-0">
+            <h1
+              id="pageTitle"
+              class="text-[17px] font-extrabold text-[#0f313a] leading-tight m-0 truncate"
+            >
+              Dashboard
+            </h1>
+            <p class="text-[11px] text-slate-400 m-0 truncate">
+              Welcome back,
+              <span class="font-semibold" data-user-name>User</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 flex-shrink-0">
+          <button
+            type="button"
+            class="icon-btn"
+            aria-label="Notifications"
+            data-404
+          >
+            <i class="fas fa-bell"></i>
+            <span class="dot"></span>
+          </button>
+
+          <div
+            class="profile-chip"
+            data-404
+            onclick="window.location.href = './404.html'"
+          >
+            <div class="chip-avatar" data-user-initial>U</div>
+            <div class="hidden lg:block pr-2 text-left">
+              <p
+                class="text-[12px] font-bold text-[#0f313a] leading-tight m-0 max-w-[150px] truncate"
+                data-user-email
+              >
+                user@logiver.com
+              </p>
+              <p class="text-[10px] text-slate-400 m-0 leading-tight">
+                Customer
+              </p>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- ============ PAGE CONTENT ============ -->
+      <div class="page-wrap">
+        <!-- ==========================================================
+             PAGE: DASHBOARD
+        =========================================================== -->
+        <section class="page active" id="page-dashboard">
+          <div class="hero-banner reveal">
+            <div
+              class="hero-inner flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6"
+            >
+              <div class="max-w-2xl">
+                <span class="hero-badge">
+                  <i class="fas fa-hand-sparkles"></i> My Account
+                </span>
+                <h2 class="hero-title">
+                  Welcome back,
+                  <span data-user-name>User</span> 👋
+                </h2>
+                <p class="hero-sub">
+                  Track your shipments, view invoices and manage your deliveries
+                  — all in one place.
+                </p>
+                <div class="hero-meta">
+                  <span>
+                    <i class="fas fa-envelope mr-1.5"></i>
+                    <span data-user-email>user@logiver.com</span>
+                  </span>
+                  <span class="sep">•</span>
+                  <span class="hero-role">CUSTOMER</span>
+                  <span class="sep">•</span>
+                  <span>
+                    <i class="fas fa-calendar-day mr-1.5"></i>
+                    <span id="todayDate">—</span>
+                  </span>
+                </div>
+              </div>
+
+              <div class="flex flex-wrap gap-3">
+                <button type="button" class="hero-btn hero-btn-solid" data-404>
+                  <i class="fas fa-plus"></i> New Shipment
+                </button>
+                <button
+                  type="button"
+                  class="hero-btn hero-btn-ghost"
+                  data-goto="track"
+                >
+                  <i class="fas fa-location-crosshairs"></i> Track Order
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 -mt-14 relative z-20"
+          >
+            <div class="stat-card reveal" data-d="1">
+              <div class="flex items-start justify-between">
+                <div
+                  class="stat-icon"
+                  style="background: rgba(80, 148, 193, 0.13); color: #5094c1"
+                >
+                  <i class="fas fa-box"></i>
+                </div>
+                <span class="trend up">
+                  <i class="fas fa-arrow-up"></i> 8.2%
+                </span>
+              </div>
+              <p class="stat-label">Total Shipments</p>
+              <h3 class="stat-value" data-count="86">0</h3>
+              <p class="stat-foot">vs 79 last month</p>
+            </div>
+
+            <div class="stat-card reveal" data-d="2">
+              <div class="flex items-start justify-between">
+                <div
+                  class="stat-icon"
+                  style="background: rgba(250, 193, 46, 0.18); color: #b8860b"
+                >
+                  <i class="fas fa-truck-fast"></i>
+                </div>
+                <span class="trend up">
+                  <i class="fas fa-arrow-up"></i> 4.5%
+                </span>
+              </div>
+              <p class="stat-label">In Transit</p>
+              <h3 class="stat-value" data-count="6">0</h3>
+              <p class="stat-foot">Arriving within 7 days</p>
+            </div>
+
+            <div class="stat-card reveal" data-d="3">
+              <div class="flex items-start justify-between">
+                <div
+                  class="stat-icon"
+                  style="background: rgba(16, 185, 129, 0.13); color: #047857"
+                >
+                  <i class="fas fa-circle-check"></i>
+                </div>
+                <span class="trend up">
+                  <i class="fas fa-arrow-up"></i> 12.1%
+                </span>
+              </div>
+              <p class="stat-label">Delivered</p>
+              <h3 class="stat-value" data-count="74">0</h3>
+              <p class="stat-foot">100% on-time rate</p>
+            </div>
+
+            <div class="stat-card reveal" data-d="4">
+              <div class="flex items-start justify-between">
+                <div
+                  class="stat-icon"
+                  style="background: rgba(249, 71, 53, 0.13); color: #f94735"
+                >
+                  <i class="fas fa-wallet"></i>
+                </div>
+                <span class="trend down">
+                  <i class="fas fa-arrow-down"></i> 3.8%
+                </span>
+              </div>
+              <p class="stat-label">Total Spent</p>
+              <h3
+                class="stat-value"
+                data-count="12.4"
+                data-decimals="1"
+                data-prefix="$"
+                data-suffix="K"
+              >
+                $0.0K
+              </h3>
+              <p class="stat-foot">Lifetime value with Logiver</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 xl:grid-cols-3 gap-5 mt-5">
+            <div class="card xl:col-span-2 reveal" data-d="1">
+              <div class="card-head">
+                <div>
+                  <h3 class="card-title">My Shipment Activity</h3>
+                  <p class="card-sub">Monthly shipments over the last year</p>
+                </div>
+                <button type="button" class="link-btn" data-goto="shipments">
+                  View all <i class="fas fa-arrow-right"></i>
+                </button>
+              </div>
+              <div class="chart-box">
+                <canvas id="chartUserVolume"></canvas>
+              </div>
+            </div>
+
+            <div class="card reveal" data-d="2">
+              <div class="card-head">
+                <div>
+                  <h3 class="card-title">Shipment Status</h3>
+                  <p class="card-sub">Current breakdown</p>
+                </div>
+              </div>
+              <div class="chart-box">
+                <canvas id="chartUserStatus"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 xl:grid-cols-3 gap-5 mt-5">
+            <div class="card xl:col-span-2 overflow-hidden reveal" data-d="1">
+              <div class="card-head">
+                <div>
+                  <h3 class="card-title">Recent Shipments</h3>
+                  <p class="card-sub">Your latest five consignments</p>
+                </div>
+                <button type="button" class="link-btn" data-goto="shipments">
+                  View all <i class="fas fa-arrow-right"></i>
+                </button>
+              </div>
+              <div class="table-scroll">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Tracking ID</th>
+                      <th>Route</th>
+                      <th>Status</th>
+                      <th>ETA</th>
+                      <th style="text-align: right">Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="cell-mono">LGV-90241</td>
+                      <td>Mumbai → Dubai</td>
+                      <td><span class="pill pill-transit">In Transit</span></td>
+                      <td>18 Sep</td>
+                      <td style="text-align: right" class="cell-strong">
+                        $4,280
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="cell-mono">LGV-90238</td>
+                      <td>Delhi → Singapore</td>
+                      <td>
+                        <span class="pill pill-delivered">Delivered</span>
+                      </td>
+                      <td>14 Sep</td>
+                      <td style="text-align: right" class="cell-strong">
+                        $2,150
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="cell-mono">LGV-90235</td>
+                      <td>Pune → Frankfurt</td>
+                      <td><span class="pill pill-pending">Pending</span></td>
+                      <td>22 Sep</td>
+                      <td style="text-align: right" class="cell-strong">
+                        $8,940
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="cell-mono">LGV-90231</td>
+                      <td>Chennai → Doha</td>
+                      <td><span class="pill pill-delayed">Delayed</span></td>
+                      <td>19 Sep</td>
+                      <td style="text-align: right" class="cell-strong">
+                        $3,610
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="cell-mono">LGV-90228</td>
+                      <td>Kolkata → Bangkok</td>
+                      <td>
+                        <span class="pill pill-delivered">Delivered</span>
+                      </td>
+                      <td>12 Sep</td>
+                      <td style="text-align: right" class="cell-strong">
+                        $1,980
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="card reveal" data-d="2">
+              <div class="card-head">
+                <div>
+                  <h3 class="card-title">Monthly Spending</h3>
+                  <p class="card-sub">Last 6 months</p>
+                </div>
+              </div>
+              <div class="chart-box">
+                <canvas id="chartUserSpend"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-5">
+            <div class="card overflow-hidden reveal" data-d="1">
+              <div class="card-head">
+                <div>
+                  <h3 class="card-title">Recent Messages</h3>
+                  <p class="card-sub">3 unread conversations</p>
+                </div>
+                <button type="button" class="link-btn" data-goto="messages">
+                  Inbox <i class="fas fa-arrow-right"></i>
+                </button>
+              </div>
+
+              <div class="list-row">
+                <div
+                  class="avatar-xs"
+                  style="background: linear-gradient(135deg, #5094c1, #104a57)"
+                >
+                  <i class="fas fa-headset text-[10px]"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center justify-between gap-2">
+                    <p
+                      class="text-[13px] font-bold text-[#0f313a] m-0 truncate"
+                    >
+                      Logiver Support
+                    </p>
+                    <span class="text-[10px] text-slate-400 flex-shrink-0"
+                      >12m ago</span
+                    >
+                  </div>
+                  <p class="text-[12px] text-slate-500 m-0 truncate">
+                    Your shipment LGV-90241 has cleared customs.
+                  </p>
+                </div>
+                <span
+                  class="w-2 h-2 rounded-full flex-shrink-0 mt-2"
+                  style="background: #f94735"
+                ></span>
+              </div>
+
+              <div class="list-row">
+                <div
+                  class="avatar-xs"
+                  style="background: linear-gradient(135deg, #fac12e, #e0a800)"
+                >
+                  <i class="fas fa-user-tie text-[10px]"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center justify-between gap-2">
+                    <p
+                      class="text-[13px] font-bold text-[#0f313a] m-0 truncate"
+                    >
+                      Aisha · Account Manager
+                    </p>
+                    <span class="text-[10px] text-slate-400 flex-shrink-0"
+                      >2h ago</span
+                    >
+                  </div>
+                  <p class="text-[12px] text-slate-500 m-0 truncate">
+                    I've applied a 10% discount to your next order.
+                  </p>
+                </div>
+                <span
+                  class="w-2 h-2 rounded-full flex-shrink-0 mt-2"
+                  style="background: #f94735"
+                ></span>
+              </div>
+
+              <div class="list-row">
+                <div
+                  class="avatar-xs"
+                  style="background: linear-gradient(135deg, #104a57, #0f313a)"
+                >
+                  <i class="fas fa-file-invoice text-[10px]"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center justify-between gap-2">
+                    <p
+                      class="text-[13px] font-bold text-[#0f313a] m-0 truncate"
+                    >
+                      Billing
+                    </p>
+                    <span class="text-[10px] text-slate-400 flex-shrink-0"
+                      >1d ago</span
+                    >
+                  </div>
+                  <p class="text-[12px] text-slate-500 m-0 truncate">
+                    Invoice #INV-2291 is now available to download.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="card reveal" data-d="2">
+              <div class="card-head">
+                <div>
+                  <h3 class="card-title">Need Help?</h3>
+                  <p class="card-sub">We usually respond within 15 minutes</p>
+                </div>
+              </div>
+              <div class="p-5 space-y-3">
+                <button
+                  type="button"
+                  class="w-full flex items-center justify-between gap-3 p-3.5 rounded-xl border border-slate-200 hover:border-[#0f313a] transition text-left"
+                  data-404
+                >
+                  <span class="flex items-center gap-3">
+                    <i
+                      class="fas fa-circle-question text-lg"
+                      style="color: #5094c1"
+                    ></i>
+                    <span>
+                      <span class="block text-[13px] font-bold text-[#0f313a]"
+                        >FAQ & Help Center</span
+                      >
+                      <span class="block text-[11px] text-slate-400">
+                        Browse common answers
+                      </span>
+                    </span>
+                  </span>
+                  <i class="fas fa-chevron-right text-xs text-slate-400"></i>
+                </button>
+
+                <button
+                  type="button"
+                  class="w-full flex items-center justify-between gap-3 p-3.5 rounded-xl border border-slate-200 hover:border-[#0f313a] transition text-left"
+                  data-404
+                >
+                  <span class="flex items-center gap-3">
+                    <i
+                      class="fas fa-comment-dots text-lg"
+                      style="color: #fac12e"
+                    ></i>
+                    <span>
+                      <span class="block text-[13px] font-bold text-[#0f313a]"
+                        >Live Chat</span
+                      >
+                      <span class="block text-[11px] text-slate-400">
+                        Chat with our team
+                      </span>
+                    </span>
+                  </span>
+                  <i class="fas fa-chevron-right text-xs text-slate-400"></i>
+                </button>
+
+                <button
+                  type="button"
+                  class="w-full flex items-center justify-between gap-3 p-3.5 rounded-xl border border-slate-200 hover:border-[#0f313a] transition text-left"
+                  data-404
+                >
+                  <span class="flex items-center gap-3">
+                    <i class="fas fa-ticket text-lg" style="color: #f94735"></i>
+                    <span>
+                      <span class="block text-[13px] font-bold text-[#0f313a]"
+                        >Raise a Ticket</span
+                      >
+                      <span class="block text-[11px] text-slate-400">
+                        For a specific issue
+                      </span>
+                    </span>
+                  </span>
+                  <i class="fas fa-chevron-right text-xs text-slate-400"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==========================================================
+             PAGE: MY SHIPMENTS
+        =========================================================== -->
+        <section class="page" id="page-shipments">
+          <div class="page-hero reveal">
+            <div
+              class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4"
+            >
+              <div>
+                <h2>My Shipments</h2>
+                <p>Every consignment you've booked with Logiver</p>
+              </div>
+              <button type="button" class="hero-btn hero-btn-solid" data-404>
+                <i class="fas fa-plus"></i> Book New Shipment
+              </button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-5">
+            <div class="mini-stat reveal" data-d="1">
+              <div
+                class="mini-icon"
+                style="background: rgba(80, 148, 193, 0.13); color: #5094c1"
+              >
+                <i class="fas fa-box"></i>
+              </div>
+              <div>
+                <p
+                  class="text-[10px] font-bold uppercase tracking-wider text-slate-400 m-0"
+                >
+                  Total
+                </p>
+                <p
+                  class="text-lg font-extrabold text-[#0f313a] m-0"
+                  data-count="86"
+                >
+                  0
+                </p>
+              </div>
+            </div>
+            <div class="mini-stat reveal" data-d="2">
+              <div
+                class="mini-icon"
+                style="background: rgba(250, 193, 46, 0.18); color: #b8860b"
+              >
+                <i class="fas fa-truck-fast"></i>
+              </div>
+              <div>
+                <p
+                  class="text-[10px] font-bold uppercase tracking-wider text-slate-400 m-0"
+                >
+                  In Transit
+                </p>
+                <p
+                  class="text-lg font-extrabold text-[#0f313a] m-0"
+                  data-count="6"
+                >
+                  0
+                </p>
+              </div>
+            </div>
+            <div class="mini-stat reveal" data-d="3">
+              <div
+                class="mini-icon"
+                style="background: rgba(16, 185, 129, 0.13); color: #047857"
+              >
+                <i class="fas fa-circle-check"></i>
+              </div>
+              <div>
+                <p
+                  class="text-[10px] font-bold uppercase tracking-wider text-slate-400 m-0"
+                >
+                  Delivered
+                </p>
+                <p
+                  class="text-lg font-extrabold text-[#0f313a] m-0"
+                  data-count="74"
+                >
+                  0
+                </p>
+              </div>
+            </div>
+            <div class="mini-stat reveal" data-d="4">
+              <div
+                class="mini-icon"
+                style="background: rgba(249, 71, 53, 0.13); color: #f94735"
+              >
+                <i class="fas fa-clock-rotate-left"></i>
+              </div>
+              <div>
+                <p
+                  class="text-[10px] font-bold uppercase tracking-wider text-slate-400 m-0"
+                >
+                  Delayed
+                </p>
+                <p
+                  class="text-lg font-extrabold text-[#0f313a] m-0"
+                  data-count="2"
+                >
+                  0
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="card mt-5 overflow-hidden reveal" data-d="1">
+            <div class="card-head flex-col sm:flex-row sm:items-center gap-3">
+              <div>
+                <h3 class="card-title">All My Shipments</h3>
+                <p class="card-sub">86 records · showing 1–8</p>
+              </div>
+              <div class="flex flex-wrap gap-2 sm:ml-auto">
+                <select class="form-field sm:w-auto">
+                  <option>All Status</option>
+                  <option>In Transit</option>
+                  <option>Delivered</option>
+                  <option>Pending</option>
+                  <option>Delayed</option>
+                </select>
+                <button type="button" class="btn-ghost" data-404>
+                  <i class="fas fa-filter"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="table-scroll">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Tracking ID</th>
+                    <th>Route</th>
+                    <th>Service</th>
+                    <th>Status</th>
+                    <th>Booked</th>
+                    <th>ETA</th>
+                    <th style="text-align: right">Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="cell-mono">LGV-90241</td>
+                    <td>Mumbai → Dubai</td>
+                    <td>Express Air</td>
+                    <td><span class="pill pill-transit">In Transit</span></td>
+                    <td>14 Sep 2025</td>
+                    <td>18 Sep 2025</td>
+                    <td style="text-align: right" class="cell-strong">
+                      $4,280
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="cell-mono">LGV-90238</td>
+                    <td>Delhi → Singapore</td>
+                    <td>Sea Freight</td>
+                    <td><span class="pill pill-delivered">Delivered</span></td>
+                    <td>02 Sep 2025</td>
+                    <td>14 Sep 2025</td>
+                    <td style="text-align: right" class="cell-strong">
+                      $2,150
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="cell-mono">LGV-90235</td>
+                    <td>Pune → Frankfurt</td>
+                    <td>Cold Chain</td>
+                    <td><span class="pill pill-pending">Pending</span></td>
+                    <td>12 Sep 2025</td>
+                    <td>22 Sep 2025</td>
+                    <td style="text-align: right" class="cell-strong">
+                      $8,940
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="cell-mono">LGV-90231</td>
+                    <td>Chennai → Doha</td>
+                    <td>Sea Freight</td>
+                    <td><span class="pill pill-delayed">Delayed</span></td>
+                    <td>08 Sep 2025</td>
+                    <td>19 Sep 2025</td>
+                    <td style="text-align: right" class="cell-strong">
+                      $3,610
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="cell-mono">LGV-90228</td>
+                    <td>Kolkata → Bangkok</td>
+                    <td>Express Air</td>
+                    <td><span class="pill pill-delivered">Delivered</span></td>
+                    <td>30 Aug 2025</td>
+                    <td>12 Sep 2025</td>
+                    <td style="text-align: right" class="cell-strong">
+                      $1,980
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="cell-mono">LGV-90224</td>
+                    <td>Bengaluru → Tokyo</td>
+                    <td>Express Air</td>
+                    <td><span class="pill pill-transit">In Transit</span></td>
+                    <td>10 Sep 2025</td>
+                    <td>21 Sep 2025</td>
+                    <td style="text-align: right" class="cell-strong">
+                      $6,420
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="cell-mono">LGV-90219</td>
+                    <td>Surat → Milan</td>
+                    <td>Sea Freight</td>
+                    <td><span class="pill pill-transit">In Transit</span></td>
+                    <td>06 Sep 2025</td>
+                    <td>25 Sep 2025</td>
+                    <td style="text-align: right" class="cell-strong">
+                      $5,120
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="cell-mono">LGV-90214</td>
+                    <td>Noida → Seoul</td>
+                    <td>Express Air</td>
+                    <td><span class="pill pill-delivered">Delivered</span></td>
+                    <td>25 Aug 2025</td>
+                    <td>09 Sep 2025</td>
+                    <td style="text-align: right" class="cell-strong">
+                      $7,340
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div
+              class="flex flex-col sm:flex-row items-center justify-between gap-3 p-5 border-t border-slate-100"
+            >
+              <p class="text-xs text-slate-400 m-0">
+                Showing <strong class="text-[#0f313a]">1–8</strong> of
+                <strong class="text-[#0f313a]">86</strong> shipments
+              </p>
+              <div class="flex items-center gap-1.5">
+                <button type="button" class="icon-btn !w-9 !h-9" data-404>
+                  <i class="fas fa-chevron-left text-xs"></i>
+                </button>
+                <button
+                  type="button"
+                  class="w-9 h-9 rounded-xl text-xs font-bold text-white"
+                  style="background: var(--abyss)"
+                  data-404
+                >
+                  1
+                </button>
+                <button
+                  type="button"
+                  class="w-9 h-9 rounded-xl text-xs font-bold text-slate-500 hover:bg-slate-100 transition"
+                  data-404
+                >
+                  2
+                </button>
+                <button type="button" class="icon-btn !w-9 !h-9" data-404>
+                  <i class="fas fa-chevron-right text-xs"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==========================================================
+             PAGE: TRACK SHIPMENT
+        =========================================================== -->
+        <section class="page" id="page-track">
+          <div class="page-hero reveal">
+            <div
+              class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4"
+            >
+              <div>
+                <h2>Track Shipment</h2>
+                <p>Enter a tracking ID to see live status updates</p>
+              </div>
+              <div class="relative w-full sm:w-80">
+                <i
+                  class="fas fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-white/50 text-xs"
+                ></i>
+                <input
+                  type="text"
+                  placeholder="Enter tracking ID…"
+                  value="LGV-90241"
+                  class="w-full pl-10 pr-4 py-2.5 rounded-xl text-sm bg-white/10 border border-white/25 text-white placeholder-white/45 focus:outline-none focus:bg-white/15 transition"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 xl:grid-cols-3 gap-5 mt-5">
+            <div class="card xl:col-span-2 reveal" data-d="1">
+              <div class="card-head">
+                <div>
+                  <h3 class="card-title">LGV-90241 · Mumbai → Dubai</h3>
+                  <p class="card-sub">Express Air · ETA 18 Sep 2025</p>
+                </div>
+                <span class="pill pill-transit">In Transit</span>
+              </div>
+
+              <div class="p-5">
+                <div class="progress mb-6" style="height: 9px">
+                  <span
+                    style="
+                      width: 68%;
+                      background: linear-gradient(90deg, #5094c1, #104a57);
+                    "
+                  ></span>
+                </div>
+
+                <div class="space-y-5">
+                  <div class="timeline-step">
+                    <div class="flex flex-col items-center">
+                      <span class="timeline-dot" style="background: #047857">
+                        <i class="fas fa-check"></i>
+                      </span>
+                      <span class="timeline-line"></span>
+                    </div>
+                    <div class="pb-2">
+                      <p class="text-[13px] font-bold text-[#0f313a] m-0">
+                        Shipment Picked Up
+                      </p>
+                      <p class="text-[11px] text-slate-400 m-0 mt-0.5">
+                        Mumbai Warehouse · 14 Sep, 08:42 IST
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="timeline-step">
+                    <div class="flex flex-col items-center">
+                      <span class="timeline-dot" style="background: #047857">
+                        <i class="fas fa-check"></i>
+                      </span>
+                      <span class="timeline-line"></span>
+                    </div>
+                    <div class="pb-2">
+                      <p class="text-[13px] font-bold text-[#0f313a] m-0">
+                        Departed Origin Hub
+                      </p>
+                      <p class="text-[11px] text-slate-400 m-0 mt-0.5">
+                        CSMIA Cargo Terminal · 14 Sep, 21:10 IST
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="timeline-step">
+                    <div class="flex flex-col items-center">
+                      <span class="timeline-dot" style="background: #5094c1">
+                        <i class="fas fa-plane"></i>
+                      </span>
+                      <span class="timeline-line"></span>
+                    </div>
+                    <div class="pb-2">
+                      <p class="text-[13px] font-bold text-[#0f313a] m-0">
+                        In Transit — International
+                      </p>
+                      <p class="text-[11px] text-slate-400 m-0 mt-0.5">
+                        Current position: over Arabian Sea · 17 Sep, 03:25 GST
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="timeline-step">
+                    <div class="flex flex-col items-center">
+                      <span
+                        class="timeline-dot"
+                        style="background: #eef2f7; color: #94a3b8"
+                      >
+                        <i class="fas fa-warehouse"></i>
+                      </span>
+                      <span class="timeline-line"></span>
+                    </div>
+                    <div class="pb-2">
+                      <p class="text-[13px] font-bold text-slate-400 m-0">
+                        Arrival at Destination Hub
+                      </p>
+                      <p class="text-[11px] text-slate-400 m-0 mt-0.5">
+                        Dubai DWC · Expected 18 Sep, 06:00 GST
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="timeline-step">
+                    <div class="flex flex-col items-center">
+                      <span
+                        class="timeline-dot"
+                        style="background: #eef2f7; color: #94a3b8"
+                      >
+                        <i class="fas fa-house"></i>
+                      </span>
+                    </div>
+                    <div>
+                      <p class="text-[13px] font-bold text-slate-400 m-0">
+                        Out for Delivery
+                      </p>
+                      <p class="text-[11px] text-slate-400 m-0 mt-0.5">
+                        Pending customs clearance
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="space-y-5">
+              <div class="card reveal" data-d="2">
+                <div class="card-head">
+                  <div>
+                    <h3 class="card-title">Shipment Details</h3>
+                    <p class="card-sub">Consignment information</p>
+                  </div>
+                </div>
+                <div class="p-5 space-y-3">
+                  <div class="flex justify-between text-[12px]">
+                    <span class="text-slate-400 font-semibold">Service</span>
+                    <span class="font-bold text-[#0f313a]">Express Air</span>
+                  </div>
+                  <div class="flex justify-between text-[12px]">
+                    <span class="text-slate-400 font-semibold">Weight</span>
+                    <span class="font-bold text-[#0f313a]">340 kg</span>
+                  </div>
+                  <div class="flex justify-between text-[12px]">
+                    <span class="text-slate-400 font-semibold">Packages</span>
+                    <span class="font-bold text-[#0f313a]">12 cartons</span>
+                  </div>
+                  <div class="flex justify-between text-[12px]">
+                    <span class="text-slate-400 font-semibold">Booked</span>
+                    <span class="font-bold text-[#0f313a]">14 Sep 2025</span>
+                  </div>
+                  <div class="flex justify-between text-[12px]">
+                    <span class="text-slate-400 font-semibold">Amount</span>
+                    <span class="font-bold text-[#0f313a]">$4,280</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card reveal" data-d="3">
+                <div class="card-head">
+                  <div>
+                    <h3 class="card-title">Recent Activity</h3>
+                    <p class="card-sub">Latest status updates</p>
+                  </div>
+                </div>
+                <div class="list-row">
+                  <div
+                    class="avatar-xs"
+                    style="
+                      background: linear-gradient(135deg, #5094c1, #104a57);
+                    "
+                  >
+                    <i class="fas fa-plane text-[10px]"></i>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-[12px] font-bold text-[#0f313a] m-0">
+                      In Transit
+                    </p>
+                    <p class="text-[11px] text-slate-400 m-0">
+                      Over Arabian Sea · 17 Sep
+                    </p>
+                  </div>
+                </div>
+                <div class="list-row">
+                  <div
+                    class="avatar-xs"
+                    style="
+                      background: linear-gradient(135deg, #fac12e, #e0a800);
+                    "
+                  >
+                    <i class="fas fa-box text-[10px]"></i>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-[12px] font-bold text-[#0f313a] m-0">
+                      Departed Hub
+                    </p>
+                    <p class="text-[11px] text-slate-400 m-0">CSMIA · 14 Sep</p>
+                  </div>
+                </div>
+                <div class="list-row">
+                  <div
+                    class="avatar-xs"
+                    style="
+                      background: linear-gradient(135deg, #047857, #065f46);
+                    "
+                  >
+                    <i class="fas fa-check text-[10px]"></i>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-[12px] font-bold text-[#0f313a] m-0">
+                      Picked Up
+                    </p>
+                    <p class="text-[11px] text-slate-400 m-0">
+                      Mumbai · 14 Sep
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==========================================================
+             PAGE: MY INVOICES
+        =========================================================== -->
+        <section class="page" id="page-invoices">
+          <div class="page-hero reveal">
+            <div
+              class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4"
+            >
+              <div>
+                <h2>My Invoices</h2>
+                <p>Billing history and outstanding payments</p>
+              </div>
+              <button type="button" class="hero-btn hero-btn-ghost" data-404>
+                <i class="fas fa-file-arrow-down"></i> Download Statement
+              </button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-5">
+            <div class="stat-card reveal" data-d="1">
+              <p class="stat-label" style="margin-top: 0">Total Billed</p>
+              <h3
+                class="stat-value"
+                data-count="12.4"
+                data-decimals="1"
+                data-prefix="$"
+                data-suffix="K"
+              >
+                $0.0K
+              </h3>
+              <p class="stat-foot">Lifetime with Logiver</p>
+            </div>
+            <div class="stat-card reveal" data-d="2">
+              <p class="stat-label" style="margin-top: 0">Paid</p>
+              <h3
+                class="stat-value"
+                data-count="11.2"
+                data-decimals="1"
+                data-prefix="$"
+                data-suffix="K"
+              >
+                $0.0K
+              </h3>
+              <p class="stat-foot">90.3% paid on time</p>
+            </div>
+            <div class="stat-card reveal" data-d="3">
+              <p class="stat-label" style="margin-top: 0">Outstanding</p>
+              <h3
+                class="stat-value"
+                data-count="1.2"
+                data-decimals="1"
+                data-prefix="$"
+                data-suffix="K"
+              >
+                $0.0K
+              </h3>
+              <p class="stat-foot">Across 2 invoices</p>
+            </div>
+            <div class="stat-card reveal" data-d="4">
+              <p class="stat-label" style="margin-top: 0">Overdue</p>
+              <h3 class="stat-value" data-count="1" data-suffix=" invoice">
+                0
+              </h3>
+              <p class="stat-foot">Please settle soon</p>
+            </div>
+          </div>
+
+          <div class="card mt-5 overflow-hidden reveal" data-d="1">
+            <div class="card-head">
+              <div>
+                <h3 class="card-title">Invoice History</h3>
+                <p class="card-sub">All invoices issued to your account</p>
+              </div>
+            </div>
+            <div class="table-scroll">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Invoice #</th>
+                    <th>Shipment</th>
+                    <th>Issued</th>
+                    <th>Due</th>
+                    <th style="text-align: right">Amount</th>
+                    <th>Status</th>
+                    <th style="text-align: right">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="cell-mono">INV-2291</td>
+                    <td class="cell-strong">LGV-90241</td>
+                    <td>02 Sep 2025</td>
+                    <td>17 Sep 2025</td>
+                    <td style="text-align: right" class="cell-strong">
+                      $4,280
+                    </td>
+                    <td><span class="pill pill-pending">Pending</span></td>
+                    <td style="text-align: right">
+                      <button type="button" class="link-btn" data-404>
+                        <i class="fas fa-download"></i> PDF
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="cell-mono">INV-2288</td>
+                    <td class="cell-strong">LGV-90238</td>
+                    <td>28 Aug 2025</td>
+                    <td>12 Sep 2025</td>
+                    <td style="text-align: right" class="cell-strong">
+                      $2,150
+                    </td>
+                    <td><span class="pill pill-delivered">Paid</span></td>
+                    <td style="text-align: right">
+                      <button type="button" class="link-btn" data-404>
+                        <i class="fas fa-download"></i> PDF
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="cell-mono">INV-2284</td>
+                    <td class="cell-strong">LGV-90235</td>
+                    <td>24 Aug 2025</td>
+                    <td>08 Sep 2025</td>
+                    <td style="text-align: right" class="cell-strong">
+                      $8,940
+                    </td>
+                    <td><span class="pill pill-delayed">Overdue</span></td>
+                    <td style="text-align: right">
+                      <button type="button" class="link-btn" data-404>
+                        <i class="fas fa-credit-card"></i> Pay
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="cell-mono">INV-2279</td>
+                    <td class="cell-strong">LGV-90228</td>
+                    <td>19 Aug 2025</td>
+                    <td>03 Sep 2025</td>
+                    <td style="text-align: right" class="cell-strong">
+                      $1,980
+                    </td>
+                    <td><span class="pill pill-delivered">Paid</span></td>
+                    <td style="text-align: right">
+                      <button type="button" class="link-btn" data-404>
+                        <i class="fas fa-download"></i> PDF
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="cell-mono">INV-2274</td>
+                    <td class="cell-strong">LGV-90224</td>
+                    <td>15 Aug 2025</td>
+                    <td>30 Aug 2025</td>
+                    <td style="text-align: right" class="cell-strong">
+                      $6,420
+                    </td>
+                    <td><span class="pill pill-delivered">Paid</span></td>
+                    <td style="text-align: right">
+                      <button type="button" class="link-btn" data-404>
+                        <i class="fas fa-download"></i> PDF
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="cell-mono">INV-2268</td>
+                    <td class="cell-strong">LGV-90214</td>
+                    <td>10 Aug 2025</td>
+                    <td>25 Aug 2025</td>
+                    <td style="text-align: right" class="cell-strong">
+                      $7,340
+                    </td>
+                    <td><span class="pill pill-delivered">Paid</span></td>
+                    <td style="text-align: right">
+                      <button type="button" class="link-btn" data-404>
+                        <i class="fas fa-download"></i> PDF
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==========================================================
+             PAGE: MESSAGES
+        =========================================================== -->
+        <section class="page" id="page-messages">
+          <div class="page-hero reveal">
+            <div>
+              <h2>Messages</h2>
+              <p>3 unread conversations with the Logiver team</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 mt-5">
+            <div class="lg:col-span-5 card overflow-hidden reveal" data-d="1">
+              <div class="card-head">
+                <div>
+                  <h3 class="card-title">Inbox</h3>
+                  <p class="card-sub">Recent conversations</p>
+                </div>
+                <span class="pill pill-delayed">3 new</span>
+              </div>
+
+              <div class="list-row" style="background: #f8fafc">
+                <div
+                  class="avatar-xs"
+                  style="background: linear-gradient(135deg, #5094c1, #104a57)"
+                >
+                  <i class="fas fa-headset text-[10px]"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center justify-between gap-2">
+                    <p
+                      class="text-[13px] font-bold text-[#0f313a] m-0 truncate"
+                    >
+                      Logiver Support
+                    </p>
+                    <span class="text-[10px] text-slate-400 flex-shrink-0"
+                      >12m</span
+                    >
+                  </div>
+                  <p class="text-[12px] text-slate-500 m-0 truncate">
+                    Your shipment LGV-90241 has cleared customs.
+                  </p>
+                </div>
+                <span
+                  class="w-2 h-2 rounded-full flex-shrink-0 mt-2"
+                  style="background: #f94735"
+                ></span>
+              </div>
+
+              <div class="list-row">
+                <div
+                  class="avatar-xs"
+                  style="background: linear-gradient(135deg, #fac12e, #e0a800)"
+                >
+                  <i class="fas fa-user-tie text-[10px]"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center justify-between gap-2">
+                    <p
+                      class="text-[13px] font-bold text-[#0f313a] m-0 truncate"
+                    >
+                      Aisha · Account Manager
+                    </p>
+                    <span class="text-[10px] text-slate-400 flex-shrink-0"
+                      >2h</span
+                    >
+                  </div>
+                  <p class="text-[12px] text-slate-500 m-0 truncate">
+                    I've applied a 10% discount to your next order.
+                  </p>
+                </div>
+                <span
+                  class="w-2 h-2 rounded-full flex-shrink-0 mt-2"
+                  style="background: #f94735"
+                ></span>
+              </div>
+
+              <div class="list-row">
+                <div
+                  class="avatar-xs"
+                  style="background: linear-gradient(135deg, #104a57, #0f313a)"
+                >
+                  <i class="fas fa-file-invoice text-[10px]"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center justify-between gap-2">
+                    <p
+                      class="text-[13px] font-bold text-[#0f313a] m-0 truncate"
+                    >
+                      Billing
+                    </p>
+                    <span class="text-[10px] text-slate-400 flex-shrink-0"
+                      >1d</span
+                    >
+                  </div>
+                  <p class="text-[12px] text-slate-500 m-0 truncate">
+                    Invoice #INV-2291 is now available to download.
+                  </p>
+                </div>
+              </div>
+
+              <div class="list-row">
+                <div
+                  class="avatar-xs"
+                  style="background: linear-gradient(135deg, #5094c1, #3d7ba3)"
+                >
+                  <i class="fas fa-truck text-[10px]"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center justify-between gap-2">
+                    <p
+                      class="text-[13px] font-bold text-[#0f313a] m-0 truncate"
+                    >
+                      Operations
+                    </p>
+                    <span class="text-[10px] text-slate-400 flex-shrink-0"
+                      >2d</span
+                    >
+                  </div>
+                  <p class="text-[12px] text-slate-500 m-0 truncate">
+                    Pickup confirmed for shipment LGV-90235.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="hidden lg:flex lg:col-span-7 card flex-col overflow-hidden reveal"
+              data-d="2"
+            >
+              <div class="card-head items-center">
+                <div class="flex items-center gap-3">
+                  <div
+                    class="avatar-xs"
+                    style="
+                      background: linear-gradient(135deg, #5094c1, #104a57);
+                    "
+                  >
+                    <i class="fas fa-headset text-[10px]"></i>
+                  </div>
+                  <div>
+                    <h3 class="card-title">Logiver Support</h3>
+                    <p class="card-sub">support@logiver.com · Online</p>
+                  </div>
+                </div>
+                <button type="button" class="icon-btn !w-9 !h-9" data-404>
+                  <i class="fas fa-ellipsis-vertical text-xs"></i>
+                </button>
+              </div>
+
+              <div class="flex-1 p-5 space-y-4" style="min-height: 300px">
+                <div class="flex gap-3">
+                  <div
+                    class="avatar-xs flex-shrink-0"
+                    style="
+                      background: linear-gradient(135deg, #5094c1, #104a57);
+                    "
+                  >
+                    <i class="fas fa-headset text-[10px]"></i>
+                  </div>
+                  <div
+                    class="max-w-[75%] rounded-2xl rounded-tl-sm px-4 py-2.5"
+                    style="background: #f1f5f9"
+                  >
+                    <p class="text-[13px] text-[#0f313a] m-0">
+                      Hi! Your shipment LGV-90241 has cleared customs at Dubai.
+                      Expected delivery remains 18 Sep.
+                    </p>
+                    <p class="text-[10px] text-slate-400 m-0 mt-1">09:40</p>
+                  </div>
+                </div>
+
+                <div class="flex gap-3 justify-end">
+                  <div
+                    class="max-w-[75%] rounded-2xl rounded-tr-sm px-4 py-2.5 text-white"
+                    style="
+                      background: linear-gradient(135deg, #104a57, #0f313a);
+                    "
+                  >
+                    <p class="text-[13px] m-0">
+                      Great, thanks for the update! Will I get a notification
+                      when it's out for delivery?
+                    </p>
+                    <p class="text-[10px] text-white/50 m-0 mt-1 text-right">
+                      09:44
+                    </p>
+                  </div>
+                  <div class="chip-avatar flex-shrink-0" data-user-initial>
+                    U
+                  </div>
+                </div>
+
+                <div class="flex gap-3">
+                  <div
+                    class="avatar-xs flex-shrink-0"
+                    style="
+                      background: linear-gradient(135deg, #5094c1, #104a57);
+                    "
+                  >
+                    <i class="fas fa-headset text-[10px]"></i>
+                  </div>
+                  <div
+                    class="max-w-[75%] rounded-2xl rounded-tl-sm px-4 py-2.5"
+                    style="background: #f1f5f9"
+                  >
+                    <p class="text-[13px] text-[#0f313a] m-0">
+                      Absolutely — you'll receive both SMS and email alerts at
+                      every stage.
+                    </p>
+                    <p class="text-[10px] text-slate-400 m-0 mt-1">09:46</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Reply form: required input + action to 404.html -->
+              <form
+                action="./404.html"
+                method="get"
+                class="p-4 border-t border-slate-100 flex items-center gap-2"
+              >
+                <input
+                  type="text"
+                  name="message"
+                  class="form-field"
+                  placeholder="Type your message…"
+                  required
+                />
+                <button type="submit" class="btn-primary !px-4">
+                  <i class="fas fa-paper-plane"></i>
+                </button>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==========================================================
+             PAGE: SUPPORT
+        =========================================================== -->
+        <section class="page" id="page-support">
+          <div class="page-hero reveal">
+            <div
+              class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4"
+            >
+              <div>
+                <h2>Support Center</h2>
+                <p>Get help with shipments, billing and your account</p>
+              </div>
+              <button type="button" class="hero-btn hero-btn-solid" data-404>
+                <i class="fas fa-plus"></i> Raise a Ticket
+              </button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-5">
+            <div class="card p-5 reveal" data-d="1">
+              <div
+                class="stat-icon mb-3"
+                style="background: rgba(80, 148, 193, 0.13); color: #5094c1"
+              >
+                <i class="fas fa-circle-question"></i>
+              </div>
+              <h4 class="text-[14px] font-extrabold text-[#0f313a] m-0">
+                FAQ & Help Center
+              </h4>
+              <p class="text-[12px] text-slate-400 mt-1 mb-4">
+                Browse answers to the most common questions about booking,
+                tracking and billing.
+              </p>
+              <button type="button" class="btn-ghost w-full" data-404>
+                Browse <i class="fas fa-arrow-right"></i>
+              </button>
+            </div>
+
+            <div class="card p-5 reveal" data-d="2">
+              <div
+                class="stat-icon mb-3"
+                style="background: rgba(250, 193, 46, 0.18); color: #b8860b"
+              >
+                <i class="fas fa-comment-dots"></i>
+              </div>
+              <h4 class="text-[14px] font-extrabold text-[#0f313a] m-0">
+                Live Chat
+              </h4>
+              <p class="text-[12px] text-slate-400 mt-1 mb-4">
+                Chat directly with our support team. Average response time: 15
+                minutes.
+              </p>
+              <button type="button" class="btn-ghost w-full" data-404>
+                Start Chat <i class="fas fa-arrow-right"></i>
+              </button>
+            </div>
+
+            <div class="card p-5 reveal" data-d="3">
+              <div
+                class="stat-icon mb-3"
+                style="background: rgba(249, 71, 53, 0.13); color: #f94735"
+              >
+                <i class="fas fa-ticket"></i>
+              </div>
+              <h4 class="text-[14px] font-extrabold text-[#0f313a] m-0">
+                Raise a Ticket
+              </h4>
+              <p class="text-[12px] text-slate-400 mt-1 mb-4">
+                Report a specific issue and track its resolution from your
+                dashboard.
+              </p>
+              <button type="button" class="btn-ghost w-full" data-404>
+                New Ticket <i class="fas fa-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="card mt-5 overflow-hidden reveal" data-d="1">
+            <div class="card-head">
+              <div>
+                <h3 class="card-title">My Support Tickets</h3>
+                <p class="card-sub">2 open · 1 resolved this month</p>
+              </div>
+            </div>
+            <div class="table-scroll">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Ticket</th>
+                    <th>Subject</th>
+                    <th>Opened</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="cell-mono">#TKT-4821</td>
+                    <td class="cell-strong">Customs hold at Dubai</td>
+                    <td>17 Sep 2025</td>
+                    <td><span class="pill pill-delayed">High</span></td>
+                    <td><span class="pill pill-transit">Open</span></td>
+                  </tr>
+                  <tr>
+                    <td class="cell-mono">#TKT-4815</td>
+                    <td class="cell-strong">Invoice discrepancy</td>
+                    <td>15 Sep 2025</td>
+                    <td><span class="pill pill-pending">Medium</span></td>
+                    <td><span class="pill pill-transit">Open</span></td>
+                  </tr>
+                  <tr>
+                    <td class="cell-mono">#TKT-4795</td>
+                    <td class="cell-strong">Delivery confirmation missing</td>
+                    <td>09 Sep 2025</td>
+                    <td><span class="pill pill-pending">Medium</span></td>
+                    <td><span class="pill pill-delivered">Resolved</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==========================================================
+             PAGE: SETTINGS
+        =========================================================== -->
+        <section class="page" id="page-settings">
+          <div class="page-hero reveal">
+            <div>
+              <h2>Account Settings</h2>
+              <p>Manage your personal details and preferences</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 xl:grid-cols-3 gap-5 mt-5">
+            <!-- Profile form: action to 404.html -->
+            <form
+              action="./404.html"
+              method="get"
+              class="xl:col-span-2 card reveal"
+              data-d="1"
+            >
+              <div class="card-head">
+                <div>
+                  <h3 class="card-title">Profile Information</h3>
+                  <p class="card-sub">Your account details</p>
+                </div>
+              </div>
+              <div class="p-5">
+                <div class="flex items-center gap-4 mb-6">
+                  <div
+                    class="w-16 h-16 rounded-2xl grid place-items-center text-xl font-extrabold text-[#0f313a]"
+                    style="
+                      background: linear-gradient(135deg, #fac12e, #ffd968);
+                    "
+                    data-user-initial
+                  >
+                    U
+                  </div>
+                  <div>
+                    <p class="text-[15px] font-extrabold text-[#0f313a] m-0">
+                      <span data-user-name>User</span>
+                    </p>
+                    <p class="text-[12px] text-slate-400 m-0">
+                      <span data-user-email>user@logiver.com</span>
+                    </p>
+                    <span class="pill pill-transit mt-1.5">Customer</span>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label class="field-label">Full Name</label>
+                    <input
+                      type="text"
+                      name="fullName"
+                      class="form-field"
+                      value="User"
+                      data-user-name-input
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label class="field-label">Email Address</label>
+                    <input
+                      type="email"
+                      name="email"
+                      class="form-field"
+                      data-user-email-input
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label class="field-label">Phone</label>
+                    <input
+                      type="text"
+                      name="phone"
+                      class="form-field"
+                      value="+91 98100 22345"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label class="field-label">Company</label>
+                    <input
+                      type="text"
+                      name="company"
+                      class="form-field"
+                      value="Personal Account"
+                      required
+                    />
+                  </div>
+                  <div class="sm:col-span-2">
+                    <label class="field-label">Default Pickup Address</label>
+                    <input
+                      type="text"
+                      name="address"
+                      class="form-field"
+                      value="Bandra West, Mumbai, Maharashtra 400050"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="flex flex-wrap gap-3 mt-6">
+                  <button type="submit" class="btn-primary">
+                    <i class="fas fa-floppy-disk"></i> Save Changes
+                  </button>
+                  <button type="button" class="btn-ghost" data-404>
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </form>
+
+            <div class="space-y-5">
+              <div class="card reveal" data-d="2">
+                <div class="card-head">
+                  <div>
+                    <h3 class="card-title">Notifications</h3>
+                    <p class="card-sub">What you'd like to receive</p>
+                  </div>
+                </div>
+                <div class="p-5 space-y-4">
+                  <div class="flex items-center justify-between gap-3">
+                    <div>
+                      <p class="text-[13px] font-bold text-[#0f313a] m-0">
+                        Shipment Alerts
+                      </p>
+                      <p class="text-[11px] text-slate-400 m-0">
+                        Status changes & delivery
+                      </p>
+                    </div>
+                    <label class="toggle">
+                      <input type="checkbox" checked />
+                      <span class="toggle-track">
+                        <span class="toggle-thumb"></span>
+                      </span>
+                    </label>
+                  </div>
+
+                  <div class="flex items-center justify-between gap-3">
+                    <div>
+                      <p class="text-[13px] font-bold text-[#0f313a] m-0">
+                        Invoice Reminders
+                      </p>
+                      <p class="text-[11px] text-slate-400 m-0">
+                        Before a payment is due
+                      </p>
+                    </div>
+                    <label class="toggle">
+                      <input type="checkbox" checked />
+                      <span class="toggle-track">
+                        <span class="toggle-thumb"></span>
+                      </span>
+                    </label>
+                  </div>
+
+                  <div class="flex items-center justify-between gap-3">
+                    <div>
+                      <p class="text-[13px] font-bold text-[#0f313a] m-0">
+                        Promotions
+                      </p>
+                      <p class="text-[11px] text-slate-400 m-0">
+                        Offers and discounts
+                      </p>
+                    </div>
+                    <label class="toggle">
+                      <input type="checkbox" />
+                      <span class="toggle-track">
+                        <span class="toggle-thumb"></span>
+                      </span>
+                    </label>
+                  </div>
+
+                  <div class="flex items-center justify-between gap-3">
+                    <div>
+                      <p class="text-[13px] font-bold text-[#0f313a] m-0">
+                        Weekly Summary
+                      </p>
+                      <p class="text-[11px] text-slate-400 m-0">
+                        Every Monday morning
+                      </p>
+                    </div>
+                    <label class="toggle">
+                      <input type="checkbox" checked />
+                      <span class="toggle-track">
+                        <span class="toggle-thumb"></span>
+                      </span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card reveal" data-d="3">
+                <div class="card-head">
+                  <div>
+                    <h3 class="card-title">Security</h3>
+                    <p class="card-sub">Keep your account safe</p>
+                  </div>
+                </div>
+                <div class="p-5 space-y-3">
+                  <button
+                    type="button"
+                    class="w-full flex items-center justify-between gap-3 p-3 rounded-xl border border-slate-200 hover:border-[#0f313a] transition text-left"
+                    data-404
+                  >
+                    <span class="flex items-center gap-3">
+                      <i class="fas fa-key text-[#5094c1]"></i>
+                      <span class="text-[13px] font-bold text-[#0f313a]">
+                        Change Password
+                      </span>
+                    </span>
+                    <i class="fas fa-chevron-right text-xs text-slate-400"></i>
+                  </button>
+
+                  <button
+                    type="button"
+                    class="w-full flex items-center justify-between gap-3 p-3 rounded-xl border border-slate-200 hover:border-[#0f313a] transition text-left"
+                    data-404
+                  >
+                    <span class="flex items-center gap-3">
+                      <i class="fas fa-shield-halved text-[#5094c1]"></i>
+                      <span class="text-[13px] font-bold text-[#0f313a]">
+                        Two-Factor Auth
+                      </span>
+                    </span>
+                    <span class="pill pill-delivered">On</span>
+                  </button>
+
+                  <!-- <button
+                    type="button"
+                    class="w-full flex items-center justify-between gap-3 p-3 rounded-xl border transition text-left"
+                    style="border-color: rgba(249, 71, 53, 0.3)"
+                    data-404
+                    onclick="window.location.href = './login.html'"
+                  >
+                    <span class="flex items-center gap-3">
+                      <i class="fas fa-right-from-bracket text-[#f94735]"></i>
+                      <span class="text-[13px] font-bold text-[#f94735]">
+                        Sign Out
+                      </span>
+                    </span>
+                  </button> -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- ================= SCRIPTS ================= -->
+    <script>
+      /* ==========================================================
+         STORED USER (from login page)
+      ========================================================== */
+      let user = {
+        email: "user@logiver.com",
+        name: "User",
+        role: "USER",
+      };
+
+      try {
+        const raw = localStorage.getItem("logiverUser");
+        if (raw) user = Object.assign(user, JSON.parse(raw));
+      } catch (e) {
+        /* ignore malformed storage */
+      }
+
+      const initial = (user.name || user.email || "U")
+        .trim()
+        .charAt(0)
+        .toUpperCase();
+
+      document.querySelectorAll("[data-user-email]").forEach((el) => {
+        el.textContent = user.email || "user@logiver.com";
+      });
+
+      document.querySelectorAll("[data-user-name]").forEach((el) => {
+        el.textContent = user.name || "User";
+      });
+
+      document.querySelectorAll("[data-user-initial]").forEach((el) => {
+        el.textContent = initial;
+      });
+
+      const emailInput = document.querySelector("[data-user-email-input]");
+      if (emailInput) emailInput.value = user.email || "";
+
+      const nameInput = document.querySelector("[data-user-name-input]");
+      if (nameInput) nameInput.value = user.name || "User";
+
+      /* Today's date */
+      const dateEl = document.getElementById("todayDate");
+      if (dateEl) {
+        dateEl.textContent = new Date().toLocaleDateString(undefined, {
+          weekday: "short",
+          day: "numeric",
+          month: "short",
+          year: "numeric",
+        });
+      }
+
+      /* ==========================================================
+         SIDEBAR
+      ========================================================== */
+      const sidebar = document.getElementById("sidebar");
+      const overlay = document.getElementById("overlay");
+      const menuBtn = document.getElementById("menuBtn");
+      const closeSidebarBtn = document.getElementById("closeSidebar");
+
+      function openSidebar() {
+        sidebar.classList.add("open");
+        overlay.classList.add("show");
+        if (window.innerWidth < 1024) document.body.classList.add("no-scroll");
+      }
+
+      function closeSidebar() {
+        sidebar.classList.remove("open");
+        overlay.classList.remove("show");
+        document.body.classList.remove("no-scroll");
+      }
+
+      menuBtn.addEventListener("click", openSidebar);
+      closeSidebarBtn.addEventListener("click", closeSidebar);
+      overlay.addEventListener("click", closeSidebar);
+
+      window.addEventListener("resize", () => {
+        if (window.innerWidth >= 1024) {
+          overlay.classList.remove("show");
+          document.body.classList.remove("no-scroll");
+        }
+      });
+
+      /* ==========================================================
+         PAGE NAVIGATION (internal tabs — kept working)
+      ========================================================== */
+      const pageTitle = document.getElementById("pageTitle");
+      const navLinks = document.querySelectorAll(".nav-link[data-page]");
+
+      function goToPage(page) {
+        const link = document.querySelector(`.nav-link[data-page="${page}"]`);
+        if (link) link.click();
+      }
+
+      navLinks.forEach((link) => {
+        link.addEventListener("click", () => {
+          const page = link.dataset.page;
+          const target = document.getElementById("page-" + page);
+          if (!target) return;
+
+          navLinks.forEach((l) => l.classList.remove("active"));
+          link.classList.add("active");
+
+          document
+            .querySelectorAll(".page")
+            .forEach((p) => p.classList.remove("active"));
+          target.classList.add("active");
+
+          if (pageTitle) {
+            pageTitle.textContent =
+              link.dataset.title || link.textContent.trim();
+          }
+
+          if (window.innerWidth < 1024) closeSidebar();
+
+          window.scrollTo({ top: 0, behavior: "smooth" });
+
+          requestAnimationFrame(() => initChartsFor(page));
+        });
+      });
+
+      document.querySelectorAll("[data-goto]").forEach((btn) => {
+        btn.addEventListener("click", () => goToPage(btn.dataset.goto));
+      });
+
+      /* ==========================================================
+         GLOBAL 404 REDIRECT for action buttons
+         (skips: menu controls, form submit, data-goto, toggle switches)
+      ========================================================== */
+      document.addEventListener("click", (e) => {
+        const btn = e.target.closest("button, [data-404]");
+        if (!btn) return;
+        if (btn.id === "menuBtn" || btn.id === "closeSidebar") return;
+        if (btn.type === "submit") return;
+        if (btn.hasAttribute("data-goto")) return;
+        if (btn.closest(".toggle")) return;
+        if (btn.classList.contains("toggle-track")) return;
+
+        // Only intercept buttons that are explicitly marked OR are plain action buttons
+        // (i.e. not form submit / nav). Redirect to 404.
+        const isActionButton =
+          btn.tagName === "BUTTON" || btn.hasAttribute("data-404");
+        if (!isActionButton) return;
+        if (btn.tagName === "BUTTON" && btn.type === "button") {
+          e.preventDefault();
+          window.location.href = "./404.html";
+        }
+      });
+
+      /* ==========================================================
+         ANIMATED COUNTERS
+      ========================================================== */
+      function animateCount(el) {
+        const target = parseFloat(el.dataset.count || "0");
+        const decimals = parseInt(el.dataset.decimals || "0", 10);
+        const prefix = el.dataset.prefix || "";
+        const suffix = el.dataset.suffix || "";
+        const duration = 1700;
+        const start = performance.now();
+
+        function tick(now) {
+          const p = Math.min((now - start) / duration, 1);
+          const eased = 1 - Math.pow(1 - p, 3);
+          const value = target * eased;
+          el.textContent =
+            prefix +
+            value.toLocaleString(undefined, {
+              minimumFractionDigits: decimals,
+              maximumFractionDigits: decimals,
+            }) +
+            suffix;
+          if (p < 1) requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+      }
+
+      const counterObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              animateCount(entry.target);
+              counterObserver.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.35 },
+      );
+
+      document
+        .querySelectorAll("[data-count]")
+        .forEach((el) => counterObserver.observe(el));
+
+      /* ==========================================================
+         SCROLL REVEAL
+      ========================================================== */
+      const revealObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("in");
+              revealObserver.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.08, rootMargin: "0px 0px -40px 0px" },
+      );
+
+      document
+        .querySelectorAll(".reveal")
+        .forEach((el) => revealObserver.observe(el));
+
+      /* ==========================================================
+         CHARTS
+      ========================================================== */
+      Chart.defaults.font.family = "'Outfit', sans-serif";
+      Chart.defaults.font.size = 11;
+      Chart.defaults.color = "#94a3b8";
+
+      const charts = {};
+
+      const centerLabelPlugin = {
+        id: "userCenterLabel",
+        afterDraw(chart) {
+          if (chart.config.type !== "doughnut") return;
+          const {
+            ctx,
+            chartArea: { left, right, top, bottom },
+          } = chart;
+          const x = (left + right) / 2;
+          const y = (top + bottom) / 2;
+          ctx.save();
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.fillStyle = "#0f313a";
+          ctx.font = "800 24px Outfit, sans-serif";
+          ctx.fillText("86", x, y - 8);
+          ctx.fillStyle = "#94a3b8";
+          ctx.font = "700 10px Outfit, sans-serif";
+          ctx.fillText("SHIPMENTS", x, y + 14);
+          ctx.restore();
+        },
+      };
+      Chart.register(centerLabelPlugin);
+
+      const tooltipStyle = {
+        backgroundColor: "#0f313a",
+        padding: 12,
+        cornerRadius: 10,
+        titleFont: { size: 12, weight: "700" },
+        bodyFont: { size: 11 },
+        usePointStyle: true,
+        displayColors: true,
+        boxPadding: 4,
+      };
+
+      const legendStyle = {
+        position: "top",
+        align: "end",
+        labels: {
+          usePointStyle: true,
+          pointStyle: "circle",
+          boxWidth: 8,
+          boxHeight: 8,
+          padding: 16,
+          font: { size: 11, weight: "700" },
+        },
+      };
+
+      function makeGradient(ctx, color, height) {
+        const g = ctx.createLinearGradient(0, 0, 0, height || 300);
+        g.addColorStop(0, color.replace("ALPHA", "0.35"));
+        g.addColorStop(1, color.replace("ALPHA", "0"));
+        return g;
+      }
+
+      function buildUserVolumeChart() {
+        const canvas = document.getElementById("chartUserVolume");
+        if (!canvas || charts.userVolume) return;
+        const ctx = canvas.getContext("2d");
+
+        charts.userVolume = new Chart(ctx, {
+          type: "line",
+          data: {
+            labels: [
+              "Jan",
+              "Feb",
+              "Mar",
+              "Apr",
+              "May",
+              "Jun",
+              "Jul",
+              "Aug",
+              "Sep",
+              "Oct",
+              "Nov",
+              "Dec",
+            ],
+            datasets: [
+              {
+                label: "My Shipments",
+                data: [4, 6, 5, 8, 7, 9, 6, 10, 8, 9, 7, 7],
+                borderColor: "#5094c1",
+                backgroundColor: makeGradient(
+                  ctx,
+                  "rgba(80,148,193,ALPHA)",
+                  300,
+                ),
+                fill: true,
+                tension: 0.42,
+                borderWidth: 3,
+                pointRadius: 0,
+                pointHoverRadius: 6,
+                pointBackgroundColor: "#5094c1",
+                pointBorderColor: "#fff",
+                pointBorderWidth: 2,
+              },
+              {
+                label: "Delivered",
+                data: [4, 5, 5, 7, 6, 8, 5, 9, 7, 8, 7, 6],
+                borderColor: "#fac12e",
+                backgroundColor: makeGradient(
+                  ctx,
+                  "rgba(250,193,46,ALPHA)",
+                  300,
+                ),
+                fill: true,
+                tension: 0.42,
+                borderWidth: 3,
+                pointRadius: 0,
+                pointHoverRadius: 6,
+                pointBackgroundColor: "#fac12e",
+                pointBorderColor: "#fff",
+                pointBorderWidth: 2,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: { mode: "index", intersect: false },
+            plugins: {
+              legend: legendStyle,
+              tooltip: tooltipStyle,
+            },
+            scales: {
+              x: {
+                grid: { display: false },
+                border: { display: false },
+                ticks: { font: { size: 10, weight: "600" } },
+              },
+              y: {
+                beginAtZero: true,
+                grid: { color: "rgba(15,49,58,0.07)" },
+                border: { display: false },
+                ticks: {
+                  maxTicksLimit: 6,
+                  precision: 0,
+                  font: { size: 10, weight: "600" },
+                },
+              },
+            },
+          },
+        });
+      }
+
+      function buildUserStatusChart() {
+        const canvas = document.getElementById("chartUserStatus");
+        if (!canvas || charts.userStatus) return;
+
+        charts.userStatus = new Chart(canvas.getContext("2d"), {
+          type: "doughnut",
+          data: {
+            labels: ["Delivered", "In Transit", "Pending", "Delayed"],
+            datasets: [
+              {
+                data: [74, 6, 4, 2],
+                backgroundColor: ["#104a57", "#5094c1", "#fac12e", "#f94735"],
+                borderWidth: 0,
+                hoverOffset: 10,
+                spacing: 2,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: "70%",
+            plugins: {
+              legend: {
+                position: "bottom",
+                labels: {
+                  usePointStyle: true,
+                  pointStyle: "circle",
+                  boxWidth: 8,
+                  boxHeight: 8,
+                  padding: 14,
+                  font: { size: 11, weight: "700" },
+                },
+              },
+              tooltip: tooltipStyle,
+            },
+          },
+        });
+      }
+
+      function buildUserSpendChart() {
+        const canvas = document.getElementById("chartUserSpend");
+        if (!canvas || charts.userSpend) return;
+
+        charts.userSpend = new Chart(canvas.getContext("2d"), {
+          type: "bar",
+          data: {
+            labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep"],
+            datasets: [
+              {
+                label: "Spent",
+                data: [1420, 1980, 2240, 1650, 2680, 2430],
+                backgroundColor: [
+                  "#3d7ba3",
+                  "#5094c1",
+                  "#104a57",
+                  "#fac12e",
+                  "#f94735",
+                  "#0f313a",
+                ],
+                borderRadius: 8,
+                borderSkipped: false,
+                maxBarThickness: 30,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                ...tooltipStyle,
+                callbacks: {
+                  label: (c) => `Spent: $${c.parsed.y.toLocaleString()}`,
+                },
+              },
+            },
+            scales: {
+              x: {
+                grid: { display: false },
+                border: { display: false },
+                ticks: { font: { size: 10, weight: "600" } },
+              },
+              y: {
+                beginAtZero: true,
+                grid: { color: "rgba(15,49,58,0.07)" },
+                border: { display: false },
+                ticks: {
+                  maxTicksLimit: 6,
+                  font: { size: 10, weight: "600" },
+                  callback: (v) => "$" + v,
+                },
+              },
+            },
+          },
+        });
+      }
+
+      function initChartsFor(page) {
+        if (page === "dashboard") {
+          buildUserVolumeChart();
+          buildUserStatusChart();
+          buildUserSpendChart();
+        }
+      }
+
+      window.addEventListener("load", () => {
+        initChartsFor("dashboard");
+      });
+    </script>
+  </body>
+</html>
