@@ -136,11 +136,205 @@
         margin-bottom: 24px;
         transition: transform 0.3s ease;
       }
+
+      /* ================= TRUCK PAGE LOADER CSS ================= */
+      .ldr-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: #f8f9fa; /* Matches body background */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition:
+          opacity 0.5s ease,
+          visibility 0.5s ease;
+      }
+      .ldr-overlay.hidden {
+        opacity: 0;
+        visibility: hidden;
+      }
+      .ldr-scene {
+        position: relative;
+        width: 100%;
+        max-width: 600px;
+        height: 150px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+      }
+      .ldr-truck-container {
+        position: absolute;
+        bottom: 15px;
+        width: 200px;
+        /* Animation to drive from RIGHT to LEFT */
+        animation: ldr-drive 2.5s linear infinite;
+      }
+      .ldr-truck {
+        width: 100%;
+        height: auto;
+        /* NO FLIP - The truck naturally faces left */
+        /* Slight bouncing animation to simulate a bumpy road */
+        animation: ldr-road-bounce 0.4s infinite alternate ease-in-out;
+      }
+      .ldr-road {
+        width: 100%;
+        height: 4px;
+        background-color: #34495e;
+        position: relative;
+      }
+      .ldr-road::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 200%;
+        height: 2px;
+        background: repeating-linear-gradient(
+          to right,
+          #f1c40f 0,
+          #f1c40f 30px,
+          transparent 30px,
+          transparent 60px
+        );
+        transform: translateY(-50%);
+        /* Animate the road moving LEFT to RIGHT */
+        animation: ldr-road-move 0.6s linear infinite;
+      }
+
+      @keyframes ldr-drive {
+        0% {
+          left: 100%;
+        } /* Start off-screen right */
+        100% {
+          left: -250px;
+        } /* Drive off-screen left */
+      }
+      @keyframes ldr-road-bounce {
+        0% {
+          transform: translateY(0);
+        }
+        100% {
+          transform: translateY(-3px);
+        }
+      }
+      .ldr-wheel-spokes {
+        transform-origin: center;
+        animation: ldr-spin 0.5s infinite linear;
+      }
+      @keyframes ldr-spin {
+        100% {
+          transform: rotate(-360deg);
+        }
+      }
+      @keyframes ldr-road-move {
+        0% {
+          transform: translateY(-50%) translateX(-60px);
+        }
+        100% {
+          transform: translateY(-50%) translateX(0);
+        }
+      }
     </style>
     <link rel="stylesheet" href="./navbar.css" />
     <link rel="stylesheet" href="./footer.css" />
   </head>
   <body>
+    <!-- ================= PAGE LOADER ================= -->
+    <div class="ldr-overlay" id="pageLoader">
+      <div class="ldr-scene">
+        <div class="ldr-truck-container">
+          <svg
+            class="ldr-truck"
+            viewBox="0 0 200 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <!-- Shadow underneath -->
+            <ellipse cx="95" cy="88" rx="70" ry="4" fill="#dcdcdc" />
+            <!-- Truck Chassis / Base -->
+            <rect x="30" y="75" width="130" height="8" rx="2" fill="#2c3e50" />
+            <!-- Truck Cabin (Red) - On the LEFT side, so it faces LEFT -->
+            <path
+              d="M 30 75 L 30 45 C 30 35 40 30 50 30 L 70 30 L 70 75 Z"
+              fill="#e74c3c"
+            />
+            <!-- Windshield -->
+            <path d="M 35 45 L 45 35 L 55 35 L 55 50 Z" fill="#ecf0f1" />
+            <!-- Front Bumper -->
+            <rect x="28" y="68" width="8" height="7" rx="2" fill="#2c3e50" />
+            <!-- Headlight -->
+            <circle cx="31" cy="65" r="2" fill="#f1c40f" />
+            <!-- Taillight -->
+            <rect x="155" y="65" width="4" height="6" rx="1" fill="#e74c3c" />
+            <!-- Cargo Boxes -->
+            <g class="boxes">
+              <rect x="72" y="35" width="35" height="40" fill="#e2b77e" />
+              <rect x="72" y="35" width="35" height="5" fill="#d19a5c" />
+              <path d="M 72 35 L 65 25 L 85 25 L 85 35 Z" fill="#f1cba6" />
+              <path d="M 85 35 L 85 25 L 95 20 L 95 35 Z" fill="#d19a5c" />
+              <rect x="107" y="35" width="35" height="40" fill="#e2b77e" />
+              <rect x="107" y="35" width="35" height="5" fill="#d19a5c" />
+              <path d="M 107 35 L 107 25 L 117 20 L 117 35 Z" fill="#f1cba6" />
+              <path d="M 117 35 L 117 20 L 137 25 L 142 35 Z" fill="#d19a5c" />
+              <rect x="85" y="15" width="35" height="25" fill="#d19a5c" />
+              <path d="M 85 15 L 80 5 L 100 5 L 100 15 Z" fill="#f1cba6" />
+              <path d="M 100 15 L 100 5 L 115 10 L 120 15 Z" fill="#e2b77e" />
+            </g>
+            <!-- Wheels -->
+            <g>
+              <circle cx="135" cy="80" r="10" fill="#2c3e50" />
+              <circle cx="135" cy="80" r="6" fill="#ecf0f1" />
+              <g class="ldr-wheel-spokes" style="transform-origin: 135px 80px">
+                <line
+                  x1="135"
+                  y1="75"
+                  x2="135"
+                  y2="85"
+                  stroke="#2c3e50"
+                  stroke-width="2"
+                />
+                <line
+                  x1="130"
+                  y1="80"
+                  x2="140"
+                  y2="80"
+                  stroke="#2c3e50"
+                  stroke-width="2"
+                />
+              </g>
+            </g>
+            <g>
+              <circle cx="55" cy="80" r="10" fill="#2c3e50" />
+              <circle cx="55" cy="80" r="6" fill="#ecf0f1" />
+              <g class="ldr-wheel-spokes" style="transform-origin: 55px 80px">
+                <line
+                  x1="55"
+                  y1="75"
+                  x2="55"
+                  y2="85"
+                  stroke="#2c3e50"
+                  stroke-width="2"
+                />
+                <line
+                  x1="50"
+                  y1="80"
+                  x2="60"
+                  y2="80"
+                  stroke="#2c3e50"
+                  stroke-width="2"
+                />
+              </g>
+            </g>
+          </svg>
+        </div>
+        <div class="ldr-road"></div>
+      </div>
+    </div>
+
     <!-- ================= NAVBAR ================= -->
     <header class="navHeader">
       <!-- ================= TOP BAR ================= -->
@@ -206,24 +400,6 @@
               onclick="window.location.href = './404.html'"
             >
               <img src="./assets/1.webp" alt="US Flag" class="navLangFlag" />
-              <!-- <i class="fas fa-chevron-down"></i> -->
-              <!-- <div class="navLangDropdown">
-                <a href="#" class="navLangItem">
-                  <img src="https://flagcdn.com/w40/ca.png" alt="Canada Flag" />
-                  Canada
-                </a>
-                <a href="#" class="navLangItem">
-                  <img
-                    src="https://flagcdn.com/w40/au.png"
-                    alt="Australia Flag"
-                  />
-                  Australia
-                </a>
-                <a href="#" class="navLangItem">
-                  <img src="https://flagcdn.com/w40/sa.png" alt="Saudi Flag" />
-                  Arabic
-                </a>
-              </div> -->
             </div>
 
             <!-- Track Button -->
@@ -406,7 +582,7 @@
               </p>
             </div>
             <img
-              src="./assets/breadcrumb-shape.webp"
+              src="./assets/about4.webp"
               alt="Ocean Freight"
               class="w-full md:w-64 h-40 object-cover rounded-xl"
             />
@@ -583,12 +759,12 @@
           <div data-aos="fade-right" data-aos-duration="1000">
             <span
               class="inline-block px-4 py-1.5 border border-[#fac12e] rounded-full text-xs font-bold text-[#fac12e] mb-6 uppercase tracking-wider"
-              >Why choose Logiver</span
+              >Why choose Stackly</span
             >
             <h2
               class="text-3xl md:text-5xl font-extrabold text-white leading-tight mb-6"
             >
-              WHY CHOOSE LOGIVER FOR RELIABLE GLOBAL TRANSPORTATION & LOGISTICS
+              WHY CHOOSE STACKLY FOR RELIABLE GLOBAL TRANSPORTATION & LOGISTICS
               SOLUTIONS.
             </h2>
 
@@ -758,7 +934,7 @@
           <div>
             <span
               class="inline-block px-4 py-1.5 border border-[#0f313a] rounded-full text-xs font-bold text-[#0f313a] mb-6 uppercase tracking-wider"
-              >Logiver Case Studies</span
+              >Stackly Case Studies</span
             >
             <h2
               class="text-4xl md:text-5xl font-extrabold text-[#0f313a] leading-tight max-w-2xl"
@@ -1114,12 +1290,12 @@
         >
           <span
             class="inline-block px-4 py-1.5 border border-[#0f313a] rounded-full text-xs font-bold text-[#0f313a] mb-4 uppercase tracking-wider"
-            >Logiver Testimonials</span
+            >Stackly Testimonials</span
           >
           <h2
             class="text-4xl md:text-5xl font-extrabold text-[#0f313a] leading-tight"
           >
-            WHAT OUR CLIENTS SAY ABOUT LOGIVER<br />LOGISTICS SERVICES.
+            WHAT OUR CLIENTS SAY ABOUT STACKLY<br />LOGISTICS SERVICES.
           </h2>
         </div>
 
@@ -1152,7 +1328,7 @@
                 />
               </div>
               <p class="text-gray-600 text-sm mb-6 italic">
-                "Logiver truly understands logistics excellence—professional
+                "Stackly truly understands logistics excellence—professional
                 service, real-time updates, and on-time deliveries every single
                 time."
               </p>
@@ -1191,7 +1367,7 @@
                 />
               </div>
               <p class="text-gray-600 text-sm mb-6 italic">
-                "Logiver truly understands logistics excellence—professional
+                "Stackly truly understands logistics excellence—professional
                 service, real-time updates, and on-time deliveries every single
                 time."
               </p>
@@ -1230,7 +1406,7 @@
                 />
               </div>
               <p class="text-gray-600 text-sm mb-6 italic">
-                "We trust Logiver for all our shipping needs; their consistent
+                "We trust Stackly for all our shipping needs; their consistent
                 quality and punctuality help us maintain customer satisfaction
                 effortlessly."
               </p>
@@ -1269,7 +1445,7 @@
                 />
               </div>
               <p class="text-gray-600 text-sm mb-6 italic">
-                "Our business improved significantly after integrating Logiver's
+                "Our business improved significantly after integrating Stackly's
                 systems. They are dependable and highly professional."
               </p>
               <div class="flex items-center justify-between">
@@ -1307,7 +1483,7 @@
                 />
               </div>
               <p class="text-gray-600 text-sm mb-6 italic">
-                "Logiver truly understands logistics excellence—professional
+                "Stackly truly understands logistics excellence—professional
                 service, real-time updates, and on-time deliveries every single
                 time."
               </p>
@@ -1346,7 +1522,7 @@
                 />
               </div>
               <p class="text-gray-600 text-sm mb-6 italic">
-                "We trust Logiver for all our shipping needs; their consistent
+                "We trust Stackly for all our shipping needs; their consistent
                 quality and punctuality help us maintain customer satisfaction
                 effortlessly."
               </p>
@@ -1385,7 +1561,7 @@
                 />
               </div>
               <p class="text-gray-600 text-sm mb-6 italic">
-                "Our business improved significantly after integrating Logiver's
+                "Our business improved significantly after integrating Stackly's
                 systems. They are dependable and highly professional."
               </p>
               <div class="flex items-center justify-between">
@@ -1423,7 +1599,7 @@
                 />
               </div>
               <p class="text-gray-600 text-sm mb-6 italic">
-                "Logiver truly understands logistics excellence—professional
+                "Stackly truly understands logistics excellence—professional
                 service, real-time updates, and on-time deliveries every single
                 time."
               </p>
@@ -1462,7 +1638,7 @@
                 />
               </div>
               <p class="text-gray-600 text-sm mb-6 italic">
-                "We trust Logiver for all our shipping needs; their consistent
+                "We trust Stackly for all our shipping needs; their consistent
                 quality and punctuality help us maintain customer satisfaction
                 effortlessly."
               </p>
@@ -1501,7 +1677,7 @@
                 />
               </div>
               <p class="text-gray-600 text-sm mb-6 italic">
-                "Our business improved significantly after integrating Logiver's
+                "Our business improved significantly after integrating Stackly's
                 systems. They are dependable and highly professional."
               </p>
               <div class="flex items-center justify-between">
@@ -1769,6 +1945,17 @@
         once: true,
         offset: 100,
         easing: "ease-out-cubic",
+      });
+
+      // ================= HIDE PAGE LOADER =================
+      window.addEventListener("load", function () {
+        // Small delay to ensure the animation is visible even on fast connections
+        setTimeout(function () {
+          const loader = document.getElementById("pageLoader");
+          if (loader) {
+            loader.classList.add("hidden");
+          }
+        }, 1500); // 1.5 seconds delay
       });
 
       // ================= HERO AUTO-SLIDER =================
