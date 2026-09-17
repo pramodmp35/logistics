@@ -3450,7 +3450,11 @@
                 <h3 class="card-title">Invoice Ledger</h3>
                 <p class="card-sub">Most recent billing activity</p>
               </div>
-              <button type="button" class="link-btn">
+              <button
+                type="button"
+                class="link-btn"
+                onclick="window.location.href = './404.html'"
+              >
                 <i class="fas fa-file-arrow-down"></i> Export CSV
               </button>
             </div>
@@ -3478,7 +3482,11 @@
                     </td>
                     <td><span class="pill pill-pending">Pending</span></td>
                     <td style="text-align: right">
-                      <button type="button" class="link-btn">
+                      <button
+                        type="button"
+                        class="link-btn"
+                        onclick="window.location.href = './404.html'"
+                      >
                         <i class="fas fa-eye"></i> View
                       </button>
                     </td>
@@ -3493,7 +3501,11 @@
                     </td>
                     <td><span class="pill pill-delivered">Paid</span></td>
                     <td style="text-align: right">
-                      <button type="button" class="link-btn">
+                      <button
+                        type="button"
+                        class="link-btn"
+                        onclick="window.location.href = './404.html'"
+                      >
                         <i class="fas fa-eye"></i> View
                       </button>
                     </td>
@@ -3508,7 +3520,11 @@
                     </td>
                     <td><span class="pill pill-delayed">Overdue</span></td>
                     <td style="text-align: right">
-                      <button type="button" class="link-btn">
+                      <button
+                        type="button"
+                        class="link-btn"
+                        onclick="window.location.href = './404.html'"
+                      >
                         <i class="fas fa-paper-plane"></i> Remind
                       </button>
                     </td>
@@ -3523,7 +3539,11 @@
                     </td>
                     <td><span class="pill pill-delivered">Paid</span></td>
                     <td style="text-align: right">
-                      <button type="button" class="link-btn">
+                      <button
+                        type="button"
+                        class="link-btn"
+                        onclick="window.location.href = './404.html'"
+                      >
                         <i class="fas fa-eye"></i> View
                       </button>
                     </td>
@@ -3538,7 +3558,11 @@
                     </td>
                     <td><span class="pill pill-delayed">Overdue</span></td>
                     <td style="text-align: right">
-                      <button type="button" class="link-btn">
+                      <button
+                        type="button"
+                        class="link-btn"
+                        onclick="window.location.href = './404.html'"
+                      >
                         <i class="fas fa-paper-plane"></i> Remind
                       </button>
                     </td>
@@ -3553,7 +3577,11 @@
                     </td>
                     <td><span class="pill pill-delivered">Paid</span></td>
                     <td style="text-align: right">
-                      <button type="button" class="link-btn">
+                      <button
+                        type="button"
+                        class="link-btn"
+                        onclick="window.location.href = './404.html'"
+                      >
                         <i class="fas fa-eye"></i> View
                       </button>
                     </td>
@@ -3968,20 +3996,32 @@
                 </div>
               </div>
 
-              <form
-                action="./404.html"
-                class="p-4 border-t border-slate-100 flex items-center gap-2"
-              >
-                <input
-                  type="text"
-                  class="form-field"
-                  placeholder="Type your message…"
-                  required
-                />
-                <button type="button" class="btn-primary !px-4">
-                  <i class="fas fa-paper-plane"></i>
-                </button>
-              </form>
+              <div class="chat-form-wrapper">
+                <!-- 1. Added id="chatForm" and novalidate -->
+                <form
+                  action="./404.html"
+                  id="chatForm"
+                  class="p-4 border-t border-slate-100 flex items-center gap-2"
+                  novalidate
+                >
+                  <input
+                    type="text"
+                    class="form-field chat-input"
+                    placeholder="Type your message…"
+                    required
+                  />
+                  <!-- 2. Changed type="button" to type="submit" -->
+                  <button type="submit" class="btn-primary !px-4">
+                    <i class="fas fa-paper-plane"></i>
+                  </button>
+                </form>
+
+                <!-- 3. Added Error Message Container (outside the form to preserve flex layout) -->
+                <div
+                  id="chatError"
+                  class="hidden text-red-500 text-xs mt-1 px-4 pb-2 font-medium"
+                ></div>
+              </div>
             </div>
           </div>
         </section>
@@ -5150,6 +5190,40 @@
       /* Build the default page's charts on load */
       window.addEventListener("load", () => {
         initChartsFor("dashboard");
+      });
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("chatForm");
+        const input = form.querySelector(".chat-input");
+        const errorMsg = document.getElementById("chatError");
+
+        form.addEventListener("submit", function (e) {
+          const value = input.value.trim();
+
+          // Validation: Check if the input is empty
+          if (value === "") {
+            e.preventDefault(); // Stop the form from submitting to 404.html
+
+            // Show error message and add red border to the input
+            errorMsg.textContent = "Please type a message before sending.";
+            errorMsg.classList.remove("hidden");
+
+            // Assuming Tailwind is used, border-red-500 will work.
+            // If not, this will just add a class you can style.
+            input.classList.add("border-red-500");
+          } else {
+            // If valid, do nothing. The form will naturally submit to ./404.html
+            // Just clear any existing errors
+            errorMsg.classList.add("hidden");
+            input.classList.remove("border-red-500");
+          }
+        });
+
+        // Clear the error message as soon as the user starts typing
+        input.addEventListener("input", function () {
+          errorMsg.classList.add("hidden");
+          input.classList.remove("border-red-500");
+        });
       });
     </script>
   </body>

@@ -162,9 +162,16 @@
         min-width: 200px;
       }
 
-      .ftrnewsform {
+      /* NEW: Wrapper for form and error message */
+      .ftrnewsform-group {
         flex: 1 1 300px;
         max-width: 480px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .ftrnewsform {
+        width: 100%;
         display: flex;
         align-items: center;
         gap: 0.5rem;
@@ -182,6 +189,27 @@
         background: rgba(80, 148, 193, 0.14);
         border-color: var(--coastal);
         box-shadow: 0 0 0 4px rgba(80, 148, 193, 0.16);
+      }
+
+      /* Error state styles for the form */
+      .ftrnewsform.has-error {
+        border-color: var(--ember) !important;
+        box-shadow: 0 0 0 4px rgba(249, 71, 53, 0.16) !important;
+      }
+
+      .ftrnewserror {
+        color: var(--ember);
+        font-size: 0.75rem;
+        font-weight: 600;
+        margin-top: 0.5rem;
+        width: 100%;
+        text-align: left;
+        padding-left: 1rem;
+        display: none; /* Hidden by default */
+      }
+
+      .ftrnewserror.visible {
+        display: block;
       }
 
       .ftrnewsinp {
@@ -550,7 +578,8 @@
           font-size: 1.28rem;
         }
 
-        .ftrnewsform {
+        /* Updated to target the new wrapper */
+        .ftrnewsform-group {
           flex: 0 1 460px;
         }
 
@@ -602,6 +631,39 @@
         }
       }
 
+      /* ============================================================
+         MOBILE OVERFLOW FIX (320px - 480px)
+      ============================================================ */
+      @media (max-width: 480px) {
+        .ftrnewsform-group {
+          max-width: 100%; /* Ensure it fits within the screen */
+        }
+
+        .ftrnewsform {
+          flex-direction: column;
+          border-radius: 12px; /* Change from pill to rounded box */
+          padding: 0.5rem;
+          gap: 0.75rem;
+        }
+
+        .ftrnewsinp {
+          width: 100%;
+          text-align: center;
+          padding: 0.75rem 0;
+        }
+
+        .ftrnewsbtn {
+          width: 100%;
+          border-radius: 8px;
+          padding: 0.85rem;
+        }
+
+        .ftrnewserror {
+          text-align: center;
+          padding-left: 0;
+        }
+      }
+
       @media (prefers-reduced-motion: reduce) {
         .ftrroot *,
         .ftrroot *::before,
@@ -632,17 +694,22 @@
         <div class="ftrnewscontent">
           <h3 class="ftrnewstitle">Subscribe Newsletter</h3>
 
-          <form class="ftrnewsform" action="./404.html">
-            <input
-              class="ftrnewsinp"
-              type="email"
-              name="ftremail"
-              placeholder="Your Email Address"
-              aria-label="Your Email Address"
-              required
-            />
-            <button class="ftrnewsbtn" type="submit">Subscribe Now</button>
-          </form>
+          <!-- NEW: Grouped form and error message to ensure they stay together -->
+          <div class="ftrnewsform-group">
+            <form class="ftrnewsform" action="./404.html" novalidate>
+              <input
+                class="ftrnewsinp"
+                type="email"
+                name="ftremail"
+                placeholder="Your Email Address"
+                aria-label="Your Email Address"
+                required
+              />
+              <button class="ftrnewsbtn" type="submit">Subscribe Now</button>
+            </form>
+            <!-- Error message container -->
+            <div class="ftrnewserror" id="ftrEmailError"></div>
+          </div>
         </div>
       </div>
 
@@ -772,5 +839,51 @@
         </div>
       </div>
     </footer>
+    <script src="./footer.js"></script>
+    <!-- JavaScript for Validation -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const form = document.querySelector(".ftrnewsform");
+        const input = document.querySelector(".ftrnewsinp");
+        const errorMsg = document.getElementById("ftrEmailError");
+
+        form.addEventListener("submit", function (e) {
+          const email = input.value.trim();
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+          // Validation checks
+          if (email === "") {
+            e.preventDefault(); // Stop the form from submitting
+            errorMsg.textContent = "Email address is required.";
+            errorMsg.classList.add("visible");
+            form.classList.add("has-error");
+            return;
+          }
+
+          if (!emailRegex.test(email)) {
+            e.preventDefault(); // Stop the form from submitting
+            errorMsg.textContent = "Please enter a valid email address.";
+            errorMsg.classList.add("visible");
+            form.classList.add("has-error");
+            return;
+          }
+
+          // If valid, do NOT call e.preventDefault().
+          // The form will naturally submit to action="./404.html"
+
+          // Clear any previous error styling just before submission
+          errorMsg.textContent = "";
+          errorMsg.classList.remove("visible");
+          form.classList.remove("has-error");
+        });
+
+        // Clear error message when the user starts typing
+        input.addEventListener("input", function () {
+          errorMsg.textContent = "";
+          errorMsg.classList.remove("visible");
+          form.classList.remove("has-error");
+        });
+      });
+    </script>
   </body>
 </html>

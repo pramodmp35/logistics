@@ -648,20 +648,24 @@
           <h2 class="text-3xl md:text-4xl font-extrabold text-[#0f313a] mb-6">
             Enter the Consignment No.
           </h2>
-          <form class="flex flex-col sm:flex-row gap-4" action="./404.html">
-            <input
-              type="text"
-              placeholder="Enter Tracking Number"
-              class="tracking-input flex-grow border border-gray-300 rounded-lg px-6 py-4 text-gray-700 focus:ring-0 transition-all duration-300"
-              required
-            />
-            <button
-              type="submit"
-              class="bg-[#f94735] hover:bg-[#d13c2c] text-white font-bold px-8 py-4 rounded-lg transition-colors duration-300 whitespace-nowrap"
-            >
-              TRACK RESULT
-            </button>
-          </form>
+        <!-- Form: Added novalidate and an ID for JS targeting -->
+<form id="trackingForm" class="flex flex-col sm:flex-row gap-4" action="./404.html" novalidate>
+  <input
+    type="text"
+    placeholder="Enter Tracking Number"
+    class="tracking-input flex-grow border border-gray-300 rounded-lg px-6 py-4 text-gray-700 focus:ring-0 transition-all duration-300"
+    required
+  />
+  <button
+    type="submit"
+    class="bg-[#f94735] hover:bg-[#d13c2c] text-white font-bold px-8 py-4 rounded-lg transition-colors duration-300 whitespace-nowrap"
+  >
+    TRACK RESULT
+  </button>
+</form>
+
+<!-- Error Message Container (placed outside the form to preserve your flexbox layout) -->
+<div id="trackingError" class="text-red-500 text-sm mt-2 hidden"></div>
           <p class="mt-4 text-[#0f313a] font-bold text-lg">Ex: STKLOG12345</p>
         </div>
       </div>
@@ -790,35 +794,36 @@
         </div>
       </div>
     </section>
- <footer class="ftrroot">
+  <!-- ================= FOOTER ================= -->
+    <footer class="ftrroot">
       <div class="ftraccent"></div>
 
       <!-- ============ NEWSLETTER BAR ============ -->
       <div class="ftrnewsbar">
         <div class="ftrnewslogo">
           <!-- REPLACE src WITH YOUR LOGO URL -->
-          <img
-            src="./assets/logoog.webp"
-            alt="Stackly Worldwide Logistics"
-            onclick="window.location.href = './index.html'"
-            style="cursor: pointer"
-          />
+          <img src="./assets/logoog.webp" alt="Stackly Worldwide Logistics" />
         </div>
 
         <div class="ftrnewscontent">
           <h3 class="ftrnewstitle">Subscribe Newsletter</h3>
 
-          <form class="ftrnewsform" action="./404.html">
-            <input
-              class="ftrnewsinp"
-              type="email"
-              name="ftremail"
-              placeholder="Your Email Address"
-              aria-label="Your Email Address"
-              required
-            />
-            <button class="ftrnewsbtn" type="submit">Subscribe Now</button>
-          </form>
+          <!-- NEW: Grouped form and error message to ensure they stay together -->
+          <div class="ftrnewsform-group">
+            <form class="ftrnewsform" action="./404.html" novalidate>
+              <input
+                class="ftrnewsinp"
+                type="email"
+                name="ftremail"
+                placeholder="Your Email Address"
+                aria-label="Your Email Address"
+                required
+              />
+              <button class="ftrnewsbtn" type="submit">Subscribe Now</button>
+            </form>
+            <!-- Error message container -->
+            <div class="ftrnewserror" id="ftrEmailError"></div>
+          </div>
         </div>
       </div>
 
@@ -948,6 +953,7 @@
         </div>
       </div>
     </footer>
+<script src="./footer.js"></script>
     <!-- ================= SCRIPTS ================= -->
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -996,6 +1002,40 @@
         stagger: 0.2,
         ease: "back.out(1.7)",
       });
+        document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("trackingForm");
+    const input = form.querySelector(".tracking-input");
+    const errorMsg = document.getElementById("trackingError");
+
+    form.addEventListener("submit", function (e) {
+      const value = input.value.trim();
+
+      // Validation: Check if the input is empty
+      if (value === "") {
+        e.preventDefault(); // Stop the form from submitting to 404.html
+        
+        // Show error message and style the input
+        errorMsg.textContent = "Please enter a tracking number.";
+        errorMsg.classList.remove("hidden");
+        
+        input.classList.add("border-red-500");
+        input.classList.remove("border-gray-300");
+      } else {
+        // If valid, do nothing. The form will naturally submit to ./404.html
+        // Just clear any existing errors
+        errorMsg.classList.add("hidden");
+        input.classList.remove("border-red-500");
+        input.classList.add("border-gray-300");
+      }
+    });
+
+    // Clear the error message as soon as the user starts typing
+    input.addEventListener("input", function () {
+      errorMsg.classList.add("hidden");
+      input.classList.remove("border-red-500");
+      input.classList.add("border-gray-300");
+    });
+  });
     </script>
      <script src="./navbar.js"></script>
   </body>

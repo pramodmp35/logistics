@@ -2681,22 +2681,33 @@
               </div>
 
               <!-- Reply form: required input + action to 404.html -->
-              <form
-                action="./404.html"
-                method="get"
-                class="p-4 border-t border-slate-100 flex items-center gap-2"
-              >
-                <input
-                  type="text"
-                  name="message"
-                  class="form-field"
-                  placeholder="Type your message…"
-                  required
-                />
-                <button type="submit" class="btn-primary !px-4">
-                  <i class="fas fa-paper-plane"></i>
-                </button>
-              </form>
+              <!-- Wrapper to hold form and error message -->
+              <div class="chat-form-wrapper">
+                <form
+                  action="./404.html"
+                  method="get"
+                  id="chatForm"
+                  class="p-4 border-t border-slate-100 flex items-center gap-2"
+                  novalidate
+                >
+                  <input
+                    type="text"
+                    name="message"
+                    class="form-field chat-input"
+                    placeholder="Type your message…"
+                    required
+                  />
+                  <button type="submit" class="btn-primary !px-4">
+                    <i class="fas fa-paper-plane"></i>
+                  </button>
+                </form>
+
+                <!-- Error Message Container -->
+                <div
+                  id="chatError"
+                  class="hidden text-red-500 text-xs mt-1 px-4 pb-2 font-medium"
+                ></div>
+              </div>
             </div>
           </div>
         </section>
@@ -3547,6 +3558,37 @@
 
       window.addEventListener("load", () => {
         initChartsFor("dashboard");
+      });
+      <!-- JavaScript Validation -->
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("chatForm");
+        const input = form.querySelector(".chat-input");
+        const errorMsg = document.getElementById("chatError");
+
+        form.addEventListener("submit", function (e) {
+          const value = input.value.trim();
+
+          // Check if the message is empty
+          if (value === "") {
+            e.preventDefault(); // Stop the form from submitting to 404.html
+
+            // Show error message and add red border to the input
+            errorMsg.textContent = "Please type a message before sending.";
+            errorMsg.classList.remove("hidden");
+            input.classList.add("border-red-500");
+          } else {
+            // If valid, clear errors and let the form naturally submit
+            errorMsg.classList.add("hidden");
+            input.classList.remove("border-red-500");
+          }
+        });
+
+        // Clear the error message as soon as the user starts typing
+        input.addEventListener("input", function () {
+          errorMsg.classList.add("hidden");
+          input.classList.remove("border-red-500");
+        });
       });
     </script>
   </body>
